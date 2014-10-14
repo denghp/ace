@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.dashboard</groupId>
+    <artifactId>dashboard-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>dashboard-core</module>
+        <module>dashboard-web</module>
+    </modules>
+    <packaging>pom</packaging>
+
+
+    <properties>
+        <spring.version>4.1.0.RELEASE</spring.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <jackson.version>1.9.13</jackson.version>
+        <mysql.version>5.1.32</mysql.version>
+        <shiro.version>1.2.2</shiro.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hibernate.commons.annotaions.version>4.0.2.Final</hibernate.commons.annotaions.version>
+        <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+        <commons-lang3.version>3.1</commons-lang3.version>
+        <common-collections.version>3.2.1</common-collections.version>
+        <aspectj.version>1.7.2</aspectj.version>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>dashboard</id>
+            <url>http://192.168.4.51:8081/nexus/content/repositories/releases</url>
+        </repository>
+    </distributionManagement>
+
+
+    <repositories>
+        <repository>
+            <id>dashboard</id>
+            <url>http://192.168.4.51:8081/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+</project>

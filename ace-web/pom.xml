@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ace-parent</artifactId>
+        <groupId>com.ace</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ace-web</artifactId>
+
+    <properties>
+        <jetty.port>9090</jetty.port>
+        <jetty.stopPort>8888</jetty.stopPort>
+        <shiro.version>1.2.3</shiro.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
+                <connection.admin.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.admin.url>
+                <connection.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.url>
+                <connection.username>root</connection.username>
+                <connection.password>123456</connection.password>
+                <log.dir>./logs/${name}</log.dir>
+                <shiro.uid.cookie.domain>localhost</shiro.uid.cookie.domain>
+                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
+            </properties>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>maven-db-plugin-repo</id>
+                    <name>maven db plugin repository</name>
+                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <profile>
+            <!--正式环境-->
+            <id>production</id>
+            <properties>
+                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
+                <connection.admin.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.admin.url>
+                <connection.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.url>
+                <connection.username>root</connection.username>
+                <connection.password>123456</connection.password>
+                <log.dir>./logs/${name}</log.dir>
+                <shiro.uid.cookie.domain>demi-panda.com</shiro.uid.cookie.domain>
+                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
+            </properties>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>maven-db-plugin-repo</id>
+                    <name>maven db plugin repository</name>
+                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>profiles</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.0.0.M2</version>
+                <configuration>
+                    <scanIntervalSeconds>2</scanIntervalSeconds>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>${jetty.port}</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                        </connector>
+                    </connectors>
+                    <webAppConfig>
+                        <contextPath>/${name}</contextPath>
+                    </webAppConfig>
+                    <stopPort>${jetty.stopPort}</stopPort>
+                    <stopKey>jetty</stopKey>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <escapeString>\</escapeString>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.googlecode</groupId>
+                <artifactId>maven-db-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <adminDbConnectionSettings>
+                        <jdbcDriver>${connection.driver_class}</jdbcDriver>
+                        <jdbcUrl>${connection.admin.url}</jdbcUrl>
+                        <userName>${connection.username}</userName>
+                        <password>${connection.password}</password>
+                    </adminDbConnectionSettings>
+                    <appDbConnectionSettings>
+                        <jdbcDriver>${connection.driver_class}</jdbcDriver>
+                        <jdbcUrl>${connection.url}</jdbcUrl>
+                        <userName>${connection.username}</userName>
+                        <password>${connection.password}</password>
+                    </appDbConnectionSettings>
+                    <dbDataScriptsDirectory>
+                        <param>src/main/resources/db/data</param>
+                    </dbDataScriptsDirectory>
+                    <dbSchemaScriptsDirectory>
+                        <param>src/main/resources/db/schema</param>
+                    </dbSchemaScriptsDirectory>
+                    <dbUpdateScriptsDirectory>
+                        <param>src/main/resources/db/update</param>
+                    </dbUpdateScriptsDirectory>
+                    <dbCreateStatements>
+                        create database ${db.name} CHARACTER SET 'utf8';
+                    </dbCreateStatements>
+                    <dbDropStatements>drop database ${db.name};</dbDropStatements>
+                    <sqlDelimiter>;;</sqlDelimiter>
+                    <scriptEncoding>UTF-8</scriptEncoding>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!-- taglist报表 生成标注上@todo或TODO的项目的列表 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!-- utils 相关jar包  -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-cas</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>

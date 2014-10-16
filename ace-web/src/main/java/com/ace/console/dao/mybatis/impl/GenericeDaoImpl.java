@@ -1,4 +1,4 @@
-package com.ace.console.dao.mybatis;
+package com.ace.console.dao.mybatis.impl;
 
 import com.ace.console.common.utils.Page;
 import com.ace.console.common.utils.PageBean;
@@ -10,6 +10,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @Time: 10:27 PM
  * @Description:
  */
+@Repository
 public class GenericeDaoImpl<T, ID extends Serializable> extends SqlSessionDaoSupport implements GenericeDao<T, ID> {
 
     private Logger logger = LoggerFactory.getLogger(GenericeDaoImpl.class);
@@ -194,7 +196,7 @@ public class GenericeDaoImpl<T, ID extends Serializable> extends SqlSessionDaoSu
         try {
             return getSqlSession().selectOne(namespace + "." + NameSpace.SQLID_SELECT_ID, id);
         } catch (Exception e) {
-            logger.error("findAll error : ", e);
+            logger.error("exists error : ", e);
         }
         return false;
     }

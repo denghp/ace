@@ -12,31 +12,40 @@
             http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context-3.0.xsd"
-        default-lazy-init="false">
+       default-lazy-init="false">
 
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <!-- 定义受环境影响易变的变量 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreResourceNotFound" value="true" />
         <property name="locations">
             <list>
-                <value>classpath:config/jdbc.properties</value>
-                <value>classpath:config/shiro.properties</value>
+                <!-- 标准配置 -->
+                <value>classpath*:config/jdbc.properties</value>
             </list>
         </property>
     </bean>
 
     <!-- 扫描注解Bean 对切入类的方法进行缓存处理-->
-    <context:component-scan base-package="com.bashboard">
+    <context:component-scan base-package="com.ace.console">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-    <!-- 开启AOP监听 只对当前配置文件有效 -->
-    <aop:aspectj-autoproxy expose-proxy="true"/>
+
+    <!--开启注解 -->
+    <context:annotation-config />
+
+    <!-- 开启自动切面代理 -->
+    <aop:aspectj-autoproxy />
+
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${erp.driverClassName}"/>
-        <property name="jdbcUrl" value="${erp.jdbc.url}"/>
-        <property name="user" value="${erp.jdbc.username}"/>
-        <property name="password" value="${erp.jdbc.password}"/>
+        <property name="driverClass" value="${ace.driverClassName}"/>
+        <property name="jdbcUrl" value="${ace.jdbc.url}"/>
+        <property name="user" value="${ace.jdbc.username}"/>
+        <property name="password" value="${ace.jdbc.password}"/>
         <property name="acquireIncrement" value="3"/>
         <property name="initialPoolSize" value="3"/>
         <property name="minPoolSize" value="2"/>
@@ -75,11 +84,11 @@
     第二个 *  —— 通配 包com.ace.erp.service下的任意class，
     第三个 *  —— 通配 包com.ace.erp.service下的任意class的任意方法
     第四个 .. —— 通配 方法可以有0个或多个参数代表方法名 -->
-    <aop:config expose-proxy="true" proxy-target-class="true">
-        <aop:pointcut id="txPointcut" expression="execution(* com.bashboard..*.*(..))"/>
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="txPointcut" expression="execution(* com.ace.console..*.*(..))"/>
         <aop:advisor id="txAdvisor" advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
-    <!--
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
@@ -90,5 +99,5 @@
             </array>
         </property>
     </bean>
-    -->
+
 </beans>

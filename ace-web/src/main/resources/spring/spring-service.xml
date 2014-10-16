@@ -15,14 +15,5 @@
        default-lazy-init="false">
 
 
-
-<bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="ehCacheManager"/>
-    </bean>
-
-    <!--ehcache-->
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:config/ehcache.xml"/>
-    </bean>
-
+<bean id="userService" class="com.ace.console.service.sys.impl.UserServiceImpl" />
 </beans>

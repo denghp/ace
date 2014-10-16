@@ -32,7 +32,7 @@
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="sqlmap" targetProject="./src/main/resources">
+        <sqlMapGenerator targetPackage="mybatis.sqlmap" targetProject="./src/main/resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 

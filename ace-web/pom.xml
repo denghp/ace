@@ -17,65 +17,6 @@
         <shiro.version>1.2.3</shiro.version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>development</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
-                <connection.admin.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.admin.url>
-                <connection.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.url>
-                <connection.username>root</connection.username>
-                <connection.password>123456</connection.password>
-                <log.dir>./logs/${name}</log.dir>
-                <shiro.uid.cookie.domain>localhost</shiro.uid.cookie.domain>
-                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
-            </properties>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>maven-db-plugin-repo</id>
-                    <name>maven db plugin repository</name>
-                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
-                    <layout>default</layout>
-                </pluginRepository>
-            </pluginRepositories>
-        </profile>
-
-        <profile>
-            <!--正式环境-->
-            <id>production</id>
-            <properties>
-                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
-                <connection.admin.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.admin.url>
-                <connection.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.url>
-                <connection.username>root</connection.username>
-                <connection.password>123456</connection.password>
-                <log.dir>./logs/${name}</log.dir>
-                <shiro.uid.cookie.domain>demi-panda.com</shiro.uid.cookie.domain>
-                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
-            </properties>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>maven-db-plugin-repo</id>
-                    <name>maven db plugin repository</name>
-                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
-                    <layout>default</layout>
-                </pluginRepository>
-            </pluginRepositories>
-        </profile>
-
-    </profiles>
-
     <build>
         <resources>
             <resource>
@@ -189,6 +130,85 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>development</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/profiles/development</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
+                <connection.admin.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.admin.url>
+                <connection.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.url>
+                <connection.username>root</connection.username>
+                <connection.password>123456</connection.password>
+                <log.dir>./logs/${name}</log.dir>
+                <shiro.uid.cookie.domain>localhost</shiro.uid.cookie.domain>
+                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
+            </properties>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>maven-db-plugin-repo</id>
+                    <name>maven db plugin repository</name>
+                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <profile>
+            <!--正式环境-->
+            <id>production</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/profiles/production</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+
+            <properties>
+                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
+                <connection.admin.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.admin.url>
+                <connection.url>
+                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
+                </connection.url>
+                <connection.username>root</connection.username>
+                <connection.password>123456</connection.password>
+                <log.dir>./logs/${name}</log.dir>
+                <shiro.uid.cookie.domain>demi-panda.com</shiro.uid.cookie.domain>
+                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
+            </properties>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>maven-db-plugin-repo</id>
+                    <name>maven db plugin repository</name>
+                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+    </profiles>
+
+
+
     <dependencies>
 
         <dependency>
@@ -278,13 +298,6 @@
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
@@ -306,6 +319,18 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>14.0.1</version>
+        </dependency>
+
+        <!-- aspectj相关jar包-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
 
 

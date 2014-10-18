@@ -8,8 +8,8 @@
     <artifactId>ace</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>ace-web</module>
-        <module>ace-core</module>
+        <module>web</module>
+        <module>core</module>
         <module>common-mybatis</module>
     </modules>
 

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.ace.console.common.utils;
+package com.ace.console.utils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -15,7 +15,7 @@ BEGIN
        END WHILE;
        RETURN pTemp;
 END ||
-DELIMITER ;
+DELIMITER ;;
 /*** custom function getChildList **/
 DROP FUNCTION IF EXISTS getChildCount;
 DELIMITER ||
@@ -26,4 +26,4 @@ BEGIN
        set pTemp = (select count(*) from sys_resource f_t where f_t.parent_id = rootId);
        RETURN pTemp;
 END ||
-DELIMITER ;
+DELIMITER ;;

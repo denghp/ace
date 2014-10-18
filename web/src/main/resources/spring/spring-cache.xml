@@ -21,13 +21,17 @@
 
 
 
-<bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehCacheManager"/>
     </bean>
 
-    <!--ehcache-->
+    <!-- 缓存管理器 使用Ehcache实现 -->
     <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:config/ehcache.xml"/>
     </bean>
 
+    <!-- 缓存管理器 使用Ehcache实现 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:config/ehcache.xml"/>
+    </bean>
 </beans>

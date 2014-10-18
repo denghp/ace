@@ -14,4 +14,24 @@ import com.ace.core.persistence.mapper.UserMapper;
  */
 public class UserMapperImpl extends GenericeMapperImpl<User, Long> implements UserMapper {
 
+    public enum RdbOperation {
+
+        FIND_BY_USERNAME(".Mapper.findByUsername");
+
+        private String value;
+
+        private RdbOperation(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return this.value;
+        }
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.FIND_BY_USERNAME, username);
+    }
+
 }

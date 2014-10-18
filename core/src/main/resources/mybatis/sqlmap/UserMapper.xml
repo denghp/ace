@@ -47,23 +47,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-
-    <insert id="save" parameterType="com.ace.core.persistence.entity.User">
-    insert into sys_user (id, username, email, 
-      mobile_phone_number, password, salt, 
-      status, organization_id, organization_name, 
-      admin, create_time, modify_time, 
-      login_time, last_login_time, count
-      )
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{mobilePhoneNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{organizationId,jdbcType=BIGINT}, #{organizationName,jdbcType=VARCHAR}, 
-      #{admin,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
-      #{loginTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{count,jdbcType=BIGINT}
-      )
-  </insert>
-
-    <insert id="insertSelective" parameterType="com.ace.core.persistence.entity.User">
+    <insert id="insert" parameterType="com.ace.core.persistence.entity.User" keyProperty="id" useGeneratedKeys="true" >
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -160,7 +144,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.ace.core.persistence.entity.User">
+
+    <update id="update" parameterType="com.ace.core.persistence.entity.User">
         update sys_user
         <set>
             <if test="username != null">
@@ -208,22 +193,5 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.ace.core.persistence.entity.User">
-    update sys_user
-    set username = #{username,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      mobile_phone_number = #{mobilePhoneNumber,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      salt = #{salt,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      organization_id = #{organizationId,jdbcType=BIGINT},
-      organization_name = #{organizationName,jdbcType=VARCHAR},
-      admin = #{admin,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      login_time = #{loginTime,jdbcType=TIMESTAMP},
-      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      count = #{count,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
 </mapper>

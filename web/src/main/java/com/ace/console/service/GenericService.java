@@ -1,8 +1,8 @@
 package com.ace.console.service;
 
 
-import com.ace.console.common.utils.Page;
 import com.ace.console.exception.AceException;
+import com.ace.core.page.Page;
 import com.ace.core.persistence.mapper.GenericeMapper;
 
 import java.io.Serializable;
@@ -39,7 +39,7 @@ public interface GenericService<T, ID extends Serializable> {
      * @return
      *              返回保存实体的ID
      */
-    public ID save(T entity) throws AceException;
+    public T save(T entity) throws AceException;
 
 
     /**
@@ -54,10 +54,10 @@ public interface GenericService<T, ID extends Serializable> {
      *
      *  删除实体集合
      *
-     * @param entites
+     * @param ids
      *         需要删除的实体的集合
      */
-    public void deleteAll(Collection<T> entites) throws AceException;
+    public void deleteAll(List<ID> ids) throws AceException;
 
     /**
      *  更新实体

@@ -1,7 +1,7 @@
 package com.ace.console.controller;
 
-import com.ace.console.common.utils.ReflectUtils;
 import com.ace.console.service.GenericService;
+import com.ace.core.utils.ReflectUtils;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.io.Serializable;

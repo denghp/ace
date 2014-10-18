@@ -1,15 +1,15 @@
-drop table if exists `sys_user`;;
-drop table if exists `sys_organization`;;
-drop table if exists `sys_job`;;
-drop table if exists `sys_user_organization_job`;;
-drop table if exists `sys_resource`;;
-drop table if exists `sys_permission`;;
-drop table if exists `sys_role`;;
-drop table if exists `sys_role_resource_permission`;;
-drop table if exists `sys_user_roles`;;
-drop table if exists `sys_group`;;
-drop table if exists `sys_group_relation`;;
-drop table if exists `sys_trade_code`;;
+drop table if exists `sys_user`;
+drop table if exists `sys_organization`;
+drop table if exists `sys_job`;
+drop table if exists `sys_user_organization_job`;
+drop table if exists `sys_resource`;
+drop table if exists `sys_permission`;
+drop table if exists `sys_role`;
+drop table if exists `sys_role_resource_permission`;
+drop table if exists `sys_user_roles`;
+drop table if exists `sys_group`;
+drop table if exists `sys_group_relation`;
+drop table if exists `sys_trade_code`;
 
 ##user
 create table `sys_user`(
@@ -18,10 +18,11 @@ create table `sys_user`(
   `email` VARCHAR(100) NULL DEFAULT NULL ,
   `mobile_phone_number` VARCHAR(20) NULL DEFAULT NULL ,
   `password` VARCHAR(100) NULL DEFAULT NULL ,
-  `salt` VARCHAR(10) NULL DEFAULT NULL ,
+  `salt` VARCHAR(100) NULL DEFAULT NULL ,
   `status` VARCHAR(50) NULL DEFAULT NULL ,
   `organization_id` BIGINT NULL DEFAULT NULL ,
   `organization_name` VARCHAR(255) NULL DEFAULT NULL ,
+  `locked` BOOL NOT NULL DEFAULT FALSE ,
   `admin` BOOL NULL DEFAULT NULL ,
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
   `modify_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '修改时间' ,
@@ -33,8 +34,8 @@ create table `sys_user`(
   constraint `unique_sys_user_email` unique(`email`),
   constraint `unique_sys_user_mobile_phone_number` unique(`mobile_phone_number`),
   index `idx_sys_user_status` (`status`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_user` auto_increment=1000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_user` auto_increment=1000;
 
 
 create table `sys_organization`(
@@ -60,8 +61,8 @@ create table `sys_organization`(
   index `idx_sys_organization_trade_code` (`trade_code_id`),
   index `idx_sys_organization_parent_id` (`parent_id`),
   index `idx_sys_organization_parent_ids_weight` (`parent_ids`, `weight`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_organization` auto_increment=10000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_organization` auto_increment=10000;
 
 CREATE TABLE `sys_job` (
   `id` BIGINT NOT NULL AUTO_INCREMENT comment '职位ID',
@@ -75,8 +76,8 @@ CREATE TABLE `sys_job` (
   index `idx_sys_job_nam` (`name`),
   index `idx_sys_job_parent_id` (`parent_id`),
   index `idx_sys_job_parent_ids_weight` (`parent_ids`, `weight`)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = '职位表';;
-alter table `sys_job` auto_increment=1000;;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = '职位表';
+alter table `sys_job` auto_increment=1000;
 
 
 create table `sys_user_organization_job`(
@@ -87,7 +88,7 @@ create table `sys_user_organization_job`(
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
   constraint `pk_sys_user_organization_job` primary key(`id`),
   constraint `unique_sys_user_organization_job` unique(`user_id`, `organization_id`, `job_id`)
-) charset=utf8 ENGINE=InnoDB;;
+) charset=utf8 ENGINE=InnoDB;
 
 create table `sys_resource`(
   `id`         bigint not null auto_increment comment '资源ID',
@@ -105,8 +106,8 @@ create table `sys_resource`(
   index `idx_sys_resource_user` (`url`),
   index `idx_sys_resource_parent_id` (`parent_id`),
   index `idx_sys_resource_parent_ids_weight` (`parent_ids`, `weight`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_resource` auto_increment=1000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_resource` auto_increment=1000;
 
 
 create table `sys_permission`(
@@ -119,8 +120,8 @@ create table `sys_permission`(
   index idx_sys_permission_name (`name`),
   index idx_sys_permission_permission (`permission`),
   index idx_sys_permission_show (`is_show`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_permission` auto_increment=1000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_permission` auto_increment=1000;
 
 create table `sys_role`(
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '角色ID' ,
@@ -134,8 +135,8 @@ create table `sys_role`(
   index `idx_sys_role_name` (`name`),
   index `idx_sys_role_role` (`role`),
   index `idx_sys_role_show` (`is_show`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_role` auto_increment=1000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_role` auto_increment=1000;
 
 
 create table `sys_role_resource_permission`(
@@ -145,8 +146,8 @@ create table `sys_role_resource_permission`(
   `permission_ids` varchar(500),
   constraint `pk_sys_role_resource_permission` primary key(`id`),
   constraint `unique_sys_role_resource_permission` unique(`role_id`, `resource_id`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_role_resource_permission` auto_increment=1000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_role_resource_permission` auto_increment=1000;
 
 
 /**
@@ -165,8 +166,8 @@ create table `sys_user_roles`(
   constraint `pk_user_roles` primary key(`id`),
   index `idx_sys_user_roles_organization` (`organization_id`),
   index `idx_sys_user_roles_type` (`type`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_user_roles` auto_increment=1000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_user_roles` auto_increment=1000;
 
 
 CREATE  TABLE `sys_group` (
@@ -182,7 +183,7 @@ CREATE  TABLE `sys_group` (
   index `idx_sys_group_type` (`type`),
   index `idx_sys_group_show` (`is_show`),
   index `idx_sys_group_default_group` (`default_group`)
-)charset=utf8 ENGINE=InnoDB;;
+)charset=utf8 ENGINE=InnoDB;
 
 CREATE  TABLE `sys_group_relation` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
@@ -193,7 +194,7 @@ CREATE  TABLE `sys_group_relation` (
   index `idx_sys_group_relation_group` (`group_id`),
   index `idx_sys_group_relation_organization` (`organization_id`),
   index `idx_sys_group_relation_user` (`user_id`)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = '用户,组,组织关联表';;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COMMENT = '用户,组,组织关联表';
 
 /**
  * 类型,代码
@@ -209,6 +210,6 @@ create table `sys_trade_code` (
   index `idx_sys_resource_name` (`name`),
   index `idx_sys_resource_identity` (`identity`),
   index `idx_sys_resource_parent_id` (`parent_id`)
-) charset=utf8 ENGINE=InnoDB;;
-alter table `sys_trade_code` auto_increment=1000;;
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_trade_code` auto_increment=1000;
 

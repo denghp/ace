@@ -26,7 +26,7 @@ public interface GenericeMapper<T, ID extends Serializable>  {
      * @return
      *              返回保存实体
      */
-    public T insert(T entity) throws NoSuchMethodException;
+    public Long insert(T entity);
 
 
     /**

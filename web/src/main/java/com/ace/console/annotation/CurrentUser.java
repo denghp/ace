@@ -1,7 +1,7 @@
 package com.ace.console.annotation;
 
 
-import com.ace.console.common.utils.Constants;
+import com.ace.console.utils.Constants;
 
 import java.lang.annotation.*;
 

@@ -13,7 +13,6 @@ package com.ace.console.common.support;
  * @Time: 11:23 PM
  */
 import com.ace.console.annotation.BaseComponent;
-import com.ace.console.common.mybatis.BaseMapper;
 import com.ace.console.controller.BaseController;
 import com.ace.console.service.GenericService;
 import com.ace.core.persistence.mapper.GenericeMapper;

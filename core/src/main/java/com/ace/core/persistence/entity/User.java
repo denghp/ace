@@ -33,6 +33,23 @@ public class User {
 
     private Long count;
 
+    private Boolean locked;
+
+    public User(){}
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
     public Long getId() {
         return id;
     }

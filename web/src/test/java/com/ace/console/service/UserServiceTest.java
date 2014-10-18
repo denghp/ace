@@ -1,13 +1,22 @@
 package com.ace.console.service;
 
 import com.ace.console.annotation.BaseComponent;
+import com.ace.console.exception.AceException;
+import com.ace.console.utils.JsonUtils;
 import com.ace.console.service.sys.UserService;
+import com.ace.core.persistence.entity.User;
+import org.codehaus.jackson.JsonGenerationException;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * @Project_Name: ace-parent
@@ -21,18 +30,31 @@ import javax.annotation.Resource;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/*.xml","classpath:*.xml"})
 public class UserServiceTest {
-
+    private Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
     @Resource
     @BaseComponent
     private UserService userService;
 
-    @Test
-    public void saveUser() {
+    protected String password = "123";
+    protected User user;
+
+    @Before
+    public void init() {
+        user = new User("demo_3", password);
 
     }
 
     @Test
-    public void selectUser() {
-        userService.findById(1l);
+    public void saveUser() throws AceException, IOException {
+       User en = userService.save(user);
+       logger.info("user : {}",JsonUtils.getObjMapper().writeValueAsString(en));
+       Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void selectUser() throws IOException {
+        User user = userService.findById(1l);
+        logger.info("user : {}",JsonUtils.getObjMapper().writeValueAsString(user));
+        Assert.assertNotNull(user);
     }
 }

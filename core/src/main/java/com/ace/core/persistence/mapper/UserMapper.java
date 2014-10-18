@@ -15,4 +15,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper extends GenericeMapper<User, Long> {
 
+    /**
+     * 根据username查询USER
+     * @param username
+     * @return
+     */
+    public User findByUsername(String username);
+
 }

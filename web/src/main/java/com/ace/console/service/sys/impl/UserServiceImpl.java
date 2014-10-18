@@ -1,12 +1,17 @@
 package com.ace.console.service.sys.impl;
 
 import com.ace.console.annotation.BaseComponent;
+import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
+import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.entity.User;
 import com.ace.core.persistence.mapper.UserMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
+import java.util.Set;
 
 
 /**
@@ -20,7 +25,68 @@ import javax.annotation.Resource;
  */
 public class UserServiceImpl extends AbstractService<User, Long> implements UserService {
 
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     @BaseComponent
     private UserMapper userMapper;
+
+    /**
+     * 创建用户
+     * @param entity
+     *              实体Bean
+     * @return
+     * @throws AceException
+     */
+    @Override
+    public User save(User entity) throws AceException {
+        //将用户的密码进行加密处理
+        PasswordHelper.encryptPassword(entity);
+
+        return super.save(entity);
+    }
+
+    /**
+     *  修改密码
+     * @param userId
+     * @param newPassword
+     * @return
+     */
+    @Override
+    public boolean changePassword(Long userId, String newPassword) {
+        //根据用户ID获取用户
+        User user = userMapper.findOne(userId);
+        user.setPassword(newPassword);
+        //加密
+        PasswordHelper.encryptPassword(user);
+
+        userMapper.update(user);
+
+        return true;
+    }
+
+    @Override
+    public boolean correlationRoles(Long userId, Long... roleIds) {
+
+        return false;
+    }
+
+    @Override
+    public Set<String> findRoles(String username) {
+        return null;
+    }
+
+    @Override
+    public Set<String> findPermissions(String username) {
+        return null;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        if (StringUtils.isBlank(username)) {
+            logger.warn("username is empty.");
+            return null;
+        }
+        return userMapper.findByUsername(username);
+    }
 }

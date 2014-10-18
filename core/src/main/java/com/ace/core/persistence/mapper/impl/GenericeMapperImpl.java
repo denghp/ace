@@ -54,22 +54,23 @@ public class GenericeMapperImpl<T, ID extends Serializable> extends SqlSessionDa
     }
 
     @Override
-    public T insert(T entity) {
-        long id = (long)getSqlSession().insert(getNamespace() + RdbOperation.INSERT, entity);
-        try {
-            Field[] fileds = entity.getClass().getDeclaredFields();
-            for (Field field : fileds) {
-                if (field.getName().equals("id")) {
-                    Method setIdMethod = entity.getClass().getDeclaredMethod("setId", Long.class);
-                    setIdMethod.invoke(entity, id);
-                }
-            }
-        } catch (NoSuchMethodException ex) {
-            ex.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return entity;
+    public Long insert(T entity) {
+        int id = getSqlSession().insert(getNamespace() + RdbOperation.INSERT, entity);
+        logger.info("insert entity return id : {}", id);
+//        try {
+//            Field[] fileds = entity.getClass().getDeclaredFields();
+//            for (Field field : fileds) {
+//                if (field.getName().equals("id")) {
+//                    Method setIdMethod = entity.getClass().getDeclaredMethod("setId", Long.class);
+//                    setIdMethod.invoke(entity, id);
+//                }
+//            }
+//        } catch (NoSuchMethodException ex) {
+//            ex.printStackTrace();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+        return 0l;
     }
 
     @Override
@@ -153,7 +154,9 @@ public class GenericeMapperImpl<T, ID extends Serializable> extends SqlSessionDa
         if (null != findOne(id)) {
             update(t);
         } else {
-            return insert(t);
+            //TODO : INSERT
+            //return insert(t);
+            return null;
         }
 
         return t;

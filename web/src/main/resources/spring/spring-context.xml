@@ -44,7 +44,6 @@
     <aop:aspectj-autoproxy />
 
 
-
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${ace.jdbc.driverClassName}"/>
         <property name="jdbcUrl" value="${ace.jdbc.url}"/>

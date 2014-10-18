@@ -73,47 +73,6 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.googlecode</groupId>
-                <artifactId>maven-db-plugin</artifactId>
-                <version>1.4</version>
-                <configuration>
-                    <adminDbConnectionSettings>
-                        <jdbcDriver>${connection.driver_class}</jdbcDriver>
-                        <jdbcUrl>${connection.admin.url}</jdbcUrl>
-                        <userName>${connection.username}</userName>
-                        <password>${connection.password}</password>
-                    </adminDbConnectionSettings>
-                    <appDbConnectionSettings>
-                        <jdbcDriver>${connection.driver_class}</jdbcDriver>
-                        <jdbcUrl>${connection.url}</jdbcUrl>
-                        <userName>${connection.username}</userName>
-                        <password>${connection.password}</password>
-                    </appDbConnectionSettings>
-                    <dbDataScriptsDirectory>
-                        <param>src/main/resources/db/data</param>
-                    </dbDataScriptsDirectory>
-                    <dbSchemaScriptsDirectory>
-                        <param>src/main/resources/db/schema</param>
-                    </dbSchemaScriptsDirectory>
-                    <dbUpdateScriptsDirectory>
-                        <param>src/main/resources/db/update</param>
-                    </dbUpdateScriptsDirectory>
-                    <dbCreateStatements>
-                        create database ${db.name} CHARACTER SET 'utf8';
-                    </dbCreateStatements>
-                    <dbDropStatements>drop database ${db.name};</dbDropStatements>
-                    <sqlDelimiter>;;</sqlDelimiter>
-                    <scriptEncoding>UTF-8</scriptEncoding>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>${mysql.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
             <!-- taglist报表 生成标注上@todo或TODO的项目的列表 -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -127,6 +86,47 @@
                 <version>2.7</version>
             </plugin>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.5</version>
+
+                <dependencies>
+                    <!-- specify the dependent JDBC driver here -->
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <driver>${mysql.driver}</driver>
+                    <url>${mysql.url}</url>
+                    <username>${mysql.username}</username>
+                    <password>${mysql.password}</password>
+                    <sqlCommand>
+                            create database IF NOT EXISTS ${db.name};
+                    </sqlCommand>
+                    <sqlCommand>use ${db.name};</sqlCommand>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <srcFiles>
+                                <srcFile>src/main/resources/db/schema/init-schema.sql</srcFile>
+                                <srcFile>src/main/resources/db/data/init-data.sql</srcFile>
+                            </srcFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -146,29 +146,12 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
-                <connection.admin.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.admin.url>
-                <connection.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.url>
-                <connection.username>root</connection.username>
-                <connection.password>123456</connection.password>
-                <log.dir>./logs/${name}</log.dir>
-                <shiro.uid.cookie.domain>localhost</shiro.uid.cookie.domain>
-                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
+                <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
+                <mysql.url> <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]></mysql.url>
+                <mysql.username>root</mysql.username>
+                <mysql.password>123456</mysql.password>
+
             </properties>
-            <pluginRepositories>
-                <!--
-                <pluginRepository>
-                    <id>maven-db-plugin-repo</id>
-                    <name>maven db plugin repository</name>
-                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
-                    <layout>default</layout>
-                </pluginRepository>
-                -->
-            </pluginRepositories>
 
         </profile>
 
@@ -184,28 +167,6 @@
                 </resources>
             </build>
 
-            <properties>
-                <connection.driver_class>com.mysql.jdbc.Driver</connection.driver_class>
-                <connection.admin.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.admin.url>
-                <connection.url>
-                    <![CDATA[ jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]>
-                </connection.url>
-                <connection.username>root</connection.username>
-                <connection.password>123456</connection.password>
-                <log.dir>./logs/${name}</log.dir>
-                <shiro.uid.cookie.domain>demi-panda.com</shiro.uid.cookie.domain>
-                <shiro.uid.cookie.path>/</shiro.uid.cookie.path>
-            </properties>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>maven-db-plugin-repo</id>
-                    <name>maven db plugin repository</name>
-                    <url>http://maven-db-plugin.googlecode.com/svn/maven/repo</url>
-                    <layout>default</layout>
-                </pluginRepository>
-            </pluginRepositories>
         </profile>
 
     </profiles>
@@ -231,6 +192,8 @@
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -321,6 +284,24 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-quartz</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
             <version>${shiro.version}</version>
         </dependency>
 

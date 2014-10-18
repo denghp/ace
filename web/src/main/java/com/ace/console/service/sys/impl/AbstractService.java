@@ -7,11 +7,10 @@
 
 package com.ace.console.service.sys.impl;
 
-import com.ace.console.common.mybatis.BaseMapper;
 import com.ace.console.common.support.InjectBaseDependencyHelper;
-import com.ace.console.common.utils.Page;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
+import com.ace.core.page.Page;
 import com.ace.core.persistence.mapper.GenericeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,8 @@ public abstract class AbstractService<T, ID extends Serializable> implements Gen
     }
 
     @Override
-    public ID save(T entity) throws AceException {
+    public T save(T entity) throws AceException {
+        genericeMapper.insert(entity);
         return null;
     }
 
@@ -61,13 +61,13 @@ public abstract class AbstractService<T, ID extends Serializable> implements Gen
     }
 
     @Override
-    public void deleteAll(Collection<T> entites) throws AceException {
-
+    public void deleteAll(List<ID> ids) throws AceException {
+        genericeMapper.deleteBatch(ids);
     }
 
     @Override
     public void update(T entity) throws AceException {
-
+        genericeMapper.update(entity);
     }
 
     @Override
@@ -77,12 +77,12 @@ public abstract class AbstractService<T, ID extends Serializable> implements Gen
 
     @Override
     public List<T> findAll() {
-        return null;
+        return genericeMapper.findAll();
     }
 
     @Override
     public int count() {
-        return 0;
+        return genericeMapper.count();
     }
 
     @Override
@@ -97,11 +97,11 @@ public abstract class AbstractService<T, ID extends Serializable> implements Gen
 
     @Override
     public Page<T> page(Map<String, Object> params, Integer pageNum, Integer pageSize) {
-        return null;
+        return genericeMapper.page(params,pageNum, pageSize);
     }
 
     @Override
     public boolean exists(ID id) {
-        return false;
+        return genericeMapper.exists(id);
     }
 }

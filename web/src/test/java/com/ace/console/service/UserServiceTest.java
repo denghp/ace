@@ -1,11 +1,10 @@
 package com.ace.console.service;
 
+import com.ace.commons.json.JsonUtils;
 import com.ace.console.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
-import com.ace.console.utils.JsonUtils;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.entity.User;
-import org.codehaus.jackson.JsonGenerationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,23 +37,31 @@ public class UserServiceTest {
     protected String password = "123";
     protected User user;
 
+
     @Before
     public void init() {
-        user = new User("demo_3", password);
+        user = new User("demo_"+System.currentTimeMillis(), password);
 
     }
 
     @Test
     public void saveUser() throws AceException, IOException {
        User en = userService.save(user);
-       logger.info("user : {}",JsonUtils.getObjMapper().writeValueAsString(en));
+       logger.info("user : {}", JsonUtils.getObjectMapper().writeValueAsString(en));
        Assert.assertNotNull(user);
     }
 
     @Test
     public void selectUser() throws IOException {
         User user = userService.findById(1l);
-        logger.info("user : {}",JsonUtils.getObjMapper().writeValueAsString(user));
+        logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void findByUsername() throws IOException {
+        User user = userService.findByUsername("admin");
+        logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);
     }
 }

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<TITLE> ZTREE DEMO - edit</TITLE>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../assets/css/demo.css" type="text/css">
+<link rel="stylesheet" href="../assets/css/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="../assets/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="../assets/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="../assets/js/jquery.ztree.exhide-3.5.min.js"></script>
+<SCRIPT type="text/javascript">
+<!--
+var setting = {
+
+    view : {
+        fontCss: {},
+        addHoverDom: addHoverDom,
+        removeHoverDom: removeHoverDom,
+        selectedMulti: true
+    },
+    edit: {
+        enable: true,
+        editNameSelectAll: true,
+        removeTitle : "删除",
+        renameTitle : "编辑",
+        showRemoveBtn: true,
+        showRenameBtn: showRenameBtn,
+        drag: {
+            isCopy: false,
+            isMove: true,
+            prev: canPrevAndNext,
+            next: canPrevAndNext,
+            inner: true
+        }
+    },
+    data: {
+        keep: {
+            leaf: true,
+            parent: true
+        },
+        simpleData: {
+            enable: true
+        }
+    },
+    callback: {
+        //beforeDrag: beforeDrag
+        beforeRemove: zTreeBeforeRemove,
+        beforeRename: zTreeBeforeRename,
+        beforeDrop: zTreeBeforeDrop
+    }
+};
+var setting2 = {
+
+    view : {
+        fontCss: setFontCss,
+        dblClickExpand : true,
+        selectedMulti: true,
+        expandSpeed: "fast"
+    },
+
+    edit: {
+        enable: true,
+        drag: {
+            isCopy: true,
+            isMove: false,
+            prev: false,
+            next: false,
+            inner: false
+        },
+        showRemoveBtn: false,
+        showRenameBtn: false
+    },
+    data : {
+        keep: {
+            leaf: true,
+            parent: true
+        },
+        simpleData : {
+            enable : true
+        }
+    },
+    callback : {
+        beforeDrag: beforeDrag,
+        beforeDrop: zTreeBeforeDrop
+
+    }
+};
+
+var zNodes =[
+    { id:1, pId:0, name:"父节点 1", open:true},
+    { id:11, pId:1, name:"叶子节点 1-1"},
+    { id:12, pId:1, name:"叶子节点 1-2"},
+    { id:2, pId:0, name:"父节点 2", open:true},
+    { id:21, pId:2, name:"叶子节点 2-1"},
+    { id:23, pId:2, name:"叶子节点 2-3"},
+    { id:3, pId:0, name:"父节点 3", open:true},
+    { id:32, pId:3, name:"叶子节点 3-2"},
+    { id:33, pId:3, name:"叶子节点 3-3"}
+];
+var zNodes2 =[
+    { id:1, pId:0, name:"父节点 1", open:true, drag:false},
+    { id:11, pId:1, name:"叶子节点 1-1"},
+    { id:12, pId:1, name:"叶子节点 1-2"},
+    { id:13, pId:1, name:"叶子节点 1-3"},
+    { id:14, pId:1, name:"父节点 14", open:true, drag:false},
+    { id:141, pId:14, name:"叶子节点 14-1"},
+    { id:142, pId:14, name:"叶子节点 14-2"},
+    { id:143, pId:14, name:"叶子节点 14-3"},
+    { id:2, pId:0, name:"父节点 2", open:true, drag:false},
+    { id:21, pId:2, name:"叶子节点 2-1"},
+    { id:22, pId:2, name:"叶子节点 2-2"},
+    { id:23, pId:2, name:"叶子节点 2-3"},
+    { id:3, pId:0, name:"父节点 3", open:true, drag:false},
+    { id:31, pId:3, name:"叶子节点 3-1"},
+    { id:32, pId:3, name:"叶子节点 3-2"},
+    { id:33, pId:3, name:"叶子节点 3-3"}
+];
+function canPrevAndNext(treeId, nodes, targetNode) {
+    return !targetNode.isParent;
+}
+
+//用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否允许开启拖拽操作
+function beforeDrag(treeId, treeNodes) {
+    for (var i=0,l=treeNodes.length; i<l; i++) {
+        if (treeNodes[i].drag === false) {
+            return false;
+        } else if (treeNodes[i].parentTId && treeNodes[i].getParentNode().childDrag === false) {
+            return false;
+        }
+    }
+    return true;
+}
+//节点后的新建文件夹图标方法
+var newCount = 1;
+function addHoverDom(treeId, treeNode) {
+    var sObj = $("#" + treeNode.tId + "_span");
+    if (!treeNode.isParent || treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+    var addStr = "<span class='button add' id='addBtn_" + treeNode.tId    + "' title='新建文件夹' onfocus='this.blur();'></span>";
+    sObj.after(addStr);
+    var btn = $("#addBtn_"+treeNode.tId);
+    if (btn) btn.bind("click", function(){
+        var zTree = $.fn.zTree.getZTreeObj(treeId);
+        var currentTime = GetCurrentTime();
+        treeNode = zTree.addNodes(treeNode, {id:currentTime, pId:treeNode.id, isParent:true, name:"新建文件夹" + (newCount++)});
+        if (treeNode) {
+            zTree.editName(treeNode[0]);
+        } else {
+            alert("新建文件夹失败!请稍后再试");
+        }
+    });
+};
+function removeHoverDom(treeId, treeNode) {
+    $("#addBtn_"+treeNode.tId).unbind().remove();
+};
+function showRenameBtn(treeId, treeNode) {
+    return treeNode.isParent;
+}
+function updateNodes(nodeList) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo2");
+    for( var i=0; i<nodeList.length; i++) {
+        nodeList[i].drag = (nodeList[i].drag == null) ? false: !nodeList[i].drag;
+        zTree.updateNode(nodeList[i]);
+    }
+}
+//个性化样式
+function setFontCss(treeId, treeNode) {
+    return (treeNode.isParent == false &&　treeNode.drag == false) ?  {color:"#d0d0d0", "font-weight":"bold"} : {color:"", "font-weight":""};
+}
+//用于捕获节点被删除之前的事件回调函数，并且根据返回值确定是否允许删除操作
+function zTreeBeforeRemove(treeId, treeNode) {
+    if(!confirm(" 确认删除\""+treeNode.name +"\"及其子节点？")){
+        return false;
+    }
+    changNodesStat(treeNode);
+    return true;
+}
+//用于捕获节点编辑名称结束（Input 失去焦点 或 按下 Enter 键）之后，更新节点名称数据之前的事件回调函数，并且根据返回值确定是否允许更改名称的操作
+function zTreeBeforeRename(treeId, treeNode, newName, isCancel) {
+    if (newName.length == 0) {
+        alert("名称不能为空!");
+        var zTree = $.fn.zTree.getZTreeObj(treeId);
+        setTimeout(function(){zTree.editName(treeNode);}, 10);
+        return false;
+    }
+}
+//用于捕获节点拖拽操作结束之前的事件回调函数，并且根据返回值确定是否允许此拖拽操作
+function zTreeBeforeDrop(treeId, treeNodes, targetNode, moveType) {
+    updateNodes(treeNodes);
+}
+//“新建文件夹”按钮的方法
+function add(e) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+            isParent = e.data.isParent,
+            nodes = zTree.getSelectedNodes(),
+            treeNode = nodes[0];
+    if (treeNode && !treeNode.isParent == true) {
+        alert("只能在文件夹或根目录下新建文件夹！");
+        return;
+    }
+    var pId = (treeNode) ? treeNode.id : "0";
+    var currentTime = GetCurrentTime();
+    treeNode = zTree.addNodes(treeNode, {id:currentTime, pId:pId, isParent:isParent, name:"新建文件夹" + (newCount++)});
+    if (treeNode) {
+        zTree.editName(treeNode[0]);
+    } else {
+        alert("新建文件夹失败!请稍后再试");
+    }
+};
+function GetCurrentTime() {
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var month = parseInt(myDate.getMonth().toString()) + 1; //month是从0开始计数的，因此要 + 1
+    var date = myDate.getDate();
+    var hour = myDate.getHours();
+    var minute = myDate.getMinutes();
+    var second = myDate.getSeconds();
+    var millisecond = myDate.getMilliseconds();
+    if (month < 10) month = "0" + month.toString();
+    if (date < 10) date = "0" + date.toString();
+    if (hour < 10) hour = "0" + hour.toString();
+    if (minute < 10) minute = "0" + minute.toString();
+    if (second < 10) second = "0" + second.toString();
+    if(millisecond < 10){
+        millisecond = "00" + millisecond.toString();
+    }else if(millisecond < 100){
+        millisecond = "0" + millisecond.toString();
+    }
+    var currentTime = year.toString() + month.toString() + date.toString() + hour.toString() + minute.toString() + second.toString() + millisecond.toString(); //返回时间的数字组合
+    return currentTime;
+}
+function changNodesStat(treeNode){
+    if(treeNode && treeNode.isParent === false){
+        var zTree2 = $.fn.zTree.getZTreeObj("treeDemo2");
+        var node = zTree2.getNodeByParam("id", treeNode.id);
+        if(node) updateNodes([node]);
+    }else {
+        var nodes = filterNodes(treeNode);
+        updateNodes(nodes);
+    }
+}
+//自定义过滤器，传入treeDemo的父节点treeNode，返回treeDemo2中匹配id与treeNode下的叶子节点相同的节点
+function filterNodes(treeNode){
+    var zTree2 = $.fn.zTree.getZTreeObj("treeDemo2");
+    var nodes = zTree2.getNodesByFilter(filter,false,null,treeNode);
+    return nodes;
+}
+function filter(node,treeNode) {
+    var flag = false;
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    var nodes = zTree.getNodesByParam("isParent", false , treeNode);
+    for ( var i = 0; i < nodes.length; i++) {
+        flag = (nodes[i].id == node.id);
+        if(flag)break;
+    }
+    return flag;
+}
+
+$(document).ready(function(){
+    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    $.fn.zTree.init($("#treeDemo2"), setting2, zNodes2);
+    $("#addParent").bind("click", {isParent:true}, add);
+    changNodesStat();
+
+    //获取全部节点
+    //var zTree2 = $.fn.zTree.getZTreeObj("treeDemo2");
+    //var nodes = zTree2.getNodesByParam("null", null , null);
+    //alert(nodes.length);
+});
+//-->
+</SCRIPT>
+<style type="text/css">
+    .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+</style>
+</HEAD>
+
+<BODY>
+
+<div class="content_wrap">
+
+    <div class="zTreeDemoBackground left">
+        常用指标：<input type="button" id="addParent" value="新建文件夹" onclick="return false;">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+
+    <div class="zTreeDemoBackground right">
+        全量指标：
+        <ul id="treeDemo2" class="ztree"></ul>
+    </div>
+</div>
+
+</BODY>
+</HTML>

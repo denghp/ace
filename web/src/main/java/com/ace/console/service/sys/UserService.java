@@ -1,5 +1,6 @@
 package com.ace.console.service.sys;
 
+import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
 import com.ace.core.persistence.entity.User;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.Set;
 @Service
 public interface UserService extends GenericService<User, Long> {
 
+    public User login (String username, String password) throws AceException;
+
     /**
      * 修改密码
      * @param userId
@@ -34,19 +37,13 @@ public interface UserService extends GenericService<User, Long> {
      */
     public boolean correlationRoles(Long userId, Long... roleIds);
 
-    /**
-     * 根据用户名查找其角色
-     * @param username
-     * @return
-     */
-    public Set<String> findRoles(String username);
 
     /**
-     * 根据用户名查找其权限
+     * 根据用户名查询用户信息
      * @param username
+     *      用户名
      * @return
+     *      返回用户基本信息
      */
-    public Set<String> findPermissions(String username);
-
     public User findByUsername(String username);
 }

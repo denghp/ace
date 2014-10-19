@@ -7,6 +7,7 @@
 
 package com.ace.console.service.sys.impl;
 
+import com.ace.commons.json.JsonUtils;
 import com.ace.console.common.support.InjectBaseDependencyHelper;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
@@ -17,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,12 @@ public abstract class AbstractService<T, ID extends Serializable> implements Gen
     @Override
     public T save(T entity) throws AceException {
         genericeMapper.insert(entity);
-        return null;
+        try {
+            logger.debug("entity : {}", JsonUtils.getObjectMapper().writeValueAsString(entity));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return entity;
     }
 
     @Override

@@ -13,9 +13,9 @@
     </typeAliases>
 
     <typeHandlers>
-        <typeHandler javaType="DateTime" jdbcType="DATE" handler="com.ace.mybatis.type.JodaDateTimeDateTypeHandler" />
-        <typeHandler javaType="DateTime" jdbcType="TIME" handler="com.ace.mybatis.type.JodaDateTimeTypeHandler" />
-        <typeHandler javaType="DateTime" jdbcType="TIMESTAMP" handler="com.ace.mybatis.type.JodaDateTimestampTypeHandler" />
+        <typeHandler javaType="DateTime" jdbcType="DATE" handler="com.ace.commons.mybatis.type.JodaDateTimeDateTypeHandler" />
+        <typeHandler javaType="DateTime" jdbcType="TIME" handler="com.ace.commons.mybatis.type.JodaDateTimeTypeHandler" />
+        <typeHandler javaType="DateTime" jdbcType="TIMESTAMP" handler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler" />
     </typeHandlers>
 
 </configuration>

@@ -1,7 +1,6 @@
 package com.ace.core.persistence.mapper;
 
 import com.ace.core.persistence.entity.User;
-import org.springframework.stereotype.Repository;
 
 /**
  * @Project_Name: ace
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
  * @Time: 4:01 PM
  * @Description:
  */
-@Repository
 public interface UserMapper extends GenericeMapper<User, Long> {
 
     /**
@@ -21,5 +19,6 @@ public interface UserMapper extends GenericeMapper<User, Long> {
      * @return
      */
     public User findByUsername(String username);
+
 
 }

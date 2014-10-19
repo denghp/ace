@@ -33,7 +33,7 @@
     </bean>
 
     <!-- 扫描注解Bean 对切入类的方法进行缓存处理-->
-    <context:component-scan base-package="com.ace.console">
+    <context:component-scan base-package="com.ace">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -102,10 +102,37 @@
         </property>
     </bean>
 
-    <!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口-->
+    <!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口 -->
+
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.ace.core.persistence.mapper" />
+        <property name="markerInterface" value="com.ace.core.persistence.mapper.UserMapper" />
         <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
     </bean>
+
+    <!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+
+    <!-- 类型转换及数据格式化 -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>
+
+    <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
+                <value>classpath:messages/messages</value>
+                <value>classpath:messages/ValidationMessages</value>
+            </list>
+        </property>
+        <property name="useCodeAsDefaultMessage" value="false"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds" value="60"/>
+    </bean>
+
 
 </beans>

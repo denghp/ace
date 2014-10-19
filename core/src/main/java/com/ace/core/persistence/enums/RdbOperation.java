@@ -11,20 +11,20 @@ package com.ace.core.persistence.enums;
  */
 public enum RdbOperation {
 
-    INSERT (".Mapper.insert"),
-    INSERT_BATCH (".Mapper.insertBatch"),
-    UPDATE (".Mapper.update"),
-    UPDATE_CONDITION (".Mapper.updateCondition"),
-    UPDATE_BATCH (".Mapper.updateBatch"),
-    DELETE (".Mapper.delete"),
-    DELETE_CONDITION(".Mapper.deleteCondition"),
-    DELETE_BATCH (".Mapper.deleteBatch"),
-    SELECT(".Mapper.select"),
-    SELECT_ID(".Mapper.selectID"),
-    SELECT_CONDITION(".Mapper.selectCondition"),
-    SELECT_LIST(".Mapper.selectList"),
-    COUNT(".Mapper.count"),
-    COUNT_CONDITION(".Mapper.countCondition");
+    INSERT (".insert"),
+    INSERT_BATCH (".insertBatch"),
+    UPDATE (".update"),
+    UPDATE_CONDITION (".updateCondition"),
+    UPDATE_BATCH (".updateBatch"),
+    DELETE (".delete"),
+    DELETE_CONDITION(".deleteCondition"),
+    DELETE_BATCH (".deleteBatch"),
+    SELECT(".select"),
+    SELECT_ID(".selectID"),
+    SELECT_CONDITION(".selectCondition"),
+    SELECT_LIST(".selectList"),
+    COUNT(".count"),
+    COUNT_CONDITION(".countCondition");
 
     private String value;
 

@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>web</artifactId>
+    <packaging>war</packaging>
 
     <properties>
         <jetty.port>9090</jetty.port>
@@ -105,10 +106,9 @@
                     <url>${mysql.url}</url>
                     <username>${mysql.username}</username>
                     <password>${mysql.password}</password>
-                    <sqlCommand>
-                            create database IF NOT EXISTS ${db.name};
-                    </sqlCommand>
-                    <sqlCommand>use ${db.name};</sqlCommand>
+                    <sqlCommand>DROP DATABASE IF EXISTS  ${db.name};</sqlCommand>
+                    <sqlCommand>CREATE DATABASE IF NOT EXISTS ${db.name};</sqlCommand>
+                    <sqlCommand>USE ${db.name};</sqlCommand>
                 </configuration>
 
                 <executions>
@@ -120,8 +120,8 @@
                         </goals>
                         <configuration>
                             <srcFiles>
-                                <srcFile>src/main/resources/db/schema/init-schema.sql</srcFile>
-                                <srcFile>src/main/resources/db/data/init-data.sql</srcFile>
+                                <srcFile>src/main/resources/db/schema/init-sys-schema.sql</srcFile>
+                                <srcFile>src/main/resources/db/data/init-sys-data.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </execution>
@@ -183,7 +183,7 @@
 
         <dependency>
             <groupId>com.ace</groupId>
-            <artifactId>common-mybatis</artifactId>
+            <artifactId>commons</artifactId>
             <version>${version}</version>
         </dependency>
 
@@ -322,6 +322,13 @@
             <artifactId>ehcache-core</artifactId>
             <version>${ehcache.core.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- hibernate validator  相关jar包 -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
         </dependency>
     </dependencies>
 </project>

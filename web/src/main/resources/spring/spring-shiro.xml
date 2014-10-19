@@ -20,6 +20,7 @@
        default-lazy-init="true">
 
    <import resource="spring-cache.xml" />
+   <import resource="spring-service.xml" />
 
     <!-- 凭证匹配器 -->
     <bean id="credentialsMatcher" class="com.ace.console.shiro.credentials.RetryLimitHashedCredentialsMatcher">

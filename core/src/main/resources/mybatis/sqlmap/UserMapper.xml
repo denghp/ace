@@ -31,6 +31,13 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where username = #{username}
+    </select>
+
     <select id="findAll" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List"/>

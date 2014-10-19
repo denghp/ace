@@ -1,5 +1,6 @@
 package com.ace.console.shiro.realm;
 
+import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.entity.User;
 import org.apache.shiro.authc.*;
@@ -45,36 +46,37 @@ public class UserRealm extends AuthorizingRealm {
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //根据用户获取相应角色并授权
-        authorizationInfo.setRoles(userService.findRoles(username));
-        Set<String> permissions = userService.findPermissions(username);
+        //TODO: 获取用户角色和权限
+        //authorizationInfo.setRoles(userService.findRoles(username));
+        //Set<String> permissions = userService.findPermissions(username);
         //获取用户相应的权限
-        authorizationInfo.setStringPermissions(permissions);
-        if (logger.isDebugEnabled()) {
-            for (String permission : permissions) {
-                logger.debug("User : {} , permission : {} ", username, permission);
-            }
-        }
+//        authorizationInfo.setStringPermissions(permissions);
+//        if (logger.isDebugEnabled()) {
+//            for (String permission : permissions) {
+//                logger.debug("User : {} , permission : {} ", username, permission);
+//            }
+//        }
         return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        //获取用户名
-        String username = (String)authenticationToken.getPrincipal();
-
-        //根据用户名获取相应信息
-        User user = userService.findByUsername(username);
-
-        //用户不存在
-        if (user == null) {
-            logger.warn("user.not.exists, username : {}", username);
-            throw new UnknownAccountException("user.not.exists");
+        UsernamePasswordToken upToken = (UsernamePasswordToken) authenticationToken;
+        String username = upToken.getUsername().trim();
+        String password = "";
+        if (upToken.getPassword() != null) {
+            password = new String(upToken.getPassword());
         }
-
-        //当前用户已经被锁定
-        if(Boolean.TRUE.equals(user.getLocked())) {
-            logger.warn("user.blocked, username : {}", username);
-            throw new LockedAccountException("user.blocked"); //帐号锁定
+        User user = null;
+        try {
+            user = userService.login(username, password);
+        } catch (AceException.UserNotFoundException e) {
+            throw new UnknownAccountException("user.not.exists", e);
+        } catch (AceException.UserBlockedException e) {
+            throw new LockedAccountException("user.blocked", e);
+        } catch (Exception e) {
+            logger.error("login error", e);
+            throw new AuthenticationException("user.unknown.error",e);
         }
 
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现

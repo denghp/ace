@@ -51,12 +51,12 @@
         <appender-ref ref="ROLLING"/>
     </logger>
 
-    <logger name="com.ace.core.persistence" level="INFO">
+    <logger name="com.ace" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLING"/>
     </logger>
 
-
-    <root level="INFO">
+    <root level="INFO" >
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLING"/>
     </root>

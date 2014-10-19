@@ -1,5 +1,7 @@
 package com.ace.core.persistence.entity;
 
+import com.ace.core.persistence.enums.UserStatus;
+
 import java.util.Date;
 
 public class User {
@@ -15,7 +17,10 @@ public class User {
 
     private String salt;
 
-    private String status;
+    /**
+     * 系统用户的状态
+     */
+    private UserStatus status = UserStatus.normal;
 
     private Long organizationId;
 
@@ -98,12 +103,12 @@ public class User {
         this.salt = salt == null ? null : salt.trim();
     }
 
-    public String getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     public Long getOrganizationId() {

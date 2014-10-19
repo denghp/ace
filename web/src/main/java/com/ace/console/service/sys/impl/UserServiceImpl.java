@@ -5,13 +5,13 @@ import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
 import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.entity.User;
+import com.ace.core.persistence.enums.UserStatus;
 import com.ace.core.persistence.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
+import javax.annotation.Resource;
 
 
 /**
@@ -27,7 +27,7 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    @Autowired
+    @Resource
     @BaseComponent
     private UserMapper userMapper;
 
@@ -72,16 +72,6 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
     }
 
     @Override
-    public Set<String> findRoles(String username) {
-        return null;
-    }
-
-    @Override
-    public Set<String> findPermissions(String username) {
-        return null;
-    }
-
-    @Override
     public User findByUsername(String username) {
         if (StringUtils.isBlank(username)) {
             logger.warn("username is empty.");
@@ -89,4 +79,27 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
         }
         return userMapper.findByUsername(username);
     }
+
+    @Override
+    public User login(String username, String password) throws AceException {
+        User user = userMapper.findByUsername(username);
+
+        if (user == null) {
+            logger.warn("{} username not found.", username);
+            throw new AceException.UserNotFoundException(username + " not found.");
+        }
+
+        if (user.getStatus() == UserStatus.blocked) {
+            logger.warn("{} login failed, user is blocked!", username);
+            throw new AceException.UserBlockedException();
+        }
+        //验证密码
+        //validate(user, password);
+        if (user.getStatus() == UserStatus.blocked) {
+            logger.warn("{} loginError user is blocked!", username);
+            throw new AceException.UserBlockedException();
+        }
+        return user;
+    }
+
 }

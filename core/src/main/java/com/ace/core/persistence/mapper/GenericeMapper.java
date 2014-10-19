@@ -26,7 +26,7 @@ public interface GenericeMapper<T, ID extends Serializable>  {
      * @return
      *              返回保存实体
      */
-    public Long insert(T entity);
+    public int insert(T entity);
 
 
     /**

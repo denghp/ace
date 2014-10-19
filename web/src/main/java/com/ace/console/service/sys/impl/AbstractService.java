@@ -12,7 +12,7 @@ import com.ace.console.common.support.InjectBaseDependencyHelper;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
 import com.ace.core.page.Page;
-import com.ace.core.persistence.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.mapper.GenericeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;

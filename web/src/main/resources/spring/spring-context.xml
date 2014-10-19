@@ -95,6 +95,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <property name="typeAliasesPackage" value="com.ace.core.persistence.sys.entity" />
         <property name="mapperLocations">
             <array>
                 <value>classpath*:mybatis/sqlmap/*.xml</value>
@@ -105,8 +106,7 @@
     <!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口 -->
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ace.core.persistence.mapper" />
-        <property name="markerInterface" value="com.ace.core.persistence.mapper.UserMapper" />
+        <property name="basePackage" value="com.ace.core.persistence.sys.mapper" />
         <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
     </bean>
 
@@ -125,8 +125,8 @@
         <property name="basenames">
             <list>
                 <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
-                <value>classpath:messages/messages</value>
-                <value>classpath:messages/ValidationMessages</value>
+                <value>classpath:messages/messages.properties</value>
+                <value>classpath:messages/ValidationMessages.properties</value>
             </list>
         </property>
         <property name="useCodeAsDefaultMessage" value="false"/>

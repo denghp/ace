@@ -1,4 +1,4 @@
-package com.ace.core.persistence.enums;
+package com.ace.core.persistence.sys.enums;
 
 /**
  * @Project_Name: ace-parent
@@ -20,7 +20,7 @@ public enum RdbOperation {
     DELETE_CONDITION(".deleteCondition"),
     DELETE_BATCH (".deleteBatch"),
     SELECT(".select"),
-    SELECT_ID(".selectID"),
+    SELECT_BY_ID(".selectById"),
     SELECT_CONDITION(".selectCondition"),
     SELECT_LIST(".selectList"),
     COUNT(".count"),

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ace.core.persistence.sys.mapper.OrganizationMapper">
+
+    <resultMap id="organizationMap" type="com.ace.core.persistence.sys.entity.Organization">
+        <result property="id" column="organ_id"/>
+        <result property="name" column="name"/>
+        <result property="tradeCodeId" column="trade_code_id"/>
+        <result property="logo" column="logo"/>
+        <result property="site" column="site"/>
+        <result property="userCount" column="user_count"/>
+        <result property="address" column="address"/>
+        <result property="description" column="description"/>
+        <result property="status" column="organ_status"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"
+                typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+    </resultMap>
+
+    <resultMap type="Organization" id="userOrganizationMap" extends="organizationMap">
+        <collection property="userList" ofType="User">
+            <result property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <result property="email" column="email"/>
+            <result property="mobilePhoneNumber" column="mobile_phone_number"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                    typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"
+                    typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+            <result property="salt" column="salt"/>
+            <result property="status" column="status"/>
+            <result property="admin" column="admin"/>
+            <result property="deleted" column="deleted"/>
+            <result property="roleIds" column="roleIds"/>
+            <result property="roleNames" column="roleNames"/>
+            <result property="roles" column="roles"/>
+        </collection>
+    </resultMap>
+
+
+</mapper>

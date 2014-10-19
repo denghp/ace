@@ -1,9 +1,9 @@
-package com.ace.core.persistence.mapper.impl;
+package com.ace.core.persistence.sys.mapper.impl;
 
 import com.ace.core.page.Page;
 import com.ace.core.page.PageBean;
-import com.ace.core.persistence.enums.RdbOperation;
-import com.ace.core.persistence.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.enums.RdbOperation;
+import com.ace.core.persistence.sys.mapper.GenericeMapper;
 import com.ace.core.utils.ReflectUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -96,7 +96,7 @@ public class GenericeMapperImpl<T, ID extends Serializable> extends SqlSessionDa
     @Override
     public T findOne(ID id) {
         logger.info("----------findOne Id : {} ", id);
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_ID.value(), id);
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_BY_ID.value(), id);
     }
 
     @Override

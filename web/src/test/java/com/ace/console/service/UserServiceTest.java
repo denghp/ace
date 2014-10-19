@@ -4,7 +4,7 @@ import com.ace.commons.json.JsonUtils;
 import com.ace.console.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
-import com.ace.core.persistence.entity.User;
+import com.ace.core.persistence.sys.entity.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +54,13 @@ public class UserServiceTest {
     @Test
     public void selectUser() throws IOException {
         User user = userService.findById(1l);
+        logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void selectUserOrgan() throws IOException {
+        User user = userService.findUserOrganization(1l);
         logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);
     }

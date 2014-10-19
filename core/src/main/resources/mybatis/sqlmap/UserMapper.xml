@@ -1,37 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ace.core.persistence.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.ace.core.persistence.entity.User">
+<mapper namespace="com.ace.core.persistence.sys.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.ace.core.persistence.sys.entity.User">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="mobile_phone_number" property="mobilePhoneNumber" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobilePhoneNumber" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="salt" property="salt" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="VARCHAR"/>
-        <result column="organization_id" property="organizationId" jdbcType="BIGINT"/>
-        <result column="organization_name" property="organizationName" jdbcType="VARCHAR"/>
         <result column="admin" property="admin" jdbcType="BIT"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
-        <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"/>
-        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"
+                typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"
+                typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+        <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"
+                typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"
+                typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
         <result column="count" property="count" jdbcType="BIGINT"/>
     </resultMap>
+
     <sql id="Base_Column_List">
-    id, username, email, mobile_phone_number, password, salt, status, organization_id, 
-    organization_name, admin, create_time, modify_time, login_time, last_login_time, 
+    id, username, email, mobile, password, salt, status, admin, create_time, modify_time, login_time, last_login_time,
     count
   </sql>
 
-    <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <resultMap type="User" id="userOrganizationMap" extends="BaseResultMap">
+        <collection property="organizationList" ofType="Organization">
+            <id property="id" column="organ_id"/>
+            <result property="name" column="organ_name"/>
+            <result property="tradeCodeId" column="trade_code_id"/>
+            <result property="url" column="url"/>
+            <result property="userCount" column="user_count"/>
+            <result property="address" column="address"/>
+            <result property="status" column="organ_status"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                    typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"
+                    typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
         from sys_user
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="findUserOrganization" resultMap="userOrganizationMap" parameterType="java.lang.Long">
+        select
+        u.id, u.username, u.email,
+        u.mobile, u.password,
+        u.salt, u.status, u.admin,
+        u.create_time, u.modify_time,
+        u.login_time, u.first_login_time,
+        u.last_login_time,
+        organ.id as organization_id,
+        organ.name as organ_name,
+        organ.user_count ,
+        organ.trade_code_id,
+        organ.url,
+        organ.address,
+        organ.status as organ_status
+        from sys_user as u
+        left join sys_user_organization_job as uoj on u.id = uoj.user_id
+        left join sys_organization as organ on uoj.organization_id = organ.id
+        where u.id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="findByUsername" resultMap="userOrganizationMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from sys_user
@@ -54,7 +93,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-    <insert id="insert" parameterType="com.ace.core.persistence.entity.User" keyProperty="id" useGeneratedKeys="true" >
+    <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.User" keyProperty="id" useGeneratedKeys="true" >
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -67,7 +106,7 @@
                 email,
             </if>
             <if test="mobilePhoneNumber != null">
-                mobile_phone_number,
+                mobile,
             </if>
             <if test="password != null">
                 password,
@@ -152,7 +191,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.ace.core.persistence.entity.User">
+    <update id="update" parameterType="com.ace.core.persistence.sys.entity.User">
         update sys_user
         <set>
             <if test="username != null">
@@ -162,7 +201,7 @@
                 email = #{email,jdbcType=VARCHAR},
             </if>
             <if test="mobilePhoneNumber != null">
-                mobile_phone_number = #{mobilePhoneNumber,jdbcType=VARCHAR},
+                mobile = #{mobilePhoneNumber,jdbcType=VARCHAR},
             </if>
             <if test="password != null">
                 password = #{password,jdbcType=VARCHAR},

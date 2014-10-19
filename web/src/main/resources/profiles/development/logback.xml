@@ -52,7 +52,6 @@
     </logger>
 
     <logger name="com.ace" level="DEBUG">
-        <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLING"/>
     </logger>
 

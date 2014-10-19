@@ -3,10 +3,9 @@ package com.ace.console.service;
 
 import com.ace.console.exception.AceException;
 import com.ace.core.page.Page;
-import com.ace.core.persistence.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.mapper.GenericeMapper;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

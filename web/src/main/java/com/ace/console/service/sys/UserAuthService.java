@@ -5,11 +5,12 @@
  */
 package com.ace.console.service.sys;
 
-import com.ace.core.persistence.entity.Role;
-import com.ace.core.persistence.entity.User;
+import com.ace.console.service.GenericService;
+import com.ace.core.persistence.sys.entity.Role;
+import com.ace.core.persistence.sys.entity.User;
+import com.ace.core.persistence.sys.entity.UserAuth;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Set;
  * @Description:
  */
 @Service
-public interface UserAuthService {
+public interface UserAuthService extends GenericService<UserAuth, Long> {
 
     /**
      * 查询用户相应的角色

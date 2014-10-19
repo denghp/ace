@@ -6,54 +6,71 @@ drop table if exists `sys_resource`;
 drop table if exists `sys_permission`;
 drop table if exists `sys_role`;
 drop table if exists `sys_role_resource_permission`;
-drop table if exists `sys_auth`;
+drop table if exists `sys_user_auth`;
 drop table if exists `sys_group`;
 drop table if exists `sys_group_relation`;
 drop table if exists `sys_trade_code`;
 
 ##user
 create table `sys_user`(
-  `id` BIGINT NOT NULL AUTO_INCREMENT ,
-  `username` VARCHAR(100) NULL DEFAULT NULL ,
-  `email` VARCHAR(100) NULL DEFAULT NULL ,
-  `mobile_phone_number` VARCHAR(20) NULL DEFAULT NULL ,
-  `password` VARCHAR(100) NULL DEFAULT NULL ,
-  `salt` VARCHAR(100) NULL DEFAULT NULL ,
-  `status` VARCHAR(50) NULL DEFAULT NULL ,
-  `organization_id` BIGINT NULL DEFAULT NULL ,
-  `organization_name` VARCHAR(255) NULL DEFAULT NULL ,
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户主键ID',
+  `username` VARCHAR(100) NULL DEFAULT NULL COMMENT '登录用户名',
+  `password` VARCHAR(100) NULL DEFAULT NULL COMMENT '登录密码',
+  `realname` VARCHAR(50) NULL DEFAULT NULL COMMENT '真实姓名',
+  `alias` VARCHAR(50) NULL DEFAULT NULL COMMENT '别名',
+  `gender` VARCHAR(20) NULL DEFAULT NULL COMMENT '性别',
+  `birthday` TIMESTAMP NULL DEFAULT NULL COMMENT '出生日期',
+  `email` VARCHAR(100) NULL DEFAULT NULL COMMENT '电子邮件',
+  `oicq` VARCHAR(100) NULL DEFAULT NULL COMMENT 'QQ号码',
+  `mobile` VARCHAR(20) NULL DEFAULT NULL COMMENT '手机号码',
+  `telephone` VARCHAR(20) NULL DEFAULT NULL COMMENT '固定电话',
+  `salt` VARCHAR(100) NULL DEFAULT NULL COMMENT '密码种子',
+  `status` VARCHAR(50) NULL DEFAULT NULL COMMENT '状态',
   `locked` BOOL NOT NULL DEFAULT FALSE ,
   `admin` BOOL NULL DEFAULT NULL ,
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
   `modify_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '修改时间' ,
   `login_time` DATETIME NULL DEFAULT NULL COMMENT '登录时间' ,
+  `first_login_time` DATETIME NULL DEFAULT NULL COMMENT '第一次登录时间' ,
   `last_login_time` DATETIME NULL DEFAULT NULL COMMENT '上次登录时间' ,
   `count` BIGINT(20) NULL DEFAULT NULL COMMENT '登录次数' ,
+  `create_user_id` BIGINT NULL DEFAULT NULL COMMENT '创建人主键ID',
+  `create_user_name` VARCHAR (50) NULL DEFAULT NULL COMMENT '创建人',
+  `modify_user_id` BIGINT NULL DEFAULT NULL COMMENT '修改用户主键ID',
+  `modify_user_name` BIGINT NULL DEFAULT NULL COMMENT '修改用户',
   constraint `pk_sys_user` primary key(`id`),
   constraint `unique_sys_user_username` unique(`username`),
   constraint `unique_sys_user_email` unique(`email`),
-  constraint `unique_sys_user_mobile_phone_number` unique(`mobile_phone_number`),
+  constraint `unique_sys_user_oicq` unique(`oicq`),
+  constraint `unique_sys_user_mobile` unique(`mobile`),
   index `idx_sys_user_status` (`status`)
 ) charset=utf8 ENGINE=InnoDB;
 alter table `sys_user` auto_increment=1000;
 
 
 create table `sys_organization`(
-  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '组织,机构ID' ,
-  `name` VARCHAR(100) NULL DEFAULT NULL COMMENT '组织名称' ,
-  `type` VARCHAR(20) NULL DEFAULT NULL COMMENT '类型' ,
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '组织机构主键ID' ,
+  `name` VARCHAR(100) NULL DEFAULT NULL COMMENT '组织机构名称' ,
+  `short_name` VARCHAR(50) NULL DEFAULT NULL COMMENT '简称' ,
+  `category` VARCHAR(50) NULL DEFAULT NULL COMMENT '分类' ,
   `icon` VARCHAR(200) NULL DEFAULT NULL ,
   `weight` INT(11) NULL DEFAULT NULL ,
-  `parent_id` bigint,
+  `parent_id` bigint COMMENT '父级主键',
   `parent_ids`  varchar(200) default '',
+  `manager` VARCHAR (50) NULL DEFAULT NULL COMMENT '主负责人' ,
+  `assistant_manager` VARCHAR (50) NULL DEFAULT NULL COMMENT '副负责人' ,
   `user_count` INT(11) NULL DEFAULT NULL COMMENT '用户数' ,
+  `telephone` VARCHAR (50) NULL DEFAULT NULL COMMENT '固定电话',
+  `fax` VARCHAR (50) NULL DEFAULT NULL COMMENT '传真',
   `description` VARCHAR(511) NULL DEFAULT NULL COMMENT '组织描述' ,
   `address` VARCHAR(255) NULL DEFAULT NULL COMMENT '地址' ,
   `url` VARCHAR(200) NULL DEFAULT NULL COMMENT 'URL' ,
-  `end_date` DATETIME NULL DEFAULT NULL COMMENT '结束时间' ,
-  `telephone` VARCHAR(50) NULL DEFAULT NULL ,
   `status` INT(11) NULL DEFAULT NULL COMMENT '状态' ,
   `trade_code_id` INT(11) NULL DEFAULT NULL COMMENT '组织类型ID',
+  `create_user_id` BIGINT NULL DEFAULT NULL COMMENT '创建人主键ID',
+  `create_user_name` VARCHAR (50) NULL DEFAULT NULL COMMENT '创建人',
+  `modify_user_id` BIGINT NULL DEFAULT NULL COMMENT '修改用户主键ID',
+  `modify_user_name` BIGINT NULL DEFAULT NULL COMMENT '修改用户',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
   `modify_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '修改时间' ,
   constraint `pk_sys_organization` primary key(`id`),
@@ -85,7 +102,7 @@ create table `sys_user_organization_job`(
   `user_id` BIGINT(20) NOT NULL ,
   `organization_id` BIGINT(20) NOT NULL ,
   `job_id` BIGINT(20) NULL DEFAULT NULL ,
-  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
+  `modify_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' ,
   constraint `pk_sys_user_organization_job` primary key(`id`),
   constraint `unique_sys_user_organization_job` unique(`user_id`, `organization_id`, `job_id`)
 ) charset=utf8 ENGINE=InnoDB;
@@ -154,7 +171,7 @@ alter table `sys_role_resource_permission` auto_increment=1000;
  * user与role organization group job的关系表
  *
  */
-create table `sys_auth`(
+create table `sys_user_auth`(
   `id`         bigint not null auto_increment,
   `user_id`        bigint,
   `role_ids` VARCHAR(500) NULL DEFAULT NULL ,
@@ -165,10 +182,10 @@ create table `sys_auth`(
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
   `modify_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '修改时间' ,
   constraint `pk_auth` primary key(`id`),
-  index `idx_sys_auth_organization` (`organization_id`),
-  index `idx_sys_auth_type` (`type`)
+  index `idx_sys_user_auth_organization` (`organization_id`),
+  index `idx_sys_user_auth_type` (`type`)
 ) charset=utf8 ENGINE=InnoDB COMMENT '用户角色表,关联对应的组织,组,职位';
-alter table `sys_auth` auto_increment=1000;
+alter table `sys_user_auth` auto_increment=1000;
 
 
 CREATE  TABLE `sys_group` (

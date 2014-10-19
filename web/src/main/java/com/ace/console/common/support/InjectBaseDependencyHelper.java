@@ -15,7 +15,7 @@ package com.ace.console.common.support;
 import com.ace.console.annotation.BaseComponent;
 import com.ace.console.controller.BaseController;
 import com.ace.console.service.GenericService;
-import com.ace.core.persistence.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.mapper.GenericeMapper;
 import com.google.common.collect.Sets;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.ReflectionUtils;

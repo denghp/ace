@@ -25,7 +25,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- targetProject:自动生成代码的位置 -->
-        <javaModelGenerator targetPackage="com.ace.core.persistence.entity" targetProject="./src/main/java">
+        <javaModelGenerator targetPackage="com.ace.core.persistence.sys.entity" targetProject="./src/main/java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="true"/>
             <!-- 从数据库返回的值被清理前后的空格  -->
@@ -36,7 +36,7 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ace.core.persistence.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ace.core.persistence.sys.mapper"
                              targetProject="./src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>

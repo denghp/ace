@@ -1,4 +1,4 @@
-package com.ace.core.persistence.enums;
+package com.ace.core.persistence.sys.enums;
 
 /**
  * @Project_Name: ace-parent

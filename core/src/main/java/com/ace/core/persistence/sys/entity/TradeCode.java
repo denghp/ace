@@ -1,19 +1,17 @@
-package com.ace.core.persistence.entity;
+package com.ace.core.persistence.sys.entity;
 
-public class Job {
+public class TradeCode {
     private Long id;
 
     private String name;
 
-    private Long parentId;
+    private String identity;
 
-    private String parentIds;
+    private Long parentId;
 
     private Integer weight;
 
     private Boolean isShow;
-
-    private String icon;
 
     public Long getId() {
         return id;
@@ -31,20 +29,20 @@ public class Job {
         this.name = name == null ? null : name.trim();
     }
 
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity == null ? null : identity.trim();
+    }
+
     public Long getParentId() {
         return parentId;
     }
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    public String getParentIds() {
-        return parentIds;
-    }
-
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds == null ? null : parentIds.trim();
     }
 
     public Integer getWeight() {
@@ -61,13 +59,5 @@ public class Job {
 
     public void setIsShow(Boolean isShow) {
         this.isShow = isShow;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
     }
 }

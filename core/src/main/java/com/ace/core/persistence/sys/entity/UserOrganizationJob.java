@@ -1,4 +1,6 @@
-package com.ace.core.persistence.entity;
+package com.ace.core.persistence.sys.entity;
+
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -11,7 +13,7 @@ public class UserOrganizationJob {
 
     private Long jobId;
 
-    private Date createTime;
+    private DateTime modifyTime;
 
     public Long getId() {
         return id;
@@ -45,11 +47,11 @@ public class UserOrganizationJob {
         this.jobId = jobId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public DateTime getModifyTime() {
+        return modifyTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setModifyTime(DateTime modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

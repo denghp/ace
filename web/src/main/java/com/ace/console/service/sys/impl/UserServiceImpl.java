@@ -4,9 +4,9 @@ import com.ace.console.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
 import com.ace.console.utils.PasswordHelper;
-import com.ace.core.persistence.entity.User;
-import com.ace.core.persistence.enums.UserStatus;
-import com.ace.core.persistence.mapper.UserMapper;
+import com.ace.core.persistence.sys.entity.User;
+import com.ace.core.persistence.sys.enums.UserStatus;
+import com.ace.core.persistence.sys.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,4 +102,12 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
         return user;
     }
 
+    @Override
+    public User findUserOrganization(Long userId) {
+        if (userId == null) {
+            logger.warn("userId is null.");
+            return null;
+        }
+        return userMapper.findUserOrganization(userId);
+    }
 }

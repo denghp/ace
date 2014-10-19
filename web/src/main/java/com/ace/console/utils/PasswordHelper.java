@@ -1,6 +1,6 @@
 package com.ace.console.utils;
 
-import com.ace.core.persistence.entity.User;
+import com.ace.core.persistence.sys.entity.User;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;

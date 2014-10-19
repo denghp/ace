@@ -2,10 +2,8 @@ package com.ace.console.service.sys;
 
 import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
-import com.ace.core.persistence.entity.User;
+import com.ace.core.persistence.sys.entity.User;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 /**
  * @Project_Name: ace-web
@@ -46,4 +44,11 @@ public interface UserService extends GenericService<User, Long> {
      *      返回用户基本信息
      */
     public User findByUsername(String username);
+
+    /**
+     * 根据用户ID查询用户信息及相关组织机构信息
+     * @param userId
+     * @return
+     */
+    public User findUserOrganization(Long userId);
 }

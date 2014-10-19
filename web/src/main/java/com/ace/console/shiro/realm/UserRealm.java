@@ -2,7 +2,7 @@ package com.ace.console.shiro.realm;
 
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
-import com.ace.core.persistence.entity.User;
+import com.ace.core.persistence.sys.entity.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -11,9 +11,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Resource;
-import java.util.Set;
 
 /**
  * @Project_Name: ace-web

@@ -1,4 +1,4 @@
-package com.ace.core.persistence.entity;
+package com.ace.core.persistence.sys.entity;
 
 public class Permission {
     private Long id;

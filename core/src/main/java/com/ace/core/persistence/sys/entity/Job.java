@@ -1,23 +1,19 @@
-package com.ace.core.persistence.entity;
+package com.ace.core.persistence.sys.entity;
 
-public class Resource {
+public class Job {
     private Long id;
 
     private String name;
-
-    private String identity;
-
-    private String url;
 
     private Long parentId;
 
     private String parentIds;
 
-    private String icon;
-
     private Integer weight;
 
     private Boolean isShow;
+
+    private String icon;
 
     public Long getId() {
         return id;
@@ -33,22 +29,6 @@ public class Resource {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public String getIdentity() {
-        return identity;
-    }
-
-    public void setIdentity(String identity) {
-        this.identity = identity == null ? null : identity.trim();
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
     }
 
     public Long getParentId() {
@@ -67,14 +47,6 @@ public class Resource {
         this.parentIds = parentIds == null ? null : parentIds.trim();
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
-    }
-
     public Integer getWeight() {
         return weight;
     }
@@ -89,5 +61,13 @@ public class Resource {
 
     public void setIsShow(Boolean isShow) {
         this.isShow = isShow;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon == null ? null : icon.trim();
     }
 }

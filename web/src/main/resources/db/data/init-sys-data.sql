@@ -4,37 +4,39 @@ use ace;
 delete from `sys_user` where id>=1 and id<=1000;
 /*默认admin/123456*/
 insert into `sys_user`
-(`id`, `username`, `email`, `mobile_phone_number`, `password`, `salt`, `create_time`, `status`, `admin`)
+(`id`, `username`, `email`, `mobile`, `password`, `salt`, `create_time`, `status`, `admin`)
   values
   (1, 'admin', 'admin@ace.com', '13412345671', 'ec21fa1738f39d5312c6df46002d403d', 'yDd1956wn1', sysdate(), 'normal', 1);
 insert into `sys_user`
-(`id`, `username`, `email`, `mobile_phone_number`, `password`, `salt`, `create_time`, `status`, `admin`)
+(`id`, `username`, `email`, `mobile`, `password`, `salt`, `create_time`, `status`, `admin`)
   values
   (2, 'sys_admin', 'sys_admin@ace.com', '13412345673', '3152e2566dc8075b2b2ac0ee0ee2424d', 'MANHOoCpnb', sysdate(), 'normal', 0);
 insert into `sys_user`
-(`id`, `username`, `email`, `mobile_phone_number`, `password`, `salt`, `create_time`, `status`, `admin`)
+(`id`, `username`, `email`, `mobile`, `password`, `salt`, `create_time`, `status`, `admin`)
   values
   (3, 'sales_admin', 'sales_admin@ace.com', '13412345672', 'aa54c5ee4922d3ee19db7009f541e0d6', 'hSSixwNQwt', sysdate(), 'normal', 0);
 
 insert into `sys_user`
-(`id`, `username`, `email`, `mobile_phone_number`, `password`, `salt`, `create_time`, `status`, `admin`)
+(`id`, `username`, `email`, `mobile`, `password`, `salt`, `create_time`, `status`, `admin`)
   values
   (4, 'purchase_admin', 'purchase_admin@ace.com', '13412345674', 'e75a4379059f918256aa6a2f0b81bfa5', 'iY71e4dtoa', sysdate(), 'normal', 0);
 
 insert into `sys_user`
-(`id`, `username`, `email`, `mobile_phone_number`, `password`, `salt`, `create_time`, `status`, `admin`)
+(`id`, `username`, `email`, `mobile`, `password`, `salt`, `create_time`, `status`, `admin`)
   values
   (5, 'stock_admin', 'stock_admin@ace.com', '13412345675', '1c7f3d8e6fa84d92f43c88bd6082b9ce', 'iruPxupgfb', sysdate(), 'normal', 0);
 
 insert into `sys_user`
-(`id`, `username`, `email`, `mobile_phone_number`, `password`, `salt`, `create_time`, `status`, `admin`)
+(`id`, `username`, `email`, `mobile`, `password`, `salt`, `create_time`, `status`, `admin`)
   values
   (6, 'finance_admin', 'finance_admin@ace.com', '13412345676', 'f30527ae456a700c5cfd079b847989fc', '2WQx5LmvlV', sysdate(), 'normal', 0);
 
 
 
 delete from `sys_organization` where id>=1 and id<=1000;
-insert into `sys_organization`(`id`, `user_count`, `name`, `status`) values (1, 2, 'ACE系统有限公司', 0);
+insert into `sys_organization`(`id`, `parent_id`,`user_count`, `name`, `status`) values (1,0, 200, '北京ACE系统有限公司', 0);
+insert into `sys_organization`(`id`, `parent_id`,`user_count`, `name`, `status`) values (2,1, 200, '上海ACE系统有限公司', 0);
+insert into `sys_organization`(`id`, `parent_id`,`user_count`, `name`, `status`) values (3,1, 200, '长沙ACE系统有限公司', 0);
 
 
 delete from `sys_resource` where id>=1 and id<=1000;

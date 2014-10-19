@@ -1,8 +1,8 @@
-package com.ace.core.persistence.entity;
+package com.ace.core.persistence.sys.entity;
 
 import java.util.Date;
 
-public class UserRoles {
+public class UserAuth {
     private Long id;
 
     private Long userId;

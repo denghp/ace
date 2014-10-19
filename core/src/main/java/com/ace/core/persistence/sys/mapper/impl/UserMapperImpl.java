@@ -1,7 +1,7 @@
-package com.ace.core.persistence.mapper.impl;
+package com.ace.core.persistence.sys.mapper.impl;
 
-import com.ace.core.persistence.entity.User;
-import com.ace.core.persistence.mapper.UserMapper;
+import com.ace.core.persistence.sys.entity.User;
+import com.ace.core.persistence.sys.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -20,7 +20,8 @@ public class UserMapperImpl extends GenericeMapperImpl<User, Long> implements Us
     private Logger logger = LoggerFactory.getLogger(UserMapperImpl.class);
     public enum RdbOperation {
 
-        FIND_BY_USERNAME(".findByUsername");
+        FIND_BY_USERNAME(".findByUsername"),
+        FIND_USER_ORGAN(".findUserOrganization");
 
         private String value;
 
@@ -38,4 +39,8 @@ public class UserMapperImpl extends GenericeMapperImpl<User, Long> implements Us
         return getSqlSession().selectOne(getNamespace() + RdbOperation.FIND_BY_USERNAME.value(), username);
     }
 
+    @Override
+    public User findUserOrganization(Long userId) {
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.FIND_USER_ORGAN.value(), userId);
+    }
 }

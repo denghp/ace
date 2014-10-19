@@ -66,6 +66,8 @@ public abstract class AceException extends Exception {
                 return new UserPasswordNotMatchException();
             case USER_PASSWORD_RETRY_COUNT:
                 return new UserPasswordRetryCount();
+            case VALIDATOR_FAILED:
+                return new ValidatorException();
             case OK:
             default:
                 throw new IllegalArgumentException("Invalid exception code");
@@ -102,6 +104,8 @@ public abstract class AceException extends Exception {
                 return "user password not match";
             case USER_PASSWORD_RETRY_COUNT:
                 return "user password retry max count.";
+            case VALIDATOR_FAILED:
+                return "validator failed.";
             default:
                 return "Unknown error " + code;
         }
@@ -160,7 +164,9 @@ public abstract class AceException extends Exception {
         //服务暂时无法访问
         SERVICE_TEMPORARILY_UNAVAILABLE(21305),
         //系统繁忙请重试
-        SYSTEM_IS_BUSY_TRY_AGEN(21306);
+        SYSTEM_IS_BUSY_TRY_AGEN(21306),
+
+        VALIDATOR_FAILED(22000);
 
 
         private static final Map<Integer,Code> lookup
@@ -348,5 +354,18 @@ public abstract class AceException extends Exception {
         }
     }
 
+
+    /**
+     * @see Code#VALIDATOR_FAILED
+     */
+    public static class ValidatorException extends AceException {
+        public ValidatorException() {
+            super(Code.VALIDATOR_FAILED);
+        }
+
+        public ValidatorException(String message) {
+            super(Code.VALIDATOR_FAILED, message);
+        }
+    }
 
 }

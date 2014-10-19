@@ -1,6 +1,7 @@
-package com.ace.core.persistence.entity;
+package com.ace.core.persistence.sys.entity;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+
 
 public class Organization {
     private Long id;
@@ -25,17 +26,15 @@ public class Organization {
 
     private String url;
 
-    private Date endDate;
-
     private String telephone;
 
     private Integer status;
 
     private Integer tradeCodeId;
 
-    private Date createTime;
+    private DateTime createTime;
 
-    private Date modifyTime;
+    private DateTime modifyTime;
 
     public Long getId() {
         return id;
@@ -125,14 +124,6 @@ public class Organization {
         this.url = url == null ? null : url.trim();
     }
 
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
     public String getTelephone() {
         return telephone;
     }
@@ -157,19 +148,19 @@ public class Organization {
         this.tradeCodeId = tradeCodeId;
     }
 
-    public Date getCreateTime() {
+    public DateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(DateTime createTime) {
         this.createTime = createTime;
     }
 
-    public Date getModifyTime() {
+    public DateTime getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Date modifyTime) {
+    public void setModifyTime(DateTime modifyTime) {
         this.modifyTime = modifyTime;
     }
 }

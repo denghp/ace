@@ -9,7 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web</artifactId>
+    <name>web</name>
+    <artifactId>ace-web</artifactId>
     <packaging>war</packaging>
 
     <properties>
@@ -150,9 +151,7 @@
                 <mysql.url> <![CDATA[ jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8 ]]></mysql.url>
                 <mysql.username>root</mysql.username>
                 <mysql.password>123456</mysql.password>
-
             </properties>
-
         </profile>
 
         <profile>
@@ -166,9 +165,7 @@
                     </resource>
                 </resources>
             </build>
-
         </profile>
-
     </profiles>
 
 
@@ -177,13 +174,13 @@
 
         <dependency>
             <groupId>com.ace</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>ace-core</artifactId>
             <version>${version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.ace</groupId>
-            <artifactId>commons</artifactId>
+            <artifactId>ace-commons</artifactId>
             <version>${version}</version>
         </dependency>
 
@@ -192,8 +189,6 @@
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
-
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -230,24 +225,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
             <version>${mybatis-spring}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-jaxrs</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
@@ -312,23 +289,11 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>14.0.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
             <version>${ehcache.core.version}</version>
             <scope>compile</scope>
         </dependency>
 
-        <!-- hibernate validator  相关jar包 -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.validator.version}</version>
-        </dependency>
     </dependencies>
 </project>

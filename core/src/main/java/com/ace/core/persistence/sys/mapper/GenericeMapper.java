@@ -1,4 +1,4 @@
-package com.ace.core.persistence.mapper;
+package com.ace.core.persistence.sys.mapper;
 
 import com.ace.core.page.Page;
 

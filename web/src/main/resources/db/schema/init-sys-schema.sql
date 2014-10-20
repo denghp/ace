@@ -1,4 +1,5 @@
 drop table if exists `sys_user`;
+drop table if exists `sys_employee`;
 drop table if exists `sys_organization`;
 drop table if exists `sys_job`;
 drop table if exists `sys_user_organization_job`;
@@ -14,22 +15,61 @@ drop table if exists `sys_trade_code`;
 ##user
 create table `sys_user`(
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户主键ID',
+  `name` VARCHAR (50) NULL DEFAULT NULL COMMENT '真实姓名',
   `username` VARCHAR(100) NULL DEFAULT NULL COMMENT '登录用户名',
   `password` VARCHAR(100) NULL DEFAULT NULL COMMENT '登录密码',
+  `gender` VARCHAR(20) NULL DEFAULT NULL COMMENT '性别',
+  `birthday` TIMESTAMP NULL DEFAULT NULL COMMENT '出生日期',
+  `email` VARCHAR(100) NULL DEFAULT NULL COMMENT '电子邮件',
+  `mobile` VARCHAR(20) NULL DEFAULT NULL COMMENT '手机号码',
+  `salt` VARCHAR(100) NULL DEFAULT NULL COMMENT '加密盐值',
+  `description` VARCHAR(256) NULL DEFAULT NULL COMMENT '用户描述',
+  `locked` BOOL NOT NULL DEFAULT FALSE ,
+  `admin` BOOL NULL DEFAULT NULL ,
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
+  `modify_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '修改时间' ,
+  `login_time` DATETIME NULL DEFAULT NULL COMMENT '登录时间' ,
+  `first_login_time` DATETIME NULL DEFAULT NULL COMMENT '第一次登录时间' ,
+  `last_login_time` DATETIME NULL DEFAULT NULL COMMENT '上次登录时间' ,
+  `count` BIGINT(20) NULL DEFAULT NULL COMMENT '登录次数' ,
+  constraint `pk_sys_user` primary key(`id`),
+  constraint `unique_sys_user_username` unique(`username`),
+  constraint `unique_sys_user_email` unique(`email`),
+  constraint `unique_sys_user_mobile` unique(`mobile`),
+  index `idx_sys_user_status` (`status`)
+) charset=utf8 ENGINE=InnoDB;
+alter table `sys_user` auto_increment=1000;
+
+##sys_employee
+create table `sys_employee`(
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '员工主键ID',
+  `user_id` BIGINT NULL COMMENT '用户主键ID',
+  `code` VARCHAR(50) NULL DEFAULT NULL COMMENT '编号,工号',
   `realname` VARCHAR(50) NULL DEFAULT NULL COMMENT '真实姓名',
+  `spell` VARCHAR(50) NULL DEFAULT NULL COMMENT '真实姓名拼音',
   `alias` VARCHAR(50) NULL DEFAULT NULL COMMENT '别名',
+  `id_card` VARCHAR(50) NULL DEFAULT NULL COMMENT '身份证号码',
+  `bank_card` VARCHAR(50) NULL DEFAULT NULL COMMENT '工资卡',
   `gender` VARCHAR(20) NULL DEFAULT NULL COMMENT '性别',
   `birthday` TIMESTAMP NULL DEFAULT NULL COMMENT '出生日期',
   `email` VARCHAR(100) NULL DEFAULT NULL COMMENT '电子邮件',
   `oicq` VARCHAR(100) NULL DEFAULT NULL COMMENT 'QQ号码',
   `mobile` VARCHAR(20) NULL DEFAULT NULL COMMENT '手机号码',
   `telephone` VARCHAR(20) NULL DEFAULT NULL COMMENT '固定电话',
-  `salt` VARCHAR(100) NULL DEFAULT NULL COMMENT '密码种子',
+  `office_phone` VARCHAR(20) NULL DEFAULT NULL COMMENT '办公电话',
+  `office_zip_code` VARCHAR(20) NULL DEFAULT NULL COMMENT '办公邮编',
+  `office_address` VARCHAR(100) NULL DEFAULT NULL COMMENT '办公地址',
+  `office_fax` VARCHAR(50) NULL DEFAULT NULL COMMENT '办公传真',
+  `age` INT(10) NULL DEFAULT NULL COMMENT '年龄',
+  `education` VARCHAR (50) NULL DEFAULT NULL COMMENT '最高学历',
+  `school` VARCHAR (50) NULL DEFAULT NULL COMMENT '毕业院校',
+  `graduation_date` TIMESTAMP NULL DEFAULT NULL COMMENT '毕业时间',
+  `major` VARCHAR (50) NULL DEFAULT NULL COMMENT '所学专业',
   `status` VARCHAR(50) NULL DEFAULT NULL COMMENT '状态',
-  `locked` BOOL NOT NULL DEFAULT FALSE ,
-  `admin` BOOL NULL DEFAULT NULL ,
+  `entry_time` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '入职时间' ,
+  `dimission_time` TIMESTAMP NULL DEFAULT NULL COMMENT '离职时间' ,
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间' ,
-  `modify_time` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '修改时间' ,
+  `modify_time` TIMESTAMP NULL DEFAULT NULL COMMENT '修改时间' ,
   `login_time` DATETIME NULL DEFAULT NULL COMMENT '登录时间' ,
   `first_login_time` DATETIME NULL DEFAULT NULL COMMENT '第一次登录时间' ,
   `last_login_time` DATETIME NULL DEFAULT NULL COMMENT '上次登录时间' ,
@@ -45,7 +85,7 @@ create table `sys_user`(
   constraint `unique_sys_user_mobile` unique(`mobile`),
   index `idx_sys_user_status` (`status`)
 ) charset=utf8 ENGINE=InnoDB;
-alter table `sys_user` auto_increment=1000;
+alter table `sys_employee` auto_increment=1000;
 
 
 create table `sys_organization`(

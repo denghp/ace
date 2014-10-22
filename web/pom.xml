@@ -107,25 +107,76 @@
                     <url>${mysql.url}</url>
                     <username>${mysql.username}</username>
                     <password>${mysql.password}</password>
-                    <sqlCommand>DROP DATABASE IF EXISTS  ${db.name};</sqlCommand>
-                    <sqlCommand>CREATE DATABASE IF NOT EXISTS ${db.name};</sqlCommand>
-                    <sqlCommand>USE ${db.name};</sqlCommand>
                 </configuration>
 
                 <executions>
                     <execution>
-                        <id>default-cli</id>
+                        <id>drop-db-before-test-if-any</id>
                         <phase>process-test-resources</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
                         <configuration>
+                            <url>${mysql.url}</url>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>drop database IF EXISTS ${db.name}</sqlCommand>
+                            <onError>continue</onError>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>create-db</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>create database ${db.name}</sqlCommand>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>create-schema</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <sqlCommand>USE ${db.name}</sqlCommand>
+                            <autocommit>true</autocommit>
                             <srcFiles>
                                 <srcFile>src/main/resources/db/schema/init-sys-schema.sql</srcFile>
+                            </srcFiles>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>create-data</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <autocommit>true</autocommit>
+                            <srcFiles>
                                 <srcFile>src/main/resources/db/data/init-sys-data.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </execution>
+                    <!--
+                    <execution>
+                        <id>drop-db-after-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>drop database ${db.name}</sqlCommand>
+                        </configuration>
+                    </execution>
+                    -->
                 </executions>
             </plugin>
         </plugins>

@@ -36,14 +36,11 @@
         <collection property="organizationList" ofType="Organization">
             <id property="id" column="organ_id"/>
             <result property="name" column="organ_name"/>
-            <result property="tradeCodeId" column="trade_code_id"/>
-            <result property="url" column="url"/>
-            <result property="userCount" column="user_count"/>
             <result property="address" column="address"/>
-            <result property="status" column="organ_status"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+            <result property="shortName" column="short_name"/>
+            <result property="createTime" column="organ_create_time" jdbcType="TIMESTAMP"
                     typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
-            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"
+            <result property="modifyTime" column="organ_modify_time" jdbcType="TIMESTAMP"
                     typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
         </collection>
     </resultMap>
@@ -57,18 +54,28 @@
 
     <select id="findUserOrganization" resultMap="userOrganizationMap" parameterType="java.lang.Long">
         select
-        u.id, u.username, u.email,
-        u.mobile, u.password,
-        u.salt, u.status, u.admin,
-        u.create_time, u.modify_time,
-        u.login_time, u.first_login_time,
+        u.id,
+        u.username,
+        u.realname,
+        u.email,
+        u.mobile,
+        u.password,
+        u.salt,
+        u.birthday,
+        u.gender,
+        u.status,
+        u.deleted,
+        u.create_time,
+        u.modify_time,
+        u.login_time,
+        u.first_login_time,
         u.last_login_time,
-        organ.id as organization_id,
+        u.count,
+        organ.id as organ_id,
         organ.name as organ_name,
-        organ.trade_code_id,
-        organ.url,
-        organ.address,
-        organ.status as organ_status
+        organ.short_name,
+        organ.create_time as organ_create_time,
+        organ.modify_time as organ_modify_time
         from sys_user as u
         left join sys_user_organization_job as uoj on u.id = uoj.user_id
         left join sys_organization as organ on uoj.organization_id = organ.id

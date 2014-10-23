@@ -5,7 +5,7 @@
  */
 package com.ace.core.persistence.sys.mapper;
 
-import com.ace.core.persistence.sys.entity.UserAuth;
+import com.ace.core.persistence.sys.entity.Auth;
 
 import java.util.Set;
 
@@ -14,18 +14,18 @@ import java.util.Set;
  * @Date: 10/19/14 6:47 PM
  * @Description:
  */
-public interface UserAuthMapper extends GenericeMapper<UserAuth, Long> {
+public interface UserAuthMapper extends GenericeMapper<Auth, Long> {
 
     /**
      * 根据userId获取用户授权
      * @param userId
      * @return
      */
-    public UserAuth findByUserId(Long userId);
+    public Auth findByUserId(Long userId);
 
-    public UserAuth findByGroupId(Long groupId);
+    public Auth findByGroupId(Long groupId);
 
-    public UserAuth findByOrganizationIdAndJobId(Long organizationId, Long jobId);
+    public Auth findByOrganizationIdAndJobId(Long organizationId, Long jobId);
 
     /**
      * 根据用户ID查询所有的角色,根据groupIds,organizationIds,jobIds

@@ -2,13 +2,14 @@ package com.ace.core.persistence.sys.entity;
 
 import org.joda.time.DateTime;
 
-
 public class Organization {
     private Long id;
 
     private String name;
 
-    private String type;
+    private String shortName;
+
+    private String category;
 
     private String icon;
 
@@ -18,19 +19,29 @@ public class Organization {
 
     private String parentIds;
 
-    private Integer userCount;
+    private String manager;
 
-    private String description;
-
-    private String address;
-
-    private String url;
+    private String assistantManager;
 
     private String telephone;
 
-    private Integer status;
+    private String fax;
 
-    private Integer tradeCodeId;
+    private String mobile;
+
+    private String description;
+
+    private Integer enabled;
+
+    private String address;
+
+    private Long createUserId;
+
+    private String createUserName;
+
+    private Long modifyUserId;
+
+    private String modifyUserName;
 
     private DateTime createTime;
 
@@ -50,14 +61,6 @@ public class Organization {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
     }
 
     public String getIcon() {
@@ -92,14 +95,6 @@ public class Organization {
         this.parentIds = parentIds == null ? null : parentIds.trim();
     }
 
-    public Integer getUserCount() {
-        return userCount;
-    }
-
-    public void setUserCount(Integer userCount) {
-        this.userCount = userCount;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -116,36 +111,12 @@ public class Organization {
         this.address = address == null ? null : address.trim();
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
-
     public String getTelephone() {
         return telephone;
     }
 
     public void setTelephone(String telephone) {
         this.telephone = telephone == null ? null : telephone.trim();
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getTradeCodeId() {
-        return tradeCodeId;
-    }
-
-    public void setTradeCodeId(Integer tradeCodeId) {
-        this.tradeCodeId = tradeCodeId;
     }
 
     public DateTime getCreateTime() {
@@ -162,5 +133,93 @@ public class Organization {
 
     public void setModifyTime(DateTime modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    public String getAssistantManager() {
+        return assistantManager;
+    }
+
+    public void setAssistantManager(String assistantManager) {
+        this.assistantManager = assistantManager;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
+
+    public Long getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(Long createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public Long getModifyUserId() {
+        return modifyUserId;
+    }
+
+    public void setModifyUserId(Long modifyUserId) {
+        this.modifyUserId = modifyUserId;
+    }
+
+    public String getModifyUserName() {
+        return modifyUserName;
+    }
+
+    public void setModifyUserName(String modifyUserName) {
+        this.modifyUserName = modifyUserName;
     }
 }

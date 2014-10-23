@@ -5,8 +5,7 @@
  */
 package com.ace.core.persistence.sys.mapper.impl;
 
-import com.ace.core.persistence.sys.entity.UserAuth;
-import com.ace.core.persistence.sys.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.mapper.UserAuthMapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +17,7 @@ import java.util.Set;
  * @Description:
  */
 @Repository
-public class UserAuthMapperImpl extends GenericeMapperImpl<UserAuth, Long> implements UserAuthMapper {
+public class UserAuthMapperImpl extends GenericeMapperImpl<Auth, Long> implements UserAuthMapper {
 
     @Override
     public Set<Long> findRoleIds(Long userId, Set<Long> groupIds, Set<Long> organizationIds, Set<Long> jobIds) {
@@ -26,17 +25,17 @@ public class UserAuthMapperImpl extends GenericeMapperImpl<UserAuth, Long> imple
     }
 
     @Override
-    public UserAuth findByUserId(Long userId) {
+    public Auth findByUserId(Long userId) {
         return null;
     }
 
     @Override
-    public UserAuth findByGroupId(Long groupId) {
+    public Auth findByGroupId(Long groupId) {
         return null;
     }
 
     @Override
-    public UserAuth findByOrganizationIdAndJobId(Long organizationId, Long jobId) {
+    public Auth findByOrganizationIdAndJobId(Long organizationId, Long jobId) {
         return null;
     }
 }

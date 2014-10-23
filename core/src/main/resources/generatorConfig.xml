@@ -59,7 +59,7 @@
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table schema="ace" tableName="sys_role_resource_permission" domainObjectName="RoleResourcePermission"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table schema="ace" tableName="sys_user_role" domainObjectName="UserRole"
+        <table schema="ace" tableName="sys_auth" domainObjectName="Auth"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table schema="ace" tableName="sys_user_organization_job" domainObjectName="UserOrganizationJob"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>

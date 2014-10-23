@@ -25,14 +25,14 @@ import java.util.Map;
 
 /**
  * @Project_Name: ace-web
- * @File: AbstractService
+ * @File: GenericeServiceImpl
  * @User: denghp
  * @Date: 11/1/13
  * @Time: 4:47 PM
  */
-public abstract class AbstractService<T, ID extends Serializable> implements GenericService<T, ID>, InitializingBean {
+public abstract class GenericeServiceImpl<T, ID extends Serializable> implements GenericService<T, ID>, InitializingBean {
 
-    private Logger logger = LoggerFactory.getLogger(AbstractService.class);
+    private Logger logger = LoggerFactory.getLogger(GenericeServiceImpl.class);
     private Class<T> entityClass;
 
     private GenericeMapper<T, ID> genericeMapper;
@@ -67,7 +67,7 @@ public abstract class AbstractService<T, ID extends Serializable> implements Gen
     }
 
     @Override
-    public void deleteAll(List<ID> ids) throws AceException {
+    public void deleteList(List<ID> ids) throws AceException {
         genericeMapper.deleteBatch(ids);
     }
 
@@ -77,13 +77,13 @@ public abstract class AbstractService<T, ID extends Serializable> implements Gen
     }
 
     @Override
-    public T findById(ID id) {
-        return genericeMapper.findOne(id);
+    public T selectOne(ID id) {
+        return genericeMapper.selectOne(id);
     }
 
     @Override
-    public List<T> findAll() {
-        return genericeMapper.findAll();
+    public List<T> selectList() {
+        return genericeMapper.selectList();
     }
 
     @Override

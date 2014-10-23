@@ -5,6 +5,7 @@ import com.ace.console.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.User;
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @Project_Name: ace-parent
@@ -53,22 +55,23 @@ public class UserServiceTest {
 
     @Test
     public void selectUser() throws IOException {
-        User user = userService.findById(1l);
+        User user = userService.selectOne(1l);
         logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);
     }
 
     @Test
     public void selectUserOrgan() throws IOException {
-        User user = userService.findUserOrganization(1l);
+        User user = userService.getUserDetails(1l);
         logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);
     }
 
     @Test
     public void findByUsername() throws IOException {
-        User user = userService.findByUsername("admin");
+        User user = userService.getByUsername("admin");
         logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);
     }
+
 }

@@ -3,35 +3,121 @@
 /* Created on:     2014/10/22 21:41:03                          */
 /* Author   :      denghp                                       */
 /*==============================================================*/
+drop table if exists sys_user;
 
+drop table if exists sys_role;
 
 drop table if exists sys_group;
 
+drop table if exists sys_organization;
+
 drop table if exists sys_group_relation;
 
-drop table if exists sys_group_role;
-
 drop table if exists sys_job;
-
-drop table if exists sys_organization;
 
 drop table if exists sys_permission;
 
 drop table if exists sys_resource;
 
-drop table if exists sys_role;
-
 drop table if exists sys_role_resource_permission;
-
-drop table if exists sys_user;
 
 drop table if exists sys_user_organization_job;
 
-drop table if exists sys_user_role;
+drop table if exists sys_auth;
 
 drop table if exists sys_employee;
 
 drop table if exists sys_employee_organization_job;
+
+/*==============================================================*/
+/* Table: sys_user                                              */
+/*==============================================================*/
+create table sys_user
+(
+  id                   bigint not null auto_increment comment '用户主键',
+  username             varchar(50) comment '用户名',
+  password             varchar(50) default NULL comment '登录密码',
+  realname             varchar(50) default NULL comment '真实姓名',
+  mobile               varchar(11) default NULL comment '手机号码',
+  email                varchar(30) default NULL comment '电子邮箱',
+  salt                 varchar(100) default NULL comment '加密盐值',
+  deleted              int(1) default 1 comment '删除: 1-正常 0-删除',
+  status               varchar(30) default NULL comment '用户状态',
+  birthday             timestamp default 0 comment '出生日期',
+  gender               char(2) default NULL comment '性别',
+  create_time          timestamp default 0 comment '创建时间',
+  modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
+  login_time           timestamp default 0 comment '登录时间',
+  last_login_time      timestamp default 0 comment '最近登录时间',
+  first_login_time     timestamp default 0 comment '第一次登录时间',
+  count                bigint default 0 comment '登录次数',
+  primary key (id)
+)
+  auto_increment = 10000;
+
+alter table sys_user comment '系统用户表';
+
+/*==============================================================*/
+/* Index: unique_sys_user_username                              */
+/*==============================================================*/
+create index unique_sys_user_username on sys_user
+(
+  username
+);
+
+/*==============================================================*/
+/* Index: unique_sys_user_email                                 */
+/*==============================================================*/
+create index unique_sys_user_email on sys_user
+(
+  email
+);
+
+/*==============================================================*/
+/* Index: unique_sys_user_mobile                                */
+/*==============================================================*/
+create index unique_sys_user_mobile on sys_user
+(
+  mobile
+);
+
+
+
+/*==============================================================*/
+/* Table: sys_role                                              */
+/*==============================================================*/
+create table sys_role
+(
+  id                   bigint not null auto_increment comment '角色主键',
+  name                 varchar(100) default NULL comment '角色名称',
+  role                 varchar(100) default NULL comment '角色',
+  category             varchar(100) comment '角色分类',
+  description          varchar(255) comment '角色描述',
+  enabled              int default 1 comment '有效: 1-有效 0-无效',
+  create_time          timestamp default 0 comment '创建时间',
+  modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
+  primary key (id)
+)
+  auto_increment = 1000;
+
+alter table sys_role comment '系统角色表';
+
+/*==============================================================*/
+/* Index: idx_sys_role_role                                     */
+/*==============================================================*/
+create index idx_sys_role_role on sys_role
+(
+  role
+);
+
+/*==============================================================*/
+/* Index: idx_sys_role_name                                     */
+/*==============================================================*/
+create index idx_sys_role_name on sys_role
+(
+  name
+);
+
 
 /*==============================================================*/
 /* Table: sys_group                                             */
@@ -98,27 +184,6 @@ create index idx_sys_group_relation_organization on sys_group_relation
   organization_id
 );
 
-/*==============================================================*/
-/* Table: sys_group_role                                        */
-/*==============================================================*/
-create table sys_group_role
-(
-  id                   bigint not null auto_increment comment '主键ID',
-  group_id             bigint comment '组主键',
-  role_id              bigint comment '角色主键',
-  primary key (id)
-);
-
-alter table sys_group_role comment '系统组角色表';
-
-/*==============================================================*/
-/* Index: idx_sys_group_role                                    */
-/*==============================================================*/
-create index idx_sys_group_role on sys_group_role
-(
-  group_id,
-  role_id
-);
 
 /*==============================================================*/
 /* Table: sys_job                                               */
@@ -316,40 +381,6 @@ create index idx_sys_resource_parent_ids_weight on sys_resource
   weight
 );
 
-/*==============================================================*/
-/* Table: sys_role                                              */
-/*==============================================================*/
-create table sys_role
-(
-  id                   bigint not null auto_increment comment '角色主键',
-  name                 varchar(100) default NULL comment '角色名称',
-  role                 varchar(100) default NULL comment '角色',
-  category             varchar(100) comment '角色分类',
-  description          varchar(255) comment '角色描述',
-  enabled              int default 1 comment '有效: 1-有效 0-无效',
-  create_time          timestamp default 0 comment '创建时间',
-  modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
-  primary key (id)
-)
-  auto_increment = 1000;
-
-alter table sys_role comment '系统角色表';
-
-/*==============================================================*/
-/* Index: idx_sys_role_role                                     */
-/*==============================================================*/
-create index idx_sys_role_role on sys_role
-(
-  role
-);
-
-/*==============================================================*/
-/* Index: idx_sys_role_name                                     */
-/*==============================================================*/
-create index idx_sys_role_name on sys_role
-(
-  name
-);
 
 /*==============================================================*/
 /* Table: sys_role_resource_permission                          */
@@ -374,57 +405,7 @@ create index unique_sys_role_resource_permission on sys_role_resource_permission
   resource_id
 );
 
-/*==============================================================*/
-/* Table: sys_user                                              */
-/*==============================================================*/
-create table sys_user
-(
-  id                   bigint not null auto_increment comment '用户主键',
-  username             varchar(50) comment '用户名',
-  password             varchar(50) default NULL comment '登录密码',
-  realname             varchar(50) default NULL comment '真实姓名',
-  mobile               varchar(11) default NULL comment '手机号码',
-  email                varchar(30) default NULL comment '电子邮箱',
-  salt                 varchar(100) default NULL comment '加密盐值',
-  deleted              int(1) default 1 comment '删除: 1-正常 0-删除',
-  status               varchar(30) default NULL comment '用户状态',
-  birthday             timestamp default 0 comment '出生日期',
-  gender               char(2) default NULL comment '性别',
-  create_time          timestamp default 0 comment '创建时间',
-  modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
-  login_time           timestamp default 0 comment '登录时间',
-  last_login_time      timestamp default 0 comment '最近登录时间',
-  first_login_time     timestamp default 0 comment '第一次登录时间',
-  count                bigint default 0 comment '登录次数',
-  primary key (id)
-)
-  auto_increment = 10000;
 
-alter table sys_user comment '系统用户表';
-
-/*==============================================================*/
-/* Index: unique_sys_user_username                              */
-/*==============================================================*/
-create index unique_sys_user_username on sys_user
-(
-  username
-);
-
-/*==============================================================*/
-/* Index: unique_sys_user_email                                 */
-/*==============================================================*/
-create index unique_sys_user_email on sys_user
-(
-  email
-);
-
-/*==============================================================*/
-/* Index: unique_sys_user_mobile                                */
-/*==============================================================*/
-create index unique_sys_user_mobile on sys_user
-(
-  mobile
-);
 
 /*==============================================================*/
 /* Table: sys_user_organization_job                             */
@@ -451,15 +432,26 @@ create index unique_sys_user_organization_job on sys_user_organization_job
 );
 
 /*==============================================================*/
-/* Table: sys_user_role                                         */
+/* Table: sys_auth   用户,组,职务,组织机构授权表                   */
 /*==============================================================*/
-create table sys_user_role
-(
-  id                   bigint not null comment '用户角色主键',
-  user_id              bigint not null comment '用户ID',
-  role_id              bigint not null comment '角色ID',
-  primary key (id)
-);
+create table `sys_auth`(
+  `id`         bigint not null auto_increment,
+  `organization_id`       bigint,
+  `job_id`       bigint,
+  `user_id`      bigint,
+  `group_id`     bigint,
+  `role_ids`     varchar(500),
+  `type`         varchar(50) COMMENT 'user,user_group,organization_job,organization_group',
+  constraint `pk_sys_auth` primary key(`id`),
+  index `idx_sys_auth_organization` (`organization_id`),
+  index `idx_sys_auth_job` (`job_id`),
+  index `idx_sys_auth_user` (`user_id`),
+  index `idx_sys_auth_group` (`group_id`),
+  index `idx_sys_auth_type` (`type`)
+) charset=utf8 ENGINE=InnoDB;;
+alter table `sys_auth` auto_increment=1000;;
+
+
 
 /*==============================================================*/
 /* Table: sys_employee                             */

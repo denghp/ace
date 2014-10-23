@@ -6,9 +6,9 @@
 package com.ace.console.service.sys;
 
 import com.ace.console.service.GenericService;
+import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
-import com.ace.core.persistence.sys.entity.UserAuth;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -19,7 +19,7 @@ import java.util.Set;
  * @Description:
  */
 @Service
-public interface UserAuthService extends GenericService<UserAuth, Long> {
+public interface UserAuthService extends GenericService<Auth, Long> {
 
     /**
      * 查询用户相应的角色

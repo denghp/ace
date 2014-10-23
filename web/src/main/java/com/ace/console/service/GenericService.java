@@ -56,7 +56,7 @@ public interface GenericService<T, ID extends Serializable> {
      * @param ids
      *         需要删除的实体的集合
      */
-    public void deleteAll(List<ID> ids) throws AceException;
+    public void deleteList(List<ID> ids) throws AceException;
 
     /**
      *  更新实体
@@ -74,7 +74,7 @@ public interface GenericService<T, ID extends Serializable> {
      * @return
      *         返回查询的实体对象
      */
-    public T findById(ID id);
+    public T selectOne(ID id);
 
     /**
      *
@@ -82,7 +82,7 @@ public interface GenericService<T, ID extends Serializable> {
      *
      * @return
      */
-    public List<T> findAll();
+    public List<T> selectList();
 
     /**
      * 统计实体总数

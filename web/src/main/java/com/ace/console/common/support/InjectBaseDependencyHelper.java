@@ -54,7 +54,7 @@ public class InjectBaseDependencyHelper {
 
         if (candidates.size() > 1) {
             throw new IllegalStateException(
-                    "expect  @BaseComponent anntation AbstractService subclass bean, but found " + candidates.size() +
+                    "expect  @BaseComponent anntation GenericeServiceImpl subclass bean, but found " + candidates.size() +
                             ", please check class [" + baseController.getClass() + "] @BaseComponent annotation.");
         }
 
@@ -62,7 +62,7 @@ public class InjectBaseDependencyHelper {
 
         if (genericService.getClass().isAssignableFrom(BaseComponent.class)) {
             throw new IllegalStateException("[" + baseController.getClass() + "] @BaseComponent annotation bean " +
-                    "must be AbstractService subclass");
+                    "must be GenericeServiceImpl subclass");
         }
 
         baseController.setGenericService((GenericService) genericService);

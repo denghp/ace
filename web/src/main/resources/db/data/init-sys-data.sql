@@ -287,11 +287,14 @@ insert into `sys_role_resource_permission` (`id`, `role_id`, `resource_id`, `per
 insert into `sys_role_resource_permission` (`id`, `role_id`, `resource_id`, `permission_ids`) values(26, 6, 34, '1');
 
 
-delete from `sys_user_role` where id>=1 and id<=1000;
-insert into sys_user_role (`id`, `user_id`, `role_id`) values(1, 1, 1);
-insert into sys_user_role (`id`, `user_id`, `role_id`) values(2, 2, 2);
-insert into sys_user_role (`id`, `user_id`, `role_id`) values(3, 3, 3);
-insert into sys_user_role (`id`, `user_id`, `role_id`) values(4, 4, 4);
-insert into sys_user_role (`id`, `user_id`, `role_id`) values(5, 5, 5);
-insert into sys_user_role (`id`, `user_id`, `role_id`) values(6, 6, 6);
+delete from `sys_auth` where id>=1 and id<=1000;
+insert into `sys_auth` (`id`, `user_id`, `role_ids`) values(1, 1, 1);
+insert into `sys_auth` (`id`, `user_id`, `role_ids`) values(2, 2, 2);
+insert into `sys_auth` (`id`, `user_id`, `role_ids`) values(3, 3, 3);
+insert into `sys_auth` (`id`, `user_id`, `role_ids`) values(4, 4, 4);
+insert into `sys_auth` (`id`, `user_id`, `role_ids`) values(5, 5, 5);
+insert into `sys_auth` (`id`, `user_id`, `role_ids`) values(6, 6, 6);
 
+insert into `sys_user_organization_job`(`user_id`,`organization_id`) values(1,1);
+insert into `sys_user_organization_job`(`user_id`,`organization_id`) values(2,1);
+insert into `sys_user_organization_job`(`user_id`,`organization_id`) values(3,3);

@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  * @Time: 11:46 PM
  * @Description:
  */
-public class UserServiceImpl extends AbstractService<User, Long> implements UserService {
+public class UserServiceImpl extends GenericeServiceImpl<User, Long> implements UserService {
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -55,7 +55,7 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
     @Override
     public boolean changePassword(Long userId, String newPassword) {
         //根据用户ID获取用户
-        User user = userMapper.findOne(userId);
+        User user = userMapper.selectOne(userId);
         user.setPassword(newPassword);
         //加密
         PasswordHelper.encryptPassword(user);
@@ -72,7 +72,7 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User getByUsername(String username) {
         if (StringUtils.isBlank(username)) {
             logger.warn("username is empty.");
             return null;
@@ -103,7 +103,7 @@ public class UserServiceImpl extends AbstractService<User, Long> implements User
     }
 
     @Override
-    public User findUserOrganization(Long userId) {
+    public User getUserDetails(Long userId) {
         if (userId == null) {
             logger.warn("userId is null.");
             return null;

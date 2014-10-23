@@ -43,12 +43,12 @@ public interface UserService extends GenericService<User, Long> {
      * @return
      *      返回用户基本信息
      */
-    public User findByUsername(String username);
+    public User getByUsername(String username);
 
     /**
-     * 根据用户ID查询用户信息及相关组织机构信息
+     * 根据用户ID查询用户详细信息
      * @param userId
      * @return
      */
-    public User findUserOrganization(Long userId);
+    public User getUserDetails(Long userId);
 }

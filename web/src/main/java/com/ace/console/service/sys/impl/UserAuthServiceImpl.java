@@ -6,9 +6,9 @@
 package com.ace.console.service.sys.impl;
 
 import com.ace.console.service.sys.UserAuthService;
+import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
-import com.ace.core.persistence.sys.entity.UserAuth;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import java.util.Set;
  * @Description:
  */
 @Service
-public class UserAuthServiceImpl extends AbstractService<UserAuth, Long> implements UserAuthService {
+public class UserAuthServiceImpl extends GenericeServiceImpl<Auth, Long> implements UserAuthService {
 
     private Logger logger = LoggerFactory.getLogger(UserAuthServiceImpl.class);
 

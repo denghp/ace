@@ -94,7 +94,7 @@ public interface GenericeMapper<T, ID extends Serializable>  {
      * @return
      *         返回查询的实体对象
      */
-    public T findOne(ID id);
+    public T selectOne(ID id);
 
 
     /**
@@ -104,7 +104,7 @@ public interface GenericeMapper<T, ID extends Serializable>  {
      *            进行查询的条件集合
      * @return 返回泛型参数类型的对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}，
      */
-    public T findOne(Map<String, Object> condition);
+    public T selectOne(Map<String, Object> condition);
 
     /**
      *
@@ -112,7 +112,7 @@ public interface GenericeMapper<T, ID extends Serializable>  {
      *
      * @return
      */
-    public List<T> findAll();
+    public List<T> selectList();
 
     /**
      * 根据条件集合进行指定类型对象集合查询

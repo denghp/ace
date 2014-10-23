@@ -94,18 +94,18 @@ public class GenericeMapperImpl<T, ID extends Serializable> extends SqlSessionDa
     }
 
     @Override
-    public T findOne(ID id) {
+    public T selectOne(ID id) {
         logger.info("----------findOne Id : {} ", id);
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_BY_ID.value(), id);
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_ONE.value(), id);
     }
 
     @Override
-    public T findOne(Map<String, Object> condition) {
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_CONDITION.value(), condition);
+    public T selectOne(Map<String, Object> condition) {
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_ONE.value(), condition);
     }
 
     @Override
-    public List<T> findAll() {
+    public List<T> selectList() {
         return null;
     }
 
@@ -136,7 +136,7 @@ public class GenericeMapperImpl<T, ID extends Serializable> extends SqlSessionDa
 
     @Override
     public T updateOrSave(T t, ID id) {
-        if (null != findOne(id)) {
+        if (null != selectOne(id)) {
             update(t);
         } else {
             //TODO : INSERT

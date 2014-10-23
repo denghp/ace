@@ -20,8 +20,7 @@ public enum RdbOperation {
     DELETE_CONDITION(".deleteCondition"),
     DELETE_BATCH (".deleteBatch"),
     SELECT(".select"),
-    SELECT_BY_ID(".selectById"),
-    SELECT_CONDITION(".selectCondition"),
+    SELECT_ONE(".selectOne"),
     SELECT_LIST(".selectList"),
     COUNT(".count"),
     COUNT_CONDITION(".countCondition");

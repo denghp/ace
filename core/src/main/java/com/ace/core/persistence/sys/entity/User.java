@@ -30,18 +30,24 @@ public class User {
 
     @NotEmpty(message = "{not.null}")
     @Pattern(regexp = MOBILE_PHONE_NUMBER_PATTERN, message = "{user.mobile.phone.number.not.valid}")
-    private String mobilePhoneNumber;
+    private String mobile;
 
+    @NotNull(message = "{not.null}")
+    @Size(max = PASSWORD_MAX_LENGTH, min = PASSWORD_MIN_LENGTH, message = "{user.password.not.valid}")
     private String password;
-
-    private String salt;
 
     /**
      * 系统用户的状态
      */
     private UserStatus status = UserStatus.normal;
 
-    private Boolean admin;
+    private String salt;
+
+    private Boolean deleted;
+
+    private Date birthday;
+
+    private String gender;
 
     private DateTime createTime;
 
@@ -49,11 +55,9 @@ public class User {
 
     private DateTime loginTime;
 
-    private DateTime lastLoginTime;
+    private DateTime firstLoginTime;
 
     private Long count;
-
-    private Boolean locked;
 
     /*
      * 用户 组织机构
@@ -67,12 +71,12 @@ public class User {
         this.password = password;
     }
 
-    public Boolean getLocked() {
-        return locked;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setLocked(Boolean locked) {
-        this.locked = locked;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public Long getId() {
@@ -99,14 +103,6 @@ public class User {
         this.email = email == null ? null : email.trim();
     }
 
-    public String getMobilePhoneNumber() {
-        return mobilePhoneNumber;
-    }
-
-    public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        this.mobilePhoneNumber = mobilePhoneNumber == null ? null : mobilePhoneNumber.trim();
-    }
-
     public String getPassword() {
         return password;
     }
@@ -129,14 +125,6 @@ public class User {
 
     public void setStatus(UserStatus status) {
         this.status = status;
-    }
-
-    public Boolean getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
     }
 
     public Long getCount() {
@@ -171,12 +159,36 @@ public class User {
         this.loginTime = loginTime;
     }
 
-    public DateTime getLastLoginTime() {
-        return lastLoginTime;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setLastLoginTime(DateTime lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public DateTime getFirstLoginTime() {
+        return firstLoginTime;
+    }
+
+    public void setFirstLoginTime(DateTime firstLoginTime) {
+        this.firstLoginTime = firstLoginTime;
     }
 
     public List<Organization> getOrganizationList() {

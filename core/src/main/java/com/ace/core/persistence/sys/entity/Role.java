@@ -9,9 +9,11 @@ public class Role {
 
     private String role;
 
+    private String category;
+
     private String description;
 
-    private Boolean isShow;
+    private Integer enabled;
 
     private Date createTime;
 
@@ -41,6 +43,14 @@ public class Role {
         this.role = role == null ? null : role.trim();
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category == null ? null : category.trim();
+    }
+
     public String getDescription() {
         return description;
     }
@@ -49,12 +59,12 @@ public class Role {
         this.description = description == null ? null : description.trim();
     }
 
-    public Boolean getIsShow() {
-        return isShow;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setIsShow(Boolean isShow) {
-        this.isShow = isShow;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 
     public Date getCreateTime() {

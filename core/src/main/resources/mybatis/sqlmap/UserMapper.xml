@@ -2,29 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ace.core.persistence.sys.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="com.ace.core.persistence.sys.entity.User">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="username" property="username" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="mobile" property="mobilePhoneNumber" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="salt" property="salt" jdbcType="VARCHAR"/>
-        <result column="status" property="status" jdbcType="VARCHAR"/>
-        <result column="admin" property="admin" jdbcType="BIT"/>
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="realname" property="realname" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="salt" property="salt" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+        <result column="gender" property="gender" jdbcType="CHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"
                 typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"
                 typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
         <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"
                 typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
-        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"
+        <result column="first_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"
+                typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+        <result column="last_login_time" property="createTime" jdbcType="TIMESTAMP"
                 typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
         <result column="count" property="count" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, username, email, mobile, password, salt, status, admin, create_time, modify_time, login_time, last_login_time,
-    count
-  </sql>
+        id, username, password, realname, mobile, email, salt, deleted, status, birthday,
+        gender, create_time, modify_time, login_time, last_login_time, first_login_time,
+        count
+    </sql>
 
     <resultMap type="User" id="userOrganizationMap" extends="BaseResultMap">
         <collection property="organizationList" ofType="Organization">
@@ -59,7 +65,6 @@
         u.last_login_time,
         organ.id as organization_id,
         organ.name as organ_name,
-        organ.user_count ,
         organ.trade_code_id,
         organ.url,
         organ.address,

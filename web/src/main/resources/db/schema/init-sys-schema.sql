@@ -41,7 +41,7 @@ create table sys_group
   id                   bigint not null auto_increment comment '组主键',
   name                 varchar(100) default NULL comment '组名称',
   type                 varchar(50) default NULL comment '组类型',
-  enabled              int default TRUE comment '有效: 1-有效 0-无效',
+  enabled              int default 1 comment '有效: 1-有效 0-无效',
   default_group        bool default TRUE comment '默认组',
   create_time          timestamp default 0 comment '创建时间',
   modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '修改时间',
@@ -130,7 +130,7 @@ create table sys_job
   parent_id            bigint default NULL comment '父级职务',
   parent_ids           varchar(100) default NULL comment '父级职务IDS',
   weight               int default 0 comment '排序权重',
-  enabled              int default TRUE comment '有效: 1-有效 0-无效',
+  enabled              int default 1 comment '有效: 1-有效 0-无效',
   icon                 varchar(50) comment '图标',
   description          varchar(255) comment '描述',
   primary key (id)
@@ -183,7 +183,7 @@ create table sys_organization
   fax                  varchar(20) default NULL comment '传真',
   mobile               varchar(11) comment '手机号码',
   description          varchar(255) default NULL comment '描述',
-  enabled              int default TRUE comment '有效: 1-有效 0-无效',
+  enabled              int default 1 comment '有效: 1-有效 0-无效',
   address              varchar(255) default NULL comment '地址',
   create_user_id       bigint default NULL comment '创建人ID',
   create_user_name     varchar(50) default NULL comment '创建人名称',
@@ -231,7 +231,7 @@ create table sys_permission
   name                 varchar(100) default NULL comment '权限名称',
   permission           varchar(100) default NULL comment '权限操作',
   description          varchar(255) default NULL comment '权限描述',
-  enabled              int default TRUE comment '有效: 1-有效 0-无效',
+  enabled              int default 1 comment '有效: 1-有效 0-无效',
   primary key (id)
 )
   auto_increment = 1000;
@@ -267,7 +267,7 @@ create table sys_resource
   parent_ids           varchar(200) default NULL comment '父级资源IDS',
   icon                 varchar(100) default NULL comment '资源图标',
   weight               int default 0 comment '排序权重',
-  enabled              int default TRUE comment '有效: 1-有效 0-无效',
+  enabled              int default 1 comment '有效: 1-有效 0-无效',
   create_time          timestamp default 0 comment '创建时间',
   modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
   primary key (id)
@@ -326,7 +326,7 @@ create table sys_role
   role                 varchar(100) default NULL comment '角色',
   category             varchar(100) comment '角色分类',
   description          varchar(255) comment '角色描述',
-  enabled              int default TRUE comment '有效: 1-有效 0-无效',
+  enabled              int default 1 comment '有效: 1-有效 0-无效',
   create_time          timestamp default 0 comment '创建时间',
   modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
   primary key (id)
@@ -386,13 +386,14 @@ create table sys_user
   mobile               varchar(11) default NULL comment '手机号码',
   email                varchar(30) default NULL comment '电子邮箱',
   salt                 varchar(100) default NULL comment '加密盐值',
-  deleted              bool default FALSE comment '是否删除',
+  deleted              int(1) default 1 comment '删除: 1-正常 0-删除',
   status               varchar(30) default NULL comment '用户状态',
   birthday             timestamp default 0 comment '出生日期',
   gender               char(2) default NULL comment '性别',
   create_time          timestamp default 0 comment '创建时间',
   modify_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
   login_time           timestamp default 0 comment '登录时间',
+  last_login_time      timestamp default 0 comment '最近登录时间',
   first_login_time     timestamp default 0 comment '第一次登录时间',
   count                bigint default 0 comment '登录次数',
   primary key (id)

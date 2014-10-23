@@ -25,19 +25,19 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- targetProject:自动生成代码的位置 -->
-        <javaModelGenerator targetPackage="com.ace.core.persistence.sys.entity" targetProject="./src/main/java">
+        <javaModelGenerator targetPackage="com.ace.core.persistence.sys.entity" targetProject="./tmp">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="true"/>
             <!-- 从数据库返回的值被清理前后的空格  -->
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mybatis.sqlmap" targetProject="./src/main/resources">
+        <sqlMapGenerator targetPackage="mybatis.sqlmap" targetProject="./tmp">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.ace.core.persistence.sys.mapper"
-                             targetProject="./src/main/java">
+                             targetProject="./tmp">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- tableName:用于自动生成代码的数据库表；domainObjectName:对应于数据库表的javaBean类名 -->
@@ -59,7 +59,7 @@
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table schema="ace" tableName="sys_role_resource_permission" domainObjectName="RoleResourcePermission"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table schema="ace" tableName="sys_user_roles" domainObjectName="UserRoles"
+        <table schema="ace" tableName="sys_user_role" domainObjectName="UserRole"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table schema="ace" tableName="sys_user_organization_job" domainObjectName="UserOrganizationJob"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>

@@ -32,27 +32,23 @@
         count
     </sql>
 
-    <resultMap type="User" id="userOrganizationMap" extends="BaseResultMap">
-        <collection property="organizationList" ofType="Organization">
-            <id property="id" column="organ_id"/>
-            <result property="name" column="organ_name"/>
-            <result property="address" column="address"/>
-            <result property="shortName" column="short_name"/>
-            <result property="createTime" column="organ_create_time" jdbcType="TIMESTAMP"
-                    typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
-            <result property="modifyTime" column="organ_modify_time" jdbcType="TIMESTAMP"
-                    typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+    <resultMap type="User" id="userOrganizationJobMap" extends="BaseResultMap">
+        <collection property="userOrganizationJobs" ofType="UserOrganizationJob">
+            <id column="uorj_id" property="id" jdbcType="BIGINT" />
+            <result column="user_id" property="userId" jdbcType="BIGINT" />
+            <result column="job_id" property="jobId" jdbcType="BIGINT" />
+            <result column="organization_id" property="organizationId" jdbcType="BIGINT" />
         </collection>
     </resultMap>
 
-    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
         from sys_user
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="findUserOrganization" resultMap="userOrganizationMap" parameterType="java.lang.Long">
+    <select id="getUserDetails" resultMap="userOrganizationJobMap" parameterType="java.lang.Long">
         select
         u.id,
         u.username,
@@ -71,25 +67,21 @@
         u.first_login_time,
         u.last_login_time,
         u.count,
-        organ.id as organ_id,
-        organ.name as organ_name,
-        organ.short_name,
-        organ.create_time as organ_create_time,
-        organ.modify_time as organ_modify_time
-        from sys_user as u
-        left join sys_user_organization_job as uoj on u.id = uoj.user_id
-        left join sys_organization as organ on uoj.organization_id = organ.id
-        where u.id = #{id,jdbcType=BIGINT}
+        uoj.id as uorj_id,
+        uoj.user_id,
+        uoj.organization_id
+        from sys_user as u, sys_user_organization_job as uoj
+        where u.id = #{id,jdbcType=BIGINT} and u.id = uoj.user_id;
     </select>
 
-    <select id="findByUsername" resultMap="userOrganizationMap" parameterType="java.lang.String">
+    <select id="getByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from sys_user
         where username = #{username}
     </select>
 
-    <select id="findAll" resultMap="BaseResultMap" >
+    <select id="selectList" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List"/>
         from sys_user order id desc limit 50
@@ -186,16 +178,16 @@
                 #{admin,jdbcType=BIT},
             </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                #{createTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="modifyTime != null">
-                #{modifyTime,jdbcType=TIMESTAMP},
+                #{modifyTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="loginTime != null">
-                #{loginTime,jdbcType=TIMESTAMP},
+                #{loginTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="lastLoginTime != null">
-                #{lastLoginTime,jdbcType=TIMESTAMP},
+                #{lastLoginTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="count != null">
                 #{count,jdbcType=BIGINT},
@@ -234,16 +226,16 @@
                 admin = #{admin,jdbcType=BIT},
             </if>
             <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
+                create_time = #{createTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="modifyTime != null">
-                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+                modify_time = #{modifyTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="loginTime != null">
-                login_time = #{loginTime,jdbcType=TIMESTAMP},
+                login_time = #{loginTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="lastLoginTime != null">
-                last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+                last_login_time = #{lastLoginTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
             </if>
             <if test="count != null">
                 count = #{count,jdbcType=BIGINT},

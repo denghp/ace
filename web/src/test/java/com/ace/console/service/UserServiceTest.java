@@ -61,7 +61,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void selectUserOrgan() throws IOException {
+    public void selectDetails() throws IOException {
         User user = userService.getUserDetails(1l);
         logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);

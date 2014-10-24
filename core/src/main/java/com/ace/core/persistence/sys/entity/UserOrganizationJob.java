@@ -1,9 +1,5 @@
 package com.ace.core.persistence.sys.entity;
 
-import org.joda.time.DateTime;
-
-import java.util.Date;
-
 public class UserOrganizationJob {
     private Long id;
 
@@ -13,7 +9,27 @@ public class UserOrganizationJob {
 
     private Long jobId;
 
-    private DateTime modifyTime;
+    private User user;
+
+    public UserOrganizationJob() {
+    }
+
+    public UserOrganizationJob(Long id) {
+        setId(id);
+    }
+
+    public UserOrganizationJob(Long organizationId, Long jobId) {
+        this.organizationId = organizationId;
+        this.jobId = jobId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
@@ -45,13 +61,5 @@ public class UserOrganizationJob {
 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
-    }
-
-    public DateTime getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(DateTime modifyTime) {
-        this.modifyTime = modifyTime;
     }
 }

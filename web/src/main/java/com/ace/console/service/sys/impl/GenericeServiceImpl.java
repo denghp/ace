@@ -8,6 +8,7 @@
 package com.ace.console.service.sys.impl;
 
 import com.ace.commons.json.JsonUtils;
+import com.ace.console.annotation.BaseComponent;
 import com.ace.console.common.support.InjectBaseDependencyHelper;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;

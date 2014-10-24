@@ -77,12 +77,12 @@ public class UserServiceImpl extends GenericeServiceImpl<User, Long> implements 
             logger.warn("username is empty.");
             return null;
         }
-        return userMapper.findByUsername(username);
+        return userMapper.getByUsername(username);
     }
 
     @Override
     public User login(String username, String password) throws AceException {
-        User user = userMapper.findByUsername(username);
+        User user = userMapper.getByUsername(username);
 
         if (user == null) {
             logger.warn("{} username not found.", username);
@@ -108,6 +108,6 @@ public class UserServiceImpl extends GenericeServiceImpl<User, Long> implements 
             logger.warn("userId is null.");
             return null;
         }
-        return userMapper.findUserOrganization(userId);
+        return userMapper.getUserDetails(userId);
     }
 }

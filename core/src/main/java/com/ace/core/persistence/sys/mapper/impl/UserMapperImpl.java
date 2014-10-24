@@ -20,8 +20,8 @@ public class UserMapperImpl extends GenericeMapperImpl<User, Long> implements Us
     private Logger logger = LoggerFactory.getLogger(UserMapperImpl.class);
     public enum RdbOperation {
 
-        FIND_BY_USERNAME(".findByUsername"),
-        FIND_USER_ORGAN(".findUserOrganization");
+        GET_BY_USERNAME(".getByUsername"),
+        GET_USER_DETAILS(".getUserDetails");
 
         private String value;
 
@@ -35,12 +35,12 @@ public class UserMapperImpl extends GenericeMapperImpl<User, Long> implements Us
     }
 
     @Override
-    public User findByUsername(String username) {
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.FIND_BY_USERNAME.value(), username);
+    public User getByUsername(String username) {
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.GET_BY_USERNAME.value(), username);
     }
 
     @Override
-    public User findUserOrganization(Long userId) {
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.FIND_USER_ORGAN.value(), userId);
+    public User getUserDetails(Long userId) {
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.GET_USER_DETAILS.value(), userId);
     }
 }

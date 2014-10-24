@@ -1,6 +1,7 @@
 package com.ace.core.persistence.sys.entity;
 
 import com.ace.core.persistence.sys.enums.UserStatus;
+import com.google.common.collect.Lists;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
@@ -59,10 +60,18 @@ public class User {
 
     private Long count;
 
-    /*
-     * 用户 组织机构
-     */
-    private List<Organization> organizationList;
+    private List<UserOrganizationJob> userOrganizationJobs;
+
+    public List<UserOrganizationJob> getUserOrganizationJobs() {
+        if (userOrganizationJobs == null) {
+            userOrganizationJobs = Lists.newArrayList();
+        }
+        return userOrganizationJobs;
+    }
+
+    public void setUserOrganizationJobs(List<UserOrganizationJob> userOrganizationJobs) {
+        this.userOrganizationJobs = userOrganizationJobs;
+    }
 
     public User(){}
 
@@ -191,11 +200,4 @@ public class User {
         this.firstLoginTime = firstLoginTime;
     }
 
-    public List<Organization> getOrganizationList() {
-        return organizationList;
-    }
-
-    public void setOrganizationList(List<Organization> organizationList) {
-        this.organizationList = organizationList;
-    }
 }

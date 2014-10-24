@@ -18,12 +18,12 @@ public interface UserMapper extends GenericeMapper<User, Long> {
      * @param username
      * @return
      */
-    public User findByUsername(String username);
+    public User getByUsername(String username);
 
     /**
      * 根据用户ID查询用户信息及相关组织机构信息
      * @param userId
      * @return
      */
-    public User findUserOrganization(Long userId);
+    public User getUserDetails(Long userId);
 }

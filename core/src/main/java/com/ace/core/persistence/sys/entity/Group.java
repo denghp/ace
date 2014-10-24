@@ -1,21 +1,23 @@
 package com.ace.core.persistence.sys.entity;
 
-import java.util.Date;
+import com.ace.core.persistence.sys.enums.GroupType;
+import org.joda.time.DateTime;
 
 public class Group {
+
     private Long id;
 
     private String name;
 
-    private String type;
+    private GroupType type;
 
-    private Boolean isShow;
+    private Integer enabled;
 
-    private Boolean defaultGroup;
+    private Boolean defaultGroup = Boolean.FALSE;
 
-    private Date createTime;
+    private DateTime createTime;
 
-    private Date modifyTime;
+    private DateTime modifyTime;
 
     private String description;
 
@@ -35,20 +37,20 @@ public class Group {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getType() {
+    public GroupType getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setType(GroupType type) {
+        this.type = type;
     }
 
-    public Boolean getIsShow() {
-        return isShow;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setIsShow(Boolean isShow) {
-        this.isShow = isShow;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 
     public Boolean getDefaultGroup() {
@@ -59,19 +61,19 @@ public class Group {
         this.defaultGroup = defaultGroup;
     }
 
-    public Date getCreateTime() {
+    public DateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(DateTime createTime) {
         this.createTime = createTime;
     }
 
-    public Date getModifyTime() {
+    public DateTime getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Date modifyTime) {
+    public void setModifyTime(DateTime modifyTime) {
         this.modifyTime = modifyTime;
     }
 
@@ -82,4 +84,5 @@ public class Group {
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
+
 }

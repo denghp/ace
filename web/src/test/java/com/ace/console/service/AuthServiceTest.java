@@ -8,6 +8,7 @@ package com.ace.console.service;
 import com.ace.commons.json.JsonUtils;
 import com.ace.console.service.sys.AuthService;
 import com.ace.core.persistence.sys.entity.Auth;
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,9 +44,18 @@ public class AuthServiceTest {
 
     @Test
     public void getAuth() throws IOException {
-        Auth auth = authService.selectOne(1l);
+        Auth auth = authService.selectById(1l);
         logger.info(" auth : " + JsonUtils.getObjectMapper().writeValueAsString(auth));
         Assert.assertNotNull(auth);
     }
 
+    @Test
+    public void getRoleOnUserGroupIds () {
+        Set<Long> groupIds = Sets.newHashSet();
+        groupIds.add(1000l);
+        groupIds.add(1001l);
+        Set<Long> roleIds = authService.getRoleIds(1l, groupIds);
+        logger.info("roleIds : {}", roleIds);
+
+    }
 }

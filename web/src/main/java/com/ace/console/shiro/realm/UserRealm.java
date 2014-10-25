@@ -1,6 +1,7 @@
 package com.ace.console.shiro.realm;
 
 import com.ace.console.exception.AceException;
+import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.User;
 import org.apache.shiro.authc.*;
@@ -11,6 +12,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Resource;
 
 /**
  * @Project_Name: ace-web
@@ -31,6 +34,8 @@ public class UserRealm extends AuthorizingRealm {
         this.userService = userService;
     }
 
+    @Resource
+    private UserAuthService userAuthService;
     /**
      * 给登录用户授权
      * @param principalCollection
@@ -42,9 +47,11 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String)principalCollection.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        //获取用户信息
+        User user = userService.getByUsername(username);
         //根据用户获取相应角色并授权
         //TODO: 获取用户角色和权限
-        //authorizationInfo.setRoles(userService.findRoles(username));
+        authorizationInfo.setRoles(userAuthService.findStringRoles(user));
         //Set<String> permissions = userService.findPermissions(username);
         //获取用户相应的权限
 //        authorizationInfo.setStringPermissions(permissions);

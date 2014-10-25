@@ -21,6 +21,20 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
 
+    <select id="getRoleIds" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_auth
+        where (user_id = #{userId,jdbcType=BIGINT})
+        <if test="groupIds != null">
+            OR (group_id in
+            <foreach collection="groupIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            )
+        </if>
+    </select>
+
   <!--
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sys_auth

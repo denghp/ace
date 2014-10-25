@@ -45,8 +45,6 @@ public class AuthServiceImpl extends GenericServiceImpl<Auth, Long> implements A
 
     @Override
     public Set<Long> getRoleIds(Long userId, Set<Long> groupIds) {
-        Auth auth = authMapper.selectOne(1l);
-
-        return auth.getRoleIds();
+        return authMapper.getRoleIds(userId, groupIds);
     }
 }

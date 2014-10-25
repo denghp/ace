@@ -1,6 +1,9 @@
 package com.ace.core.persistence.sys.entity;
 
+import com.google.common.collect.Lists;
+
 import java.util.Date;
+import java.util.List;
 
 public class Role {
     private Long id;
@@ -18,6 +21,8 @@ public class Role {
     private Date createTime;
 
     private Date modifyTime;
+
+    private List<RoleResourcePermission> resourcePermissions;
 
     public Long getId() {
         return id;
@@ -81,5 +86,33 @@ public class Role {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public List<RoleResourcePermission> getResourcePermissions() {
+        if (resourcePermissions == null) {
+            resourcePermissions = Lists.newArrayList();
+        }
+        return resourcePermissions;
+    }
+
+    public void setResourcePermissions(List<RoleResourcePermission> resourcePermissions) {
+        this.resourcePermissions = resourcePermissions;
+    }
+
+    public void addResourcePermission(RoleResourcePermission roleResourcePermission) {
+        roleResourcePermission.setRole(this);
+        getResourcePermissions().add(roleResourcePermission);
+    }
+
+    @Override
+    public String toString() {
+        return "Role{id=" + this.getId() +
+                ", id=" + id +
+                ", name=" + name +
+                ", category=" + category +
+                ", enabled=" + enabled +
+                ", createTime=" + createTime +
+                ", modifyTime=" + modifyTime +
+                '}';
     }
 }

@@ -3,7 +3,9 @@ package com.ace.console.service;
 import com.ace.commons.json.JsonUtils;
 import com.ace.console.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
+import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.service.sys.UserService;
+import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
@@ -35,6 +37,9 @@ public class UserServiceTest {
     @Resource
     private UserService userService;
 
+    @Resource
+    private UserAuthService userAuthService;
+
     protected String password = "123";
     protected User user;
 
@@ -54,7 +59,7 @@ public class UserServiceTest {
 
     @Test
     public void selectUser() throws IOException {
-        User user = userService.selectOne(1l);
+        User user = userService.selectById(1l);
         logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);
     }
@@ -73,4 +78,11 @@ public class UserServiceTest {
         Assert.assertNotNull(user);
     }
 
+    @Test
+    public void getRoleIds() {
+        user = new User();
+        user.setId(1l);
+        Set<Role> roles = userAuthService.findRoles(user);
+        logger.info("roles : {}", roles);
+    }
 }

@@ -74,15 +74,38 @@ public interface GenericService<T, ID extends Serializable> {
      * @return
      *         返回查询的实体对象
      */
-    public T selectOne(ID id);
+    public T selectById(ID id);
+
 
     /**
+     * 根据任意属性和属性值进行对象查询，如果返回多个对象，将抛出异常
      *
-     *  查询实体列表
-     *
-     * @return
+     * @param property
+     *            进行对象匹配的属性
+     * @param value
+     *            进行对象匹配的属性值
+     * @return 返回泛型参数类型对象
      */
-    public List<T> selectList();
+    public T selectOne(String property, Object value);
+
+    /**
+     * 根据任意（单一）属性和属性值进行集合查询
+     *
+     * @param property
+     *            进行对象匹配的属性
+     * @param value
+     *            进行对象匹配的属性值
+     * @return 返回泛型参数类型的对象集合
+     */
+    public List<T> selectList(String property, Object value);
+
+    /**
+     * 根据传入的泛型参数类型查询该类型对应表中的所有数据，返回一个集合对象
+     *
+     * @return 返回泛型参数类型的对象集合
+     */
+    public List<T> selectAll();
+
 
     /**
      * 统计实体总数
@@ -103,16 +126,6 @@ public interface GenericService<T, ID extends Serializable> {
      *          返回集合实体列表
      */
     public List<T> getPageList(Integer offset, Integer limit);
-
-    /**
-     * <p>
-     * 根据每页记录的数量,计算出总的分页数
-     * </p>
-     *
-     * @param size 每页记录的数量
-     * @return 分页总数
-     */
-    public int getPageSize(int size);
 
     /**
      * <p/>

@@ -11,17 +11,19 @@ package com.ace.core.persistence.sys.enums;
  */
 public enum RdbOperation {
 
-    INSERT (".insert"),
+    INSERT(".insert"),
+    INSERT_SELECTIVE(".insertSelective"),
     INSERT_BATCH (".insertBatch"),
-    UPDATE (".update"),
+    UPDATE_BY_PRIMARY_KEY_SELECTIVE (".updateByPrimaryKeySelective"),
+    UPDATE_BY_PRIMARY_KEY (".updateByPrimaryKey"),
     UPDATE_CONDITION (".updateCondition"),
     UPDATE_BATCH (".updateBatch"),
-    DELETE (".delete"),
+    DELETE_BY_PRIMARY_KEY(".deleteByPrimaryKey"),
     DELETE_CONDITION(".deleteCondition"),
     DELETE_BATCH (".deleteBatch"),
-    SELECT(".select"),
-    SELECT_ONE(".selectOne"),
+    SELECT_BY_PRIMARY_KEY(".selectByPrimaryKey"),
     SELECT_LIST(".selectList"),
+    SELECT_ALL(".selectAll"),
     COUNT(".count"),
     COUNT_CONDITION(".countCondition");
 

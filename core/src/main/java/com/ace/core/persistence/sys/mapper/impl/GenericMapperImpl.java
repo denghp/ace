@@ -54,7 +54,7 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
 
     @Override
     public int insert(T entity) {
-        return getSqlSession().insert(getNamespace() + RdbOperation.INSERT.value(), entity);
+        return getSqlSession().insert(getNamespace() + RdbOperation.INSERT_SELECTIVE.value(), entity);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
 
     @Override
     public int delete(ID id) {
-        return getSqlSession().delete(getNamespace() + RdbOperation.DELETE, id);
+        return getSqlSession().delete(getNamespace() + RdbOperation.DELETE_BY_PRIMARY_KEY, id);
     }
 
     @Override
@@ -80,12 +80,12 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
 
     @Override
     public int update(T entity) {
-        return getSqlSession().update(getNamespace() + RdbOperation.UPDATE, entity);
+        return getSqlSession().update(getNamespace() + RdbOperation.UPDATE_BY_PRIMARY_KEY_SELECTIVE.value(), entity);
     }
 
     @Override
     public void updateNull(T entity) {
-        getSqlSession().update(getNamespace() + RdbOperation.UPDATE, entity);
+        getSqlSession().update(getNamespace() + RdbOperation.UPDATE_BY_PRIMARY_KEY_SELECTIVE.value(), entity);
     }
 
     @Override
@@ -94,19 +94,28 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
     }
 
     @Override
-    public T selectOne(ID id) {
+    public T selectById(ID id) {
         logger.info("----------findOne Id : {} ", id);
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_ONE.value(), id);
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_BY_PRIMARY_KEY.value(), id);
     }
 
     @Override
-    public T selectOne(Map<String, Object> condition) {
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_ONE.value(), condition);
+    public T selectOne(String property, Object value) {
+        Map<String, Object> condition = new HashMap<String, Object>();
+        condition.put(property, value);
+        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_BY_PRIMARY_KEY.value(), condition);
     }
 
     @Override
-    public List<T> selectList() {
-        return null;
+    public List<T> selectList(String property, Object value) {
+        Map<String, Object> condition = new HashMap<String, Object>();
+        condition.put(property, value);
+        return getSqlSession().selectList(getNamespace() + RdbOperation.SELECT_LIST, condition);
+    }
+
+    @Override
+    public List<T> selectAll() {
+        return getSqlSession().selectList(getNamespace() + RdbOperation.SELECT_ALL.value());
     }
 
     @Override
@@ -131,15 +140,15 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
     @Override
     public int count(Map<String, Object> condition) {
         return getSqlSession().selectOne(
-                getNamespace() + RdbOperation.SELECT.value(), condition);
+                getNamespace() + RdbOperation.SELECT_BY_PRIMARY_KEY.value(), condition);
     }
 
     @Override
     public T updateOrSave(T t, ID id) {
-        if (null != selectOne(id)) {
+        if (null != selectById(id)) {
             update(t);
         } else {
-            //TODO : INSERT
+            //TODO : INSERT_SELECTIVE
             //return insert(t);
             return null;
         }

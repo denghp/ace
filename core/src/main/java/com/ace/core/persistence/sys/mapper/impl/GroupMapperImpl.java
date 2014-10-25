@@ -20,13 +20,13 @@ import java.util.Map;
 @Repository
 public class GroupMapperImpl extends GenericMapperImpl<Group, Long> implements GroupMapper {
 
-    public enum RdbOperation {
+    public enum GroupRdbOperation {
 
         GET_DEFAULT_GROUPIDS(".getDefaultGroupIds");
 
         private String value;
 
-        private RdbOperation(String value) {
+        private GroupRdbOperation(String value) {
             this.value = value;
         }
 
@@ -40,6 +40,6 @@ public class GroupMapperImpl extends GenericMapperImpl<Group, Long> implements G
     public List<Long> getDefaultGroupIds(Integer enabled) {
         Map<String, Object>  params = Maps.newHashMap();
         params.put("enabled", enabled);
-        return getSqlSession().selectList(getNamespace() + RdbOperation.GET_DEFAULT_GROUPIDS.value(), params);
+        return getSqlSession().selectList(getNamespace() + GroupRdbOperation.GET_DEFAULT_GROUPIDS.value(), params);
     }
 }

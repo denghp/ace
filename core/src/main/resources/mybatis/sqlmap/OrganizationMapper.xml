@@ -42,7 +42,7 @@
         delete from sys_organization
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insertSelective" parameterType="com.ace.core.persistence.sys.entity.Organization" >
+    <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.Organization" >
         insert into sys_organization
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >

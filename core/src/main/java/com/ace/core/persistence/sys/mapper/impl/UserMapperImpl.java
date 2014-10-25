@@ -18,14 +18,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserMapperImpl extends GenericMapperImpl<User, Long> implements UserMapper {
     private Logger logger = LoggerFactory.getLogger(UserMapperImpl.class);
-    public enum RdbOperation {
+    public enum UserRdbOperation {
 
         GET_BY_USERNAME(".getByUsername"),
         GET_USER_DETAILS(".getUserDetails");
 
         private String value;
 
-        private RdbOperation(String value) {
+        private UserRdbOperation(String value) {
             this.value = value;
         }
 
@@ -36,11 +36,11 @@ public class UserMapperImpl extends GenericMapperImpl<User, Long> implements Use
 
     @Override
     public User getByUsername(String username) {
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.GET_BY_USERNAME.value(), username);
+        return getSqlSession().selectOne(getNamespace() + UserRdbOperation.GET_BY_USERNAME.value(), username);
     }
 
     @Override
     public User getUserDetails(Long userId) {
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.GET_USER_DETAILS.value(), userId);
+        return getSqlSession().selectOne(getNamespace() + UserRdbOperation.GET_USER_DETAILS.value(), userId);
     }
 }

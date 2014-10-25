@@ -18,7 +18,7 @@ import java.util.Set;
  * @Date: 10/19/14 2:55 PM
  * @Description:
  */
-public interface UserAuthService extends GenericService<Auth, Long> {
+public interface UserAuthService {
 
     /**
      * 查询用户相应的角色

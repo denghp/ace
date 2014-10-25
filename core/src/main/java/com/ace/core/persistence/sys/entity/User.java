@@ -46,7 +46,7 @@ public class User {
 
     private Boolean deleted;
 
-    private Date birthday;
+    private DateTime birthday;
 
     private String gender;
 
@@ -176,11 +176,11 @@ public class User {
         this.deleted = deleted;
     }
 
-    public Date getBirthday() {
+    public DateTime getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(DateTime birthday) {
         this.birthday = birthday;
     }
 

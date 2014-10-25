@@ -10,4 +10,19 @@ package com.ace.core.persistence.sys.enums;
  * @Description:
  */
 public enum RdbParams {
+
+    ID("id"),
+    USER_ID("userId"),
+    GROUP_IDS("groupIds");
+
+    private String value;
+
+    private RdbParams(String value) {
+        this.value = value;
+    }
+
+    public String value() {
+        return this.value;
+    }
+
 }

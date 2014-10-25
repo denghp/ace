@@ -57,7 +57,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
     @Override
     public boolean changePassword(Long userId, String newPassword) {
         //根据用户ID获取用户
-        User user = userMapper.selectOne(userId);
+        User user = userMapper.selectById(userId);
         user.setPassword(newPassword);
         //加密
         PasswordHelper.encryptPassword(user);

@@ -33,7 +33,6 @@ import java.util.Map;
 public abstract class GenericServiceImpl<T, ID extends Serializable> implements GenericService<T, ID>, InitializingBean {
 
     private Logger logger = LoggerFactory.getLogger(GenericServiceImpl.class);
-    private Class<T> entityClass;
 
     private GenericMapper<T, ID> genericeMapper;
 
@@ -52,8 +51,9 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
 
     @Override
     public T save(T entity) throws AceException {
-        genericeMapper.insert(entity);
+
         try {
+            genericeMapper.insert(entity);
             logger.debug("entity : {}", JsonUtils.getObjectMapper().writeValueAsString(entity));
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -77,13 +77,23 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
     }
 
     @Override
-    public T selectOne(ID id) {
-        return genericeMapper.selectOne(id);
+    public T selectById(ID id) {
+        return genericeMapper.selectById(id);
     }
 
     @Override
-    public List<T> selectList() {
-        return genericeMapper.selectList();
+    public List<T> selectList(String property, Object value) {
+        return genericeMapper.selectList(property, value);
+    }
+
+    @Override
+    public T selectOne(String property, Object value) {
+        return genericeMapper.selectOne(property, value);
+    }
+
+    @Override
+    public List<T> selectAll() {
+        return genericeMapper.selectAll();
     }
 
     @Override
@@ -94,11 +104,6 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
     @Override
     public List<T> getPageList(Integer offset, Integer limit) {
         return null;
-    }
-
-    @Override
-    public int getPageSize(int size) {
-        return 0;
     }
 
     @Override

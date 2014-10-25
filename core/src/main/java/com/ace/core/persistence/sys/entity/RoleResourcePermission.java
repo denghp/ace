@@ -1,5 +1,7 @@
 package com.ace.core.persistence.sys.entity;
 
+import java.util.Set;
+
 public class RoleResourcePermission {
     private Long id;
 
@@ -7,7 +9,17 @@ public class RoleResourcePermission {
 
     private Long resourceId;
 
-    private String permissionIds;
+    private Set<Long> permissionIds;
+
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -33,11 +45,20 @@ public class RoleResourcePermission {
         this.resourceId = resourceId;
     }
 
-    public String getPermissionIds() {
+    public Set<Long> getPermissionIds() {
         return permissionIds;
     }
 
-    public void setPermissionIds(String permissionIds) {
-        this.permissionIds = permissionIds == null ? null : permissionIds.trim();
+    public void setPermissionIds(Set<Long> permissionIds) {
+        this.permissionIds = permissionIds;
+    }
+
+    @Override
+    public String toString() {
+        return "RoleResourcePermission{id=" + this.getId() +
+                ",roleId=" + (role != null ? role.getId() : "null") +
+                ", resourceId=" + resourceId +
+                ", permissionIds=" + permissionIds +
+                '}';
     }
 }

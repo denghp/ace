@@ -94,25 +94,37 @@ public interface GenericMapper<T, ID extends Serializable>  {
      * @return
      *         返回查询的实体对象
      */
-    public T selectOne(ID id);
+    public T selectById(ID id);
 
 
     /**
-     * 根据条件集合进行指定类型单一对象查询
+     * 根据任意属性和属性值进行对象查询，如果返回多个对象，将抛出异常
      *
-     * @param condition
-     *            进行查询的条件集合
-     * @return 返回泛型参数类型的对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}，
+     * @param property
+     *            进行对象匹配的属性
+     * @param value
+     *            进行对象匹配的属性值
+     * @return 返回泛型参数类型对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public T selectOne(Map<String, Object> condition);
+    public T selectOne(String property, Object value);
 
     /**
+     * 根据任意（单一）属性和属性值进行集合查询
      *
-     *  查询实体列表
-     *
-     * @return
+     * @param property
+     *            进行对象匹配的属性
+     * @param value
+     *            进行对象匹配的属性值
+     * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public List<T> selectList();
+    public List<T> selectList(String property, Object value);
+
+    /**
+     * 根据传入的泛型参数类型查询该类型对应表中的所有数据，返回一个集合对象
+     *
+     * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
+     */
+    public List<T> selectAll();
 
     /**
      * 根据条件集合进行指定类型对象集合查询

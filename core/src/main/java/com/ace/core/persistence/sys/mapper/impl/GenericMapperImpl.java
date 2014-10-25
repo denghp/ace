@@ -3,7 +3,7 @@ package com.ace.core.persistence.sys.mapper.impl;
 import com.ace.core.page.Page;
 import com.ace.core.page.PageBean;
 import com.ace.core.persistence.sys.enums.RdbOperation;
-import com.ace.core.persistence.sys.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.mapper.GenericMapper;
 import com.ace.core.utils.ReflectUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * @Project_Name: ace
- * @File: GenericeMapperImpl
+ * @File: GenericMapperImpl
  * (C) Copyright ACE Corporation 2014 All Rights Reserved.
  * @Author: denghp
  * @Date: 10/18/14
@@ -30,9 +30,9 @@ import java.util.Map;
  *
  */
 @Repository
-public class GenericeMapperImpl<T, ID extends Serializable> extends SqlSessionDaoSupport implements GenericeMapper<T, ID> {
+public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDaoSupport implements GenericMapper<T, ID> {
 
-    private Logger logger = LoggerFactory.getLogger(GenericeMapperImpl.class);
+    private Logger logger = LoggerFactory.getLogger(GenericMapperImpl.class);
     public java.util.logging.Logger log = java.util.logging.Logger.getLogger(getClass().getName());
     private String namespace;
 

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * @Description:
  */
 @Repository
-public class UserMapperImpl extends GenericeMapperImpl<User, Long> implements UserMapper {
+public class UserMapperImpl extends GenericMapperImpl<User, Long> implements UserMapper {
     private Logger logger = LoggerFactory.getLogger(UserMapperImpl.class);
     public enum RdbOperation {
 

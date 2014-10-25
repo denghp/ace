@@ -14,7 +14,7 @@ import java.util.Set;
  * @Date: 10/19/14 6:47 PM
  * @Description:
  */
-public interface UserAuthMapper extends GenericeMapper<Auth, Long> {
+public interface UserAuthMapper extends GenericMapper<Auth, Long> {
 
     /**
      * 根据userId获取用户授权

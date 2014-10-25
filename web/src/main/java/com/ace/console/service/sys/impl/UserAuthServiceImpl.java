@@ -10,7 +10,6 @@ import com.ace.console.service.sys.UserAuthService;
 import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
-import com.ace.core.persistence.sys.entity.UserOrganizationJob;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ import java.util.Set;
  * @Description:
  */
 @Service
-public class UserAuthServiceImpl extends GenericeServiceImpl<Auth, Long> implements UserAuthService {
+public class UserAuthServiceImpl extends GenericServiceImpl<Auth, Long> implements UserAuthService {
 
     private Logger logger = LoggerFactory.getLogger(UserAuthServiceImpl.class);
 
@@ -57,7 +56,8 @@ public class UserAuthServiceImpl extends GenericeServiceImpl<Auth, Long> impleme
 //        }
 
         //TODO 目前默认子会继承父 后续实现添加flag控制是否继承
-        //default_group + userId 查找 group
+        //TODO 根据用户所属的组获取相应的权限 default_group + userId 查找 group
+
 
         return null;
     }

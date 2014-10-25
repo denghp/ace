@@ -18,7 +18,6 @@ import java.util.Set;
  * @Date: 10/19/14 2:55 PM
  * @Description:
  */
-@Service
 public interface UserAuthService extends GenericService<Auth, Long> {
 
     /**

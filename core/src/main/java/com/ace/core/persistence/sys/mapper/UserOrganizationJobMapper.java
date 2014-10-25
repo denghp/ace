@@ -12,7 +12,7 @@ import com.ace.core.persistence.sys.entity.UserOrganizationJob;
  * @Date: 10/19/14 10:27 PM
  * @Description:
  */
-public interface UserOrganizationJobMapper extends GenericeMapper<UserOrganizationJob, Long> {
+public interface UserOrganizationJobMapper extends GenericMapper<UserOrganizationJob, Long> {
 
 
 }

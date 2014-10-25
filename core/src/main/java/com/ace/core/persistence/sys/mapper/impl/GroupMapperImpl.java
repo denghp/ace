@@ -18,7 +18,7 @@ import java.util.Map;
  * @Description:
  */
 @Repository
-public class GroupMapperImpl extends GenericeMapperImpl<Group, Long> implements GroupMapper {
+public class GroupMapperImpl extends GenericMapperImpl<Group, Long> implements GroupMapper {
 
     public enum RdbOperation {
 

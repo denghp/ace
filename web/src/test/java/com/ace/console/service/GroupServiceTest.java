@@ -56,7 +56,7 @@ public class GroupServiceTest {
     @Test
     public void getGroupTest() throws AceException,IOException {
         groupService.save(group);
-        group = groupService.selectOne(1002l);
+        group = groupService.selectOne(group.getId());
         logger.info(JsonUtils.getObjectMapper().writeValueAsString(group));
         Assert.assertNotNull(group);
     }

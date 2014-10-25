@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @Description:
  */
 @Repository
-public class UserOrganizationJobMapperImpl extends GenericeMapperImpl<UserOrganizationJob, Long> implements UserOrganizationJobMapper {
+public class UserOrganizationJobMapperImpl extends GenericMapperImpl<UserOrganizationJob, Long> implements UserOrganizationJobMapper {
 
 }

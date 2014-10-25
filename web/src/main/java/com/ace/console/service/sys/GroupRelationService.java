@@ -16,7 +16,6 @@ import java.util.List;
  * @Time: 上午11:37
  * @Description:
  */
-@Service
 public interface GroupRelationService extends GenericService<GroupRelation, Long> {
 
     /**

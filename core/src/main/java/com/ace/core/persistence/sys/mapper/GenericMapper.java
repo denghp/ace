@@ -9,14 +9,14 @@ import java.util.Map;
 
 /**
  * @Project_Name: ace-core
- * @File: GenericeMapper
+ * @File: GenericMapper
  * (C) Copyright ACE Corporation 2014 All Rights Reserved.
  * @Author: denghp
  * @Date: 10/15/14
  * @Time: 9:56 PM
  * @Description:
  */
-public interface GenericeMapper<T, ID extends Serializable>  {
+public interface GenericMapper<T, ID extends Serializable>  {
 
     /**
      * 保存单个实体,如果需要保存多个实体集合{@link #insertBatch(java.util.Collection)}

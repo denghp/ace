@@ -6,6 +6,7 @@ import com.ace.core.persistence.sys.entity.GroupRelation;
 import com.ace.core.persistence.sys.mapper.GroupRelationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,9 +20,11 @@ import java.util.List;
  * @Time: 下午9:11
  * @Description:
  */
-public class GroupRelationServiceImpl extends GenericeServiceImpl<GroupRelation, Long> implements GroupRelationService {
+@Service
+public class GroupRelationServiceImpl extends GenericServiceImpl<GroupRelation, Long> implements GroupRelationService {
 
     private Logger logger = LoggerFactory.getLogger(GroupRelationServiceImpl.class);
+
     @Resource
     @BaseComponent
     private GroupRelationMapper groupRelationMapper;

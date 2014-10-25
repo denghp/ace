@@ -6,7 +6,6 @@
 package com.ace.core.persistence.sys.mapper.impl;
 
 import com.ace.core.persistence.sys.entity.Organization;
-import com.ace.core.persistence.sys.mapper.GenericeMapper;
 import com.ace.core.persistence.sys.mapper.OrganizationMapper;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * @Description:
  */
 @Repository
-public class OrganizationMapperImpl extends GenericeMapperImpl<Organization, Long> implements OrganizationMapper {
+public class OrganizationMapperImpl extends GenericMapperImpl<Organization, Long> implements OrganizationMapper {
 
     
 }

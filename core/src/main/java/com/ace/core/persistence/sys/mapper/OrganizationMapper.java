@@ -12,7 +12,7 @@ import com.ace.core.persistence.sys.entity.Organization;
  * @Date: 10/19/14 10:27 PM
  * @Description:
  */
-public interface OrganizationMapper extends GenericeMapper<Organization, Long> {
+public interface OrganizationMapper extends GenericMapper<Organization, Long> {
 
 
 }

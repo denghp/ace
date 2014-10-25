@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
  * @Time: 9:09 PM
  * @Description:
  */
-@Service
 public interface UserService extends GenericService<User, Long> {
 
     public User login (String username, String password) throws AceException;

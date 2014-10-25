@@ -4,6 +4,7 @@ import com.ace.console.annotation.BaseComponent;
 import com.ace.console.service.sys.GroupService;
 import com.ace.core.persistence.sys.entity.Group;
 import com.ace.core.persistence.sys.mapper.GroupMapper;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.List;
  * @Time: 上午11:45
  * @Description:
  */
-public class GroupServiceImpl extends GenericeServiceImpl<Group, Long> implements GroupService {
+@Service
+public class GroupServiceImpl extends GenericServiceImpl<Group, Long> implements GroupService {
 
     @Resource
     @BaseComponent

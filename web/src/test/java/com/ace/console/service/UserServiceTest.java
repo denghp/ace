@@ -33,7 +33,6 @@ import java.util.Set;
 public class UserServiceTest {
     private Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
     @Resource
-    @BaseComponent
     private UserService userService;
 
     protected String password = "123";

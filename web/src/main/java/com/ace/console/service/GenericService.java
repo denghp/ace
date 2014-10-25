@@ -3,7 +3,7 @@ package com.ace.console.service;
 
 import com.ace.console.exception.AceException;
 import com.ace.core.page.Page;
-import com.ace.core.persistence.sys.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.mapper.GenericMapper;
 
 import java.io.Serializable;
 import java.util.List;
@@ -29,7 +29,7 @@ public interface GenericService<T, ID extends Serializable> {
      * 设置基础baseMapper
      * @param genericeMapper
      */
-    public void setGenericeMapper(GenericeMapper<T, ID> genericeMapper);
+    public void setGenericeMapper(GenericMapper<T, ID> genericeMapper);
     /**
      * 保存单个实体
      *

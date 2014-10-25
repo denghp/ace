@@ -15,7 +15,7 @@ package com.ace.console.common.support;
 import com.ace.console.annotation.BaseComponent;
 import com.ace.console.controller.BaseController;
 import com.ace.console.service.GenericService;
-import com.ace.core.persistence.sys.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.mapper.GenericMapper;
 import com.google.common.collect.Sets;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.ReflectionUtils;
@@ -44,7 +44,7 @@ public class InjectBaseDependencyHelper {
             throw new IllegalStateException("[" + genericService.getClass() + "] @BaseComponent annotation bean " +
                     "must be BaseRepository subclass");
         }
-        genericService.setGenericeMapper((GenericeMapper) genericeMapper);
+        genericService.setGenericeMapper((GenericMapper) genericeMapper);
     }
 
 
@@ -54,7 +54,7 @@ public class InjectBaseDependencyHelper {
 
         if (candidates.size() > 1) {
             throw new IllegalStateException(
-                    "expect  @BaseComponent anntation GenericeServiceImpl subclass bean, but found " + candidates.size() +
+                    "expect  @BaseComponent anntation GenericServiceImpl subclass bean, but found " + candidates.size() +
                             ", please check class [" + baseController.getClass() + "] @BaseComponent annotation.");
         }
 
@@ -62,7 +62,7 @@ public class InjectBaseDependencyHelper {
 
         if (genericService.getClass().isAssignableFrom(BaseComponent.class)) {
             throw new IllegalStateException("[" + baseController.getClass() + "] @BaseComponent annotation bean " +
-                    "must be GenericeServiceImpl subclass");
+                    "must be GenericServiceImpl subclass");
         }
 
         baseController.setGenericService((GenericService) genericService);

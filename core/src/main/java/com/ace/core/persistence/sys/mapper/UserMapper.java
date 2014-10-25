@@ -11,7 +11,7 @@ import com.ace.core.persistence.sys.entity.User;
  * @Time: 4:01 PM
  * @Description:
  */
-public interface UserMapper extends GenericeMapper<User, Long> {
+public interface UserMapper extends GenericMapper<User, Long> {
 
     /**
      * 根据username查询USER

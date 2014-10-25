@@ -8,18 +8,16 @@
 package com.ace.console.service.sys.impl;
 
 import com.ace.commons.json.JsonUtils;
-import com.ace.console.annotation.BaseComponent;
 import com.ace.console.common.support.InjectBaseDependencyHelper;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
 import com.ace.core.page.Page;
-import com.ace.core.persistence.sys.mapper.GenericeMapper;
+import com.ace.core.persistence.sys.mapper.GenericMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -27,19 +25,19 @@ import java.util.Map;
 
 /**
  * @Project_Name: ace-web
- * @File: GenericeServiceImpl
+ * @File: GenericServiceImpl
  * @User: denghp
  * @Date: 11/1/13
  * @Time: 4:47 PM
  */
-public abstract class GenericeServiceImpl<T, ID extends Serializable> implements GenericService<T, ID>, InitializingBean {
+public abstract class GenericServiceImpl<T, ID extends Serializable> implements GenericService<T, ID>, InitializingBean {
 
-    private Logger logger = LoggerFactory.getLogger(GenericeServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(GenericServiceImpl.class);
     private Class<T> entityClass;
 
-    private GenericeMapper<T, ID> genericeMapper;
+    private GenericMapper<T, ID> genericeMapper;
 
-    public void setGenericeMapper(GenericeMapper<T, ID> genericeMapper) {
+    public void setGenericeMapper(GenericMapper<T, ID> genericeMapper) {
         this.genericeMapper = genericeMapper;
     }
 

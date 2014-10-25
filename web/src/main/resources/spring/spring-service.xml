@@ -20,7 +20,5 @@
        default-lazy-init="true">
 
 
-    <bean id="userService" class="com.ace.console.service.sys.impl.UserServiceImpl" />
-    <bean id="groupService" class="com.ace.console.service.sys.impl.GroupServiceImpl" />
 
 </beans>

@@ -10,6 +10,7 @@ import com.ace.core.persistence.sys.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -23,7 +24,8 @@ import javax.annotation.Resource;
  * @Time: 11:46 PM
  * @Description:
  */
-public class UserServiceImpl extends GenericeServiceImpl<User, Long> implements UserService {
+@Service
+public class UserServiceImpl extends GenericServiceImpl<User, Long> implements UserService {
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 

@@ -17,7 +17,7 @@ import java.util.Set;
  * @Description:
  */
 @Repository
-public class UserAuthMapperImpl extends GenericeMapperImpl<Auth, Long> implements UserAuthMapper {
+public class UserAuthMapperImpl extends GenericMapperImpl<Auth, Long> implements UserAuthMapper {
 
     @Override
     public Set<Long> findRoleIds(Long userId, Set<Long> groupIds, Set<Long> organizationIds, Set<Long> jobIds) {

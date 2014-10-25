@@ -13,7 +13,7 @@ import java.util.List;
  * @Time: 4:01 PM
  * @Description:
  */
-public interface GroupRelationMapper extends GenericeMapper<GroupRelation, Long> {
+public interface GroupRelationMapper extends GenericMapper<GroupRelation, Long> {
 
     /**
      * 根据用户ID获取对应的group ids

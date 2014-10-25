@@ -13,7 +13,7 @@ import java.util.List;
  * @Time: 4:01 PM
  * @Description:
  */
-public interface GroupMapper extends GenericeMapper<Group, Long> {
+public interface GroupMapper extends GenericMapper<Group, Long> {
 
     /**
      * 查询默认的组Id集合

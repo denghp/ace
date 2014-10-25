@@ -1,8 +1,8 @@
 package com.ace.core.persistence.sys.mapper.impl;
 
 import com.ace.core.persistence.sys.entity.GroupRelation;
-import com.ace.core.persistence.sys.mapper.GenericeMapper;
 import com.ace.core.persistence.sys.mapper.GroupRelationMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,7 +15,8 @@ import java.util.List;
  * @Time: 4:01 PM
  * @Description:
  */
-public class GroupRelationMapperImpl extends GenericeMapperImpl<GroupRelation, Long> implements GroupRelationMapper {
+@Repository
+public class GroupRelationMapperImpl extends GenericMapperImpl<GroupRelation, Long> implements GroupRelationMapper {
 
     public enum RdbOperation {
 

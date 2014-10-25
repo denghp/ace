@@ -7,16 +7,14 @@ package com.ace.console.service.sys.impl;
 
 import com.ace.console.enums.Status;
 import com.ace.console.service.sys.*;
-import com.ace.core.persistence.sys.entity.Auth;
-import com.ace.core.persistence.sys.entity.Role;
-import com.ace.core.persistence.sys.entity.RoleResourcePermission;
-import com.ace.core.persistence.sys.entity.User;
+import com.ace.core.persistence.sys.entity.*;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -43,6 +41,13 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private ResourceService resourceService;
+
+    @Resource
+    private PermissionService permissionService;
+
 
     @Override
     public Set<Role> findRoles(User user) {
@@ -105,8 +110,26 @@ public class UserAuthServiceImpl implements UserAuthService {
         Set<Role> roles = findRoles(user);
         //循环获取角色对应的资源及权限
         for (Role role : roles) {
-            for (RoleResourcePermission roleResourcePermission : role.getResourcePermissions()) {
+            for (RoleResourcePermission rrp : role.getResourcePermissions()) {
+                com.ace.core.persistence.sys.entity.Resource resource = resourceService.selectById(rrp.getResourceId());
 
+                String actualResourceIdentity = resourceService.findActualResourceIdentity(resource);
+
+                //不可用 即没查到 或者标识字符串不存在
+                if (resource == null || StringUtils.isEmpty(actualResourceIdentity) || Status.DISABLE.getIndex() == resource.getEnabled()) {
+                    continue;
+                }
+
+                for (Long permissionId : rrp.getPermissionIds()) {
+                    Permission permission = permissionService.selectById(permissionId);
+
+                    //不可用
+                    if (permission == null || Status.DISABLE.getIndex() == permission.getEnabled()) {
+                        continue;
+                    }
+                    permissions.add(actualResourceIdentity + ":" + permission.getPermission());
+
+                }
             }
         }
         return null;

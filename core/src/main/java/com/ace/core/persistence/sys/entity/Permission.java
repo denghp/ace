@@ -9,7 +9,7 @@ public class Permission {
 
     private String description;
 
-    private Boolean isShow;
+    private Integer enabled;
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Permission {
         this.description = description == null ? null : description.trim();
     }
 
-    public Boolean getIsShow() {
-        return isShow;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setIsShow(Boolean isShow) {
-        this.isShow = isShow;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 }

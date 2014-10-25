@@ -22,7 +22,7 @@ public class Menu implements Serializable {
     private String url;
     private Integer weight;
     private String identity;
-    private Boolean status;
+    private Integer enabled;
 
     private List<Menu> children;
 
@@ -33,11 +33,11 @@ public class Menu implements Serializable {
         this.url = url;
     }
     public Menu(Long id, String name, String icon, String url,
-                Integer weight, String identity, boolean status) {
+                Integer weight, String identity, Integer enabled) {
         this(id,name,icon,url);
         this.weight = weight;
         this.identity = identity;
-        this.status = status;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -48,12 +48,12 @@ public class Menu implements Serializable {
         this.id = id;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 
     public Integer getWeight() {

@@ -296,7 +296,7 @@ create table sys_permission
   name                 varchar(100) default NULL comment '权限名称',
   permission           varchar(100) default NULL comment '权限操作',
   description          varchar(255) default NULL comment '权限描述',
-  enabled              int default 1 comment '有效: 1-有效 0-无效',
+  enabled              int(1) default 1 comment '有效: 1-有效 0-无效',
   primary key (id)
 )
   auto_increment = 1000;

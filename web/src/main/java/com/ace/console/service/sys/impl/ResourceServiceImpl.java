@@ -230,7 +230,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
 
     private static Menu convertToMenu(Resource resource) {
         return new Menu(resource.getId(), resource.getName(), resource.getIcon(), resource.getUrl(),
-                resource.getWeight(), resource.getIdentity(), resource.getShow());
+                resource.getWeight(), resource.getIdentity(), resource.getEnabled());
     }
 
     public List<Resource> getAllWithSort() {

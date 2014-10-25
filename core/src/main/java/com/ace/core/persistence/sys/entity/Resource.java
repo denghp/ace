@@ -44,9 +44,9 @@ public class Resource implements Treeable<Long> {
     private boolean hasChildren;
 
     /**
-     * 是否显示
+     * 是否有效
      */
-    private Boolean show = Boolean.FALSE;
+    private Integer enabled = 0;
 
     //表示父级ID
     private Integer parent;
@@ -223,14 +223,13 @@ public class Resource implements Treeable<Long> {
         this.hasChildren = hasChildren;
     }
 
-    public Boolean getShow() {
-        return show;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setShow(Boolean show) {
-        this.show = show;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
-
 
     /**
      * 根节点默认图标 如果没有默认 空即可

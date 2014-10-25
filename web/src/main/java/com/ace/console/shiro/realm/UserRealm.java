@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * @Project_Name: ace-web
@@ -52,14 +53,14 @@ public class UserRealm extends AuthorizingRealm {
         //根据用户获取相应角色并授权
         //TODO: 获取用户角色和权限
         authorizationInfo.setRoles(userAuthService.findStringRoles(user));
-        //Set<String> permissions = userService.findPermissions(username);
+        Set<String> permissions = userAuthService.findPermissions(user);
         //获取用户相应的权限
-//        authorizationInfo.setStringPermissions(permissions);
-//        if (logger.isDebugEnabled()) {
-//            for (String permission : permissions) {
-//                logger.debug("User : {} , permission : {} ", username, permission);
-//            }
-//        }
+        authorizationInfo.setStringPermissions(permissions);
+        if (logger.isDebugEnabled()) {
+            for (String permission : permissions) {
+                logger.debug("User : {} , permission : {} ", username, permission);
+            }
+        }
         return authorizationInfo;
     }
 

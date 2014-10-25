@@ -2,6 +2,7 @@ package com.ace.console.service;
 
 import com.ace.commons.json.JsonUtils;
 import com.ace.console.exception.AceException;
+import com.ace.console.service.sys.GroupRelationService;
 import com.ace.console.service.sys.GroupService;
 import com.ace.core.persistence.sys.entity.Group;
 import com.ace.core.persistence.sys.enums.GroupType;
@@ -39,6 +40,9 @@ public class GroupServiceTest {
     @Resource
     private GroupService groupService;
 
+    @Resource
+    private GroupRelationService groupRelationService;
+
     Group group;
 
     @Before
@@ -64,6 +68,15 @@ public class GroupServiceTest {
             logger.info("id : {}", id);
         }
         Assert.assertNotNull(group);
+    }
+
+    @Test
+    public void getGroupIds() {
+        List<Long> ids = groupRelationService.getGroupIds(1l);
+        for (Long id : ids) {
+            logger.info("id : {}", id);
+        }
+        Assert.assertNotNull(ids);
     }
 
 }

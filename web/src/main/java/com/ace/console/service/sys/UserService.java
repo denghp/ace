@@ -50,4 +50,7 @@ public interface UserService extends GenericService<User, Long> {
      * @return
      */
     public User getUserDetails(Long userId);
+
+
+
 }

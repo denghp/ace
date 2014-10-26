@@ -1,13 +1,12 @@
 package com.ace.console.service;
 
 import com.ace.commons.json.JsonUtils;
-import com.ace.console.annotation.BaseComponent;
+import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
-import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

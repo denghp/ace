@@ -5,7 +5,7 @@
  */
 package com.ace.console.service.sys.impl;
 
-import com.ace.console.annotation.BaseComponent;
+import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.ResourceService;
 import com.ace.console.service.sys.RoleService;
@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.permission.WildcardPermission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

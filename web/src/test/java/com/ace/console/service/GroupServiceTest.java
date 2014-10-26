@@ -6,8 +6,6 @@ import com.ace.console.service.sys.GroupRelationService;
 import com.ace.console.service.sys.GroupService;
 import com.ace.core.persistence.sys.entity.Group;
 import com.ace.core.persistence.sys.enums.GroupType;
-import org.apache.commons.collections4.ListUtils;
-import org.codehaus.jackson.JsonGenerationException;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;

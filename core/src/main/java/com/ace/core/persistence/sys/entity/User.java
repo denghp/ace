@@ -37,6 +37,8 @@ public class User {
     @Size(max = PASSWORD_MAX_LENGTH, min = PASSWORD_MIN_LENGTH, message = "{user.password.not.valid}")
     private String password;
 
+
+    private String realname;
     /**
      * 系统用户的状态
      */
@@ -58,7 +60,25 @@ public class User {
 
     private DateTime firstLoginTime;
 
+    private DateTime lastLoginTime;
+
     private Long count;
+
+    public DateTime getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(DateTime lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
 
     private List<UserOrganizationJob> userOrganizationJobs;
 
@@ -198,6 +218,11 @@ public class User {
 
     public void setFirstLoginTime(DateTime firstLoginTime) {
         this.firstLoginTime = firstLoginTime;
+    }
+
+    //获取凭证盐
+    public String getCredentialsSalt() {
+        return username + salt;
     }
 
 }

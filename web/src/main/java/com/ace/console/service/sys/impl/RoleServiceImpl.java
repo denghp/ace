@@ -5,7 +5,7 @@
  */
 package com.ace.console.service.sys.impl;
 
-import com.ace.console.annotation.BaseComponent;
+import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.enums.Status;
 import com.ace.console.service.sys.RoleService;
 import com.ace.core.persistence.sys.entity.Role;

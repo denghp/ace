@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>web</name>
+    <name>ace-web</name>
     <artifactId>ace-web</artifactId>
     <packaging>war</packaging>
 
@@ -17,6 +17,7 @@
         <jetty.port>9090</jetty.port>
         <jetty.stopPort>8888</jetty.stopPort>
         <shiro.version>1.2.3</shiro.version>
+        <skipTestDB>true</skipTestDB>
     </properties>
 
     <build>
@@ -88,111 +89,13 @@
                 <version>2.7</version>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>sql-maven-plugin</artifactId>
-                <version>1.5</version>
 
-                <dependencies>
-                    <!-- specify the dependent JDBC driver here -->
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>${mysql.version}</version>
-                    </dependency>
-                </dependencies>
-
-                <configuration>
-                    <driver>${mysql.driver}</driver>
-                    <url>${mysql.url}</url>
-                    <username>${mysql.username}</username>
-                    <password>${mysql.password}</password>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <id>drop-db-before-test-if-any</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>${mysql.url}</url>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>drop database IF EXISTS ${db.name}</sqlCommand>
-                            <onError>continue</onError>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>create-db</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>create database ${db.name}</sqlCommand>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>create-schema</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <sqlCommand>USE ${db.name}</sqlCommand>
-                            <autocommit>true</autocommit>
-                            <srcFiles>
-                                <srcFile>src/main/resources/db/schema/init-sys-schema.sql</srcFile>
-                            </srcFiles>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>create-data</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <autocommit>true</autocommit>
-                            <srcFiles>
-                                <srcFile>src/main/resources/db/data/init-sys-data.sql</srcFile>
-                            </srcFiles>
-                        </configuration>
-                    </execution>
-                    <!--
-                    <execution>
-                        <id>drop-db-after-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>drop database ${db.name}</sqlCommand>
-                        </configuration>
-                    </execution>
-                    -->
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
     <profiles>
         <profile>
             <id>development</id>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources/profiles/development</directory>
-                        <filtering>true</filtering>
-                    </resource>
-                </resources>
-            </build>
 
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -203,6 +106,111 @@
                 <mysql.username>root</mysql.username>
                 <mysql.password>123456</mysql.password>
             </properties>
+
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/profiles/development</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <version>1.5</version>
+
+                        <dependencies>
+                            <!-- specify the dependent JDBC driver here -->
+                            <dependency>
+                                <groupId>mysql</groupId>
+                                <artifactId>mysql-connector-java</artifactId>
+                                <version>${mysql.version}</version>
+                            </dependency>
+                        </dependencies>
+
+                        <configuration>
+                            <driver>${mysql.driver}</driver>
+                            <url>${mysql.url}</url>
+                            <username>${mysql.username}</username>
+                            <password>${mysql.password}</password>
+                            <skip>${skipTestDB}</skip>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>drop-db-before-test-if-any</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <url>${mysql.url}</url>
+                                    <autocommit>true</autocommit>
+                                    <sqlCommand>drop database IF EXISTS ${db.name}</sqlCommand>
+                                    <onError>continue</onError>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>create-db</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <sqlCommand>create database ${db.name}</sqlCommand>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>create-schema</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <sqlCommand>USE ${db.name}</sqlCommand>
+                                    <autocommit>true</autocommit>
+                                    <srcFiles>
+                                        <srcFile>src/main/resources/db/schema/init-sys-schema.sql</srcFile>
+                                    </srcFiles>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>create-data</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <srcFiles>
+                                        <srcFile>src/main/resources/db/data/init-sys-data.sql</srcFile>
+                                    </srcFiles>
+                                </configuration>
+                            </execution>
+                            <!--
+                            <execution>
+                                <id>drop-db-after-test</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <sqlCommand>drop database ${db.name}</sqlCommand>
+                                </configuration>
+                            </execution>
+                            -->
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+
         </profile>
 
         <profile>
@@ -337,6 +345,12 @@
             <artifactId>ehcache-core</artifactId>
             <version>${ehcache.core.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.21</version>
         </dependency>
 
     </dependencies>

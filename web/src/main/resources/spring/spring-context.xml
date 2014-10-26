@@ -28,6 +28,7 @@
             <list>
                 <!-- 标准配置 -->
                 <value>classpath*:config/jdbc.properties</value>
+                <value>classpath*:config/shiro.properties</value>
             </list>
         </property>
     </bean>

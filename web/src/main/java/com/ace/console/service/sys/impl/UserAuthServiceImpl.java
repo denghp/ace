@@ -78,8 +78,11 @@ public class UserAuthServiceImpl implements UserAuthService {
         Set<Long> groupIds = Sets.newHashSet();
         //获取所有默认的组
         List<Long> defaultGroupIds = groupService.getDefaultGroupIds(Status.ENABLED.getIndex());
+        List<Long> validGroupIds = groupRelationService.getGroupIds(userId);
         groupIds.addAll(defaultGroupIds);
-        groupIds.addAll(groupRelationService.getGroupIds(userId));
+        if (validGroupIds != null) {
+            groupIds.addAll(validGroupIds);
+        }
         logger.info("{} relation group ids : {}", user.getId(), groupIds);
 
         //获取所有的角色

@@ -1,4 +1,4 @@
-package com.ace.console.annotation;
+package com.ace.console.bind.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

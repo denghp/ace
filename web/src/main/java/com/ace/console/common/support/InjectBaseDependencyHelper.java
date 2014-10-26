@@ -12,7 +12,7 @@ package com.ace.console.common.support;
  * @Date: 11/1/13
  * @Time: 11:23 PM
  */
-import com.ace.console.annotation.BaseComponent;
+import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.controller.BaseController;
 import com.ace.console.service.GenericService;
 import com.ace.core.persistence.sys.mapper.GenericMapper;

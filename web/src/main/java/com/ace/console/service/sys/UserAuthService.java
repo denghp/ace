@@ -5,11 +5,8 @@
  */
 package com.ace.console.service.sys;
 
-import com.ace.console.service.GenericService;
-import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
-import org.springframework.stereotype.Service;
 
 import java.util.Set;
 

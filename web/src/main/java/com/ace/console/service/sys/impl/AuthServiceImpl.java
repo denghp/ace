@@ -1,18 +1,14 @@
 package com.ace.console.service.sys.impl;
 
-import com.ace.commons.json.JsonUtils;
-import com.ace.console.annotation.BaseComponent;
-import com.ace.console.service.GenericService;
+import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.service.sys.AuthService;
 import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.mapper.AuthMapper;
-import org.codehaus.jackson.JsonGenerationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.Set;
 
 /**

@@ -1,6 +1,6 @@
 package com.ace.console.service.sys.impl;
 
-import com.ace.console.annotation.BaseComponent;
+import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
 import com.ace.console.utils.PasswordHelper;
@@ -96,7 +96,8 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
             throw new AceException.UserBlockedException();
         }
         //验证密码
-        //validate(user, password);
+//        passwordService.validate(user, password);
+
         if (user.getStatus() == UserStatus.blocked) {
             logger.warn("{} loginError user is blocked!", username);
             throw new AceException.UserBlockedException();

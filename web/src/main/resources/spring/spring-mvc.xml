@@ -27,100 +27,20 @@
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
-    <!-- 会自动注册了validator  ConversionService  -->
-    <mvc:annotation-driven validator="validator"
-            conversion-service="conversionService"
-            content-negotiation-manager="contentNegotiationManager">
-        <!--enableMatrixVariables="true">-->
+    <mvc:annotation-driven >
 
-        <!-- 异步支持 默认30秒超时
-        <mvc:async-support default-timeout="30000" task-executor="executor"/>   -->
-
-        <mvc:message-converters register-defaults="true">
-            <!-- StringHttpMessageConverter编码为UTF-8，防止乱码 -->
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <constructor-arg value="UTF-8"/>
-                <property name = "supportedMediaTypes">
-                    <list>
-                        <bean class="org.springframework.http.MediaType">
-                            <constructor-arg index="0" value="text"/>
-                            <constructor-arg index="1" value="plain"/>
-                            <constructor-arg index="2" value="UTF-8"/>
-                        </bean>
-                        <bean class="org.springframework.http.MediaType">
-                            <constructor-arg index="0" value="*"/>
-                            <constructor-arg index="1" value="*"/>
-                            <constructor-arg index="2" value="UTF-8"/>
-                        </bean>
-                    </list>
-                </property>
-            </bean>
-
-            <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
-            <!--
-            <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>application/json;charset=UTF-8</value>
-                    </list>
-                </property>
-            </bean>
-            -->
-        </mvc:message-converters>
-        <!--
         <mvc:argument-resolvers>
-            <bean class="com.ace.erp.handler.CurrentUserMethodArgumentResolver"/>
+            <bean class="com.ace.console.bind.method.CurrentUserMethodArgumentResolver"/>
         </mvc:argument-resolvers>
-        -->
+
     </mvc:annotation-driven>
-     <!--  -->
+
     <mvc:view-controller path="/" view-name="redirect:/index"/>
 
     <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
     <mvc:default-servlet-handler/>
 
-    <!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/assets/"/>
-
-
-    <!-- 内容协商管理器  -->
-    <!--1、首先检查路径扩展名（如my.pdf）；2、其次检查Parameter（如my?format=pdf）；3、检查Accept Header-->
-    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-        <!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
-        <property name="favorPathExtension" value="true"/>
-        <!-- 用于开启 /userinfo/123?format=json 的支持 -->
-        <property name="favorParameter" value="true"/>
-        <property name="parameterName" value="format"/>
-        <!-- 是否忽略Accept Header -->
-        <property name="ignoreAcceptHeader" value="false"/>
-
-        <!--扩展名到MIME的映射；favorPathExtension, favorParameter是true时起作用  -->
-        <property name="mediaTypes">
-            <map>
-                <entry key="json" value="application/json" />
-                <entry key="xml" value="application/xml" />
-                <entry key="rss" value="application/rss+xml" />
-            </map>
-        </property>
-        <!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
-        <property name="defaultContentType" value="application/json"/>
-    </bean>
-
-
-    <!-- ========================= VIEW定义 ========================= -->
-    <!-- 内容协商视图解析器；根据客户端的不同的请求决定不同的 view进行响应, 如 /blog/1.json /blog/1.xml -->
-    <!-- 会自动根据解析的contentType来决定使用哪个视图解析器（默认使用整个web应用中的viewResolver） -->
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="0">
-        <!-- 内容协商管理器 用于决定media type -->
-        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
-        <!-- 默认视图 放在解析链最后 -->
-        <property name="defaultViews">
-            <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
-                <!--<bean class="org.springframework.web.servlet.view.xml.MarshallingView"/>-->
-            </list>
-        </property>
-    </bean>
 
 
     <!-- freemarker config -->
@@ -128,8 +48,12 @@
         <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
         <property name="freemarkerSettings">
             <props>
-                <prop key="defaultEncoding">UTF-8</prop>
-                <prop key="number_format">#</prop>
+                <prop key="template_update_delay">0</prop>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="number_format">0.##########</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="classic_compatible">true</prop>
+                <prop key="template_exception_handler">ignore</prop>
             </props>
         </property>
         <property name="freemarkerVariables">
@@ -147,7 +71,7 @@
   View resolvers can also be configured with ResourceBundles or XML files. If you need
   different view resolving based on Locale, you have to use the mis bundle resolver.
   -->
-    <bean id="freeMarkerViewResolver"
+    <bean id="viewResolver"
           class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="order" value="2"/>
         <property name="cache" value="true"/>
@@ -161,9 +85,5 @@
         <property name="requestContextAttribute" value="rc"/>
     </bean>
 
-    <!-- 文件上传相关  one of the properties available;the maximum upload size in bytes 100M
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="104857600"/>
-    </bean>  -->
 
 </beans>

@@ -32,7 +32,6 @@
 
     <!-- Realm实现 -->
     <bean id="userRealm" class="com.ace.console.shiro.realm.UserRealm">
-        <property name="userService" ref="userService"/>
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <property name="cachingEnabled" value="true"/>
         <property name="authenticationCachingEnabled" value="true"/>
@@ -43,6 +42,13 @@
 
     <!-- 会话ID生成器 -->
     <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
+
+    <!-- 会话Cookie模板 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="180000"/>
+    </bean>
 
     <!-- 会话DAO -->
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
@@ -57,21 +63,19 @@
     </bean>
 
     <!-- 会话管理器 -->
-    <bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <property name="globalSessionTimeout" value="1800000"/>
         <property name="deleteInvalidSessions" value="true"/>
         <property name="sessionValidationSchedulerEnabled" value="true"/>
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
         <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
     </bean>
 
     <!-- 安全管理器 -->
-    <bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">
-        <property name="realms">
-            <list>
-                <ref bean="userRealm"/>
-            </list>
-        </property>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="cacheManager" ref="cacheManager"/>
     </bean>
@@ -82,7 +86,39 @@
         <property name="arguments" ref="securityManager"/>
     </bean>
 
+    <!--替换默认的form 验证过滤器  表单上的用户名/密码 下次自动登录的参数名  -->
+    <bean id="formAuthenticationFilter" class="com.ace.console.filter.authc.CustomFormAuthenticationFilter">
+        <property name="defaultSuccessUrl" value="${shiro.default.success.url}"/>
+        <property name="adminDefaultSuccessUrl" value="${shiro.admin.default.success.url}"/>
+        <property name="usernameParam" value="username"/>
+        <property name="passwordParam" value="password"/>
+        <property name="rememberMeParam" value="rememberMe"/>
+        <property name="failureKeyAttribute" value="shiroLoginFailure" />
+    </bean>
+
+    <!-- Shiro的Web过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="${shiro.login.url}"/>
+        <property name="unauthorizedUrl" value="${shiro.unauthorizedUrl}"/>
+        <property name="filters">
+            <util:map>
+                <entry key="authc" value-ref="formAuthenticationFilter"/>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /assets/** = anon
+                /register* = anon
+                /validate* = anon
+                /forgot* = anon
+                /logout = logout
+                /login = authc
+                /** = user
+            </value>
+        </property>
+    </bean>
+
     <!-- Shiro生命周期处理器-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
 </beans>

@@ -1,6 +1,6 @@
 package com.ace.console.service.sys.impl;
 
-import com.ace.console.annotation.BaseComponent;
+import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.service.sys.GroupService;
 import com.ace.core.persistence.sys.entity.Group;
 import com.ace.core.persistence.sys.mapper.GroupMapper;

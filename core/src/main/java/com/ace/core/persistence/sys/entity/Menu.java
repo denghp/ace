@@ -5,6 +5,7 @@
  */
 package com.ace.core.persistence.sys.entity;
 
+import com.ace.commons.json.JsonUtils;
 import com.google.common.collect.Lists;
 
 import java.io.Serializable;
@@ -116,12 +117,11 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "Menu{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", icon='" + icon + '\'' +
-                ", url='" + url + '\'' +
-                ", children=" + children +
-                '}';
+        try {
+            return JsonUtils.getObjectMapper().writeValueAsString(this);
+        } catch (Exception ex) {
+            //ignore
+        }
+        return  null;
     }
 }

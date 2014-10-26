@@ -1,8 +1,9 @@
 package com.ace.core.persistence.sys.entity;
 
+import com.ace.commons.json.JsonUtils;
 import com.ace.core.entity.Treeable;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.joda.time.DateTime;
 
 public class Resource implements Treeable<Long> {
 
@@ -60,6 +61,26 @@ public class Resource implements Treeable<Long> {
     // 表示是否加载完成，设置为True表示加载完成，不需要在加载,
     //一般设置此值为True，这样在点击树节点就不会再次调用后台数据，加载数据，避免数据重复
     private boolean loaded = Boolean.FALSE;
+
+    private DateTime createTime;
+
+    private DateTime modifyTime;
+
+    public DateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(DateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public DateTime getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(DateTime modifyTime) {
+        this.modifyTime = modifyTime;
+    }
 
     public Integer getLevel() {
         return level;
@@ -264,8 +285,7 @@ public class Resource implements Treeable<Long> {
     @Override
     public String toString() {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(this);
+            return JsonUtils.getObjectMapper().writeValueAsString(this);
         } catch (Exception ex) {
             //ignore
         }

@@ -22,6 +22,7 @@ import org.apache.shiro.authz.permission.WildcardPermission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -30,6 +31,7 @@ import java.util.*;
  * @Date: 10/25/14 11:33 PM
  * @Description:
  */
+@Service
 public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> implements ResourceService {
 
     private static Logger logger = LoggerFactory.getLogger(ResourceServiceImpl.class);
@@ -40,8 +42,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
     @javax.annotation.Resource
     private RoleService roleService;
 
-    @javax.annotation.Resource
     @BaseComponent
+    @javax.annotation.Resource
     private ResourceMapper resourceMapper;
 
     public static final String DEFAULT_SORT = "parent_id desc,weight desc";
@@ -129,7 +131,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         params.put("sort", sort);
         List<Resource> resources = resourceMapper.getAllWithSort(params);
 
-        Set<String> userPermissions = userAuthService.findStringPermissions(user);
+        Set<String> userPermissions = userAuthService.findPermissions(user);
 
         Iterator<Resource> iter = resources.iterator();
         while (iter.hasNext()) {
@@ -316,6 +318,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         resourceMapper.insert(t);
         return t;
     }
+
+
 
 
 }

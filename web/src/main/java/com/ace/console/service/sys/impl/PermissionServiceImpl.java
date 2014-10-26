@@ -5,9 +5,13 @@
  */
 package com.ace.console.service.sys.impl;
 
+import com.ace.console.annotation.BaseComponent;
 import com.ace.console.service.sys.PermissionService;
 import com.ace.core.persistence.sys.entity.Permission;
+import com.ace.core.persistence.sys.mapper.PermissionMapper;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @Author: denghp
@@ -17,4 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PermissionServiceImpl extends GenericServiceImpl<Permission, Long> implements PermissionService {
 
+    @BaseComponent
+    @Resource
+    private PermissionMapper permissionMapper;
 }

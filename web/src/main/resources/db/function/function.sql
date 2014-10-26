@@ -1,4 +1,5 @@
 /*** custom function getChildList **/
+use ace;
 DROP FUNCTION IF EXISTS getChildList;
 DELIMITER ||
 CREATE FUNCTION `getChildList`(rootId INT)

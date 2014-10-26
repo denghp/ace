@@ -84,5 +84,15 @@ public class UserServiceTest {
         user.setId(1l);
         Set<Role> roles = userAuthService.findRoles(user);
         logger.info("roles : {}", roles);
+        Assert.assertNotNull(roles);
+    }
+
+    @Test
+    public void findPermissions() {
+        user = new User();
+        user.setId(1l);
+        Set<String> permissions = userAuthService.findPermissions(user);
+        logger.info("permissions : {}", permissions);
+        Assert.assertNotNull(permissions);
     }
 }

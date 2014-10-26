@@ -7,6 +7,7 @@ package com.ace.core.persistence.sys.mapper.impl;
 
 import com.ace.core.persistence.sys.entity.Permission;
 import com.ace.core.persistence.sys.mapper.GenericMapper;
+import com.ace.core.persistence.sys.mapper.PermissionMapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,6 +16,6 @@ import org.springframework.stereotype.Repository;
  * @Description:
  */
 @Repository
-public class PermissionMapperImpl extends GenericMapperImpl<Permission, Long> {
+public class PermissionMapperImpl extends GenericMapperImpl<Permission, Long> implements PermissionMapper {
     
 }

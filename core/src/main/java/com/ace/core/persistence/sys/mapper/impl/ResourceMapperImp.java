@@ -40,11 +40,11 @@ public class ResourceMapperImp extends GenericMapperImpl<Resource, Long> impleme
 
     @Override
     public List<Resource> getAllWithSort(Map<String, Object> params) {
-        return null;
+        return getSqlSession().selectList(getNamespace() + ResourceRdbOperation.GET_ALL_WITH_SORT.value(), params);
     }
 
     @Override
     public List<Resource> getChildsByPid(int pid) {
-        return null;
+        return getSqlSession().selectList(getNamespace() + ResourceRdbOperation.GET_CHILDS_BY_PID.value(), pid);
     }
 }

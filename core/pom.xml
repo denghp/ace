@@ -36,6 +36,13 @@
     </build>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.ace</groupId>
+            <artifactId>ace-commons</artifactId>
+            <version>${version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>

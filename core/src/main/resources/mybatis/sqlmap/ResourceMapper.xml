@@ -11,20 +11,24 @@
     <result column="icon" property="icon" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="INTEGER" />
     <result column="enabled" property="enabled" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result property="hasChildren" column="hasChildren" />
+    <result property="loaded" column="loaded" />
+    <result property="parent" column="parent_id" />
+    <result property="level" column="parent_ids" javaType="java.lang.Integer" typeHandler="com.ace.commons.mybatis.type.StringParentIdsToLevel"/>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"  typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" typeHandler="com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, identity, url, parent_id, parent_ids, icon, weight, enabled, create_time, 
-    modify_time
+    modify_time,if (getChildCount(id) > 0,true,false) as hasChildren
   </sql>
 
-    <select id="getChildsByPid" resultMap="resourceResult">
-        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,is_show,if (getChildCount(id) > 0,true,false) as hasChildren,if (getChildCount(id) > 0,false,true) as loaded FROM sys_resource where parent_id = #{pid} order by parent_id desc,weight asc;
+    <select id="getChildsByPid" resultMap="BaseResultMap">
+        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,enabled,create_time, modify_time,if (getChildCount(id) > 0,true,false) as hasChildren,if (getChildCount(id) > 0,false,true) as loaded FROM sys_resource where parent_id = #{pid} order by parent_id desc,weight asc;
     </select>
 
-    <select id="getAllWithSort" parameterType="java.lang.String" resultMap="resourceResult">
-        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,is_show,if (getChildCount(id) > 0,true,false) as hasChildren FROM sys_resource where is_show = 1  ORDER by ${sort};
+    <select id="getAllWithSort" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,enabled,create_time, modify_time,if (getChildCount(id) > 0,true,false) as hasChildren FROM sys_resource where enabled = 1  ORDER by ${sort};
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -37,7 +41,7 @@
     delete from sys_resource
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.Resource" >
+  <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.Resource" useGeneratedKeys="true" keyProperty="id">
     insert into sys_resource (id, name, identity, 
       url, parent_id, parent_ids, 
       icon, weight, enabled, 
@@ -45,9 +49,10 @@
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{identity,jdbcType=VARCHAR}, 
       #{url,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, #{parentIds,jdbcType=VARCHAR}, 
       #{icon,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{enabled,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+      #{createTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
+      #{modifyTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler})
   </insert>
-  <insert id="insertSelective" parameterType="com.ace.core.persistence.sys.entity.Resource" >
+  <insert id="insertSelective" parameterType="com.ace.core.persistence.sys.entity.Resource"  useGeneratedKeys="true" keyProperty="id">
     insert into sys_resource
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -113,10 +118,10 @@
         #{enabled,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
       </if>
       <if test="modifyTime != null" >
-        #{modifyTime,jdbcType=TIMESTAMP},
+        #{modifyTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
       </if>
     </trim>
   </insert>
@@ -148,10 +153,10 @@
         enabled = #{enabled,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
       </if>
       <if test="modifyTime != null" >
-        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -166,8 +171,8 @@
       icon = #{icon,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
       enabled = #{enabled,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
+      modify_time = #{modifyTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

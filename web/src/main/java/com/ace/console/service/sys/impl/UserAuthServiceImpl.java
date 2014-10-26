@@ -103,7 +103,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public Set<String> findStringPermissions(User user) {
+    public Set<String> findPermissions(User user) {
         Set<String> permissions = Sets.newHashSet();
 
         //获取所有角色
@@ -132,6 +132,6 @@ public class UserAuthServiceImpl implements UserAuthService {
                 }
             }
         }
-        return null;
+        return permissions;
     }
 }

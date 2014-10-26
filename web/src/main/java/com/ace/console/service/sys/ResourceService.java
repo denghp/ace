@@ -58,12 +58,5 @@ public interface ResourceService extends GenericService<Resource, Long> {
 
     public List<ZTree<Integer>> getZTreeList(boolean async, Long roleId);
 
-    /**
-     * 保存单个实体
-     *
-     * @param t 实体
-     * @return 返回保存的实体
-     */
-    public Resource save(Resource t) throws AceException;
 
 }

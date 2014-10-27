@@ -6,6 +6,7 @@
 package com.ace.console.controller.sys;
 
 import com.ace.console.bind.annotation.CurrentUser;
+import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.ResourceService;
 import com.ace.core.persistence.sys.entity.Menu;
 import com.ace.core.persistence.sys.entity.User;
@@ -32,7 +33,10 @@ public class IndexController {
     private ResourceService resourceService;
 
     @RequestMapping(value = {"/{index:index;?.*}"})
-    public String index(@CurrentUser User user,Model model) {
+    public String index(@CurrentUser User user,Model model)throws AceException{
+        if (user == null) {
+            throw AceException.create(AceException.Code.NO_AUTH, "用户没有权限.");
+        }
         List<Menu> menuList = resourceService.findMenus(user);
         model.addAttribute("menuList", menuList);
 

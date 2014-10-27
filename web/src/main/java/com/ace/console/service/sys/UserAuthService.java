@@ -5,6 +5,7 @@
  */
 package com.ace.console.service.sys;
 
+import com.ace.console.exception.AceException;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
 
@@ -42,6 +43,6 @@ public interface UserAuthService {
      * @param user
      * @return
      */
-    public Set<String> findPermissions(User user);
+    public Set<String> findPermissions(User user) ;
 
 }

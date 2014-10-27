@@ -6,6 +6,7 @@
 package com.ace.console.service.sys.impl;
 
 import com.ace.console.enums.Status;
+import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.*;
 import com.ace.core.persistence.sys.entity.*;
 import com.google.common.base.Function;
@@ -93,7 +94,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public Set<String> findStringRoles(User user) {
+    public Set<String> findStringRoles(User user){
 
         Set<Role> roleSet = findRoles(user);
 
@@ -107,6 +108,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public Set<String> findPermissions(User user) {
+
         Set<String> permissions = Sets.newHashSet();
 
         //获取所有角色

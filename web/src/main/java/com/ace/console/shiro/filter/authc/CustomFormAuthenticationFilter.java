@@ -3,7 +3,7 @@
  *
  * Licensed 
  */
-package com.ace.console.filter.authc;
+package com.ace.console.shiro.filter.authc;
 
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.User;

@@ -130,7 +130,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         params.put("sort", sort);
         List<Resource> resources = resourceMapper.getAllWithSort(params);
 
-        Set<String> userPermissions = userAuthService.findPermissions(user);
+        Set<String> userPermissions = null;
+        userPermissions = userAuthService.findPermissions(user);
 
         Iterator<Resource> iter = resources.iterator();
         while (iter.hasNext()) {

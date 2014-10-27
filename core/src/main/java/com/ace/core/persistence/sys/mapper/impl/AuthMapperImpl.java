@@ -60,7 +60,7 @@ public class AuthMapperImpl extends GenericMapperImpl<Auth, Long> implements Aut
         }
         Map<String, Object> params = Maps.newHashMap();
         params.put(RdbParams.USER_ID.value(), userId);
-        if (groupIds != null) {
+        if (groupIds != null && groupIds.size() > 0) {
             params.put(RdbParams.GROUP_IDS.value(), groupIds);
         }
         List<Auth> authList = getSqlSession().selectList(getNamespace() + AuthOperation.GET_ROLE_IDS.value(), params);

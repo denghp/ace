@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    
+    <name>web</name>
     <artifactId>ace-web</artifactId>
     <packaging>war</packaging>
 
@@ -43,7 +43,7 @@
                         </connector>
                     </connectors>
                     <webAppConfig>
-                        <contextPath>/${parent.name}</contextPath>
+                        <contextPath>/${project.parent.name}</contextPath>
                     </webAppConfig>
                     <stopPort>${jetty.stopPort}</stopPort>
                     <stopKey>jetty</stopKey>

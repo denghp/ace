@@ -24,7 +24,7 @@
 
     <!-- 凭证匹配器 -->
     <bean id="credentialsMatcher" class="com.ace.console.shiro.credentials.RetryLimitHashedCredentialsMatcher">
-        <constructor-arg ref="cacheManager"/>
+        <constructor-arg ref="shiroCacheManager"/>
         <property name="hashAlgorithmName" value="md5"/>
         <property name="hashIterations" value="2"/>
         <property name="storedCredentialsHexEncoded" value="true"/>
@@ -77,7 +77,11 @@
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
-        <property name="cacheManager" ref="cacheManager"/>
+        <property name="cacheManager" ref="shiroCacheManager"/>
+    </bean>
+
+    <bean id="shiroCacheManager" class="com.ace.console.cache.SpringCacheManagerWrapper">
+        <property name="cacheManager" ref="springCacheManager"/>
     </bean>
 
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->

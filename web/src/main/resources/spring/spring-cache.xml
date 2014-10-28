@@ -19,19 +19,13 @@
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd"
        default-lazy-init="true">
 
-
-
+    <!-- 缓存配置 -->
     <bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehCacheManager"/>
     </bean>
 
-    <!-- 缓存管理器 使用Ehcache实现 -->
+    <!--ehcache-->
     <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:config/ehcache.xml"/>
-    </bean>
-
-    <!-- 缓存管理器 使用Ehcache实现 -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManagerConfigFile" value="classpath:config/ehcache.xml"/>
     </bean>
 </beans>

@@ -54,7 +54,7 @@ public class AuthMapperImpl extends GenericMapperImpl<Auth, Long> implements Aut
     @Override
     public Set<Long> getRoleIds(Long userId, Set<Long> groupIds) {
 
-        if (userId == null) {
+        if (userId == null ) {
             logger.warn("userId is null.");
             return null;
         }

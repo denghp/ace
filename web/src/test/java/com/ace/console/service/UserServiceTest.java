@@ -83,6 +83,8 @@ public class UserServiceTest {
         user.setId(1l);
         Set<Role> roles = userAuthService.findRoles(user);
         logger.info("roles : {}", roles);
+        roles = userAuthService.findRoles(user);
+        logger.info("roles : {}", roles);
         Assert.assertNotNull(roles);
     }
 

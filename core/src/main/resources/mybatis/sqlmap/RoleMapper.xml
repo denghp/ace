@@ -13,9 +13,13 @@
   </resultMap>
 
     <resultMap type="Role" id="roleResourcePermissionResultMap" extends="BaseResultMap">
-        <collection column="role_id" property="resourcePermissions" ofType="RoleResourcePermission"
-               resultMap="com.ace.core.persistence.sys.mapper.RoleResourcePermissionMapper.BaseResultMap" />
-
+        <collection column="role_id" property="resourcePermissions" ofType="RoleResourcePermission">
+            <id column="rrp_id" property="id" jdbcType="BIGINT" />
+            <result column="role_id" property="roleId" jdbcType="BIGINT" />
+            <result column="resource_id" property="resourceId" jdbcType="BIGINT" />
+            <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR" javaType="java.util.Set"
+                    typeHandler="com.ace.commons.mybatis.type.StringToSetTypeHander"/>
+          </collection>
     </resultMap>
 
   <sql id="Base_Column_List" >

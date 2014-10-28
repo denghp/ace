@@ -10,6 +10,7 @@
   </resultMap>
 
 
+
   <sql id="Base_Column_List" >
     id, role_id, resource_id, permission_ids
   </sql>

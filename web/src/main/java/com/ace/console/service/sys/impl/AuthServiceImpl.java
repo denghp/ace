@@ -6,6 +6,7 @@ import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.mapper.AuthMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,8 +40,13 @@ public class AuthServiceImpl extends GenericServiceImpl<Auth, Long> implements A
 
     }
 
+    @CachePut(value = "Set<Long>", key = "#auth.getRoleIds")
     @Override
     public Set<Long> getRoleIds(Long userId, Set<Long> groupIds) {
+        if (userId == null) {
+            logger.error("userId is empty.");
+            return null;
+        }
         return authMapper.getRoleIds(userId, groupIds);
     }
 }

@@ -13,6 +13,7 @@ import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
 import com.ace.core.page.Page;
 import com.ace.core.persistence.sys.mapper.GenericMapper;
+import com.ace.core.utils.ReflectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -78,6 +79,10 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
 
     @Override
     public T selectById(ID id) {
+        if (id == null) {
+            logger.error("id is null.");
+            return null;
+        }
         return genericeMapper.selectById(id);
     }
 
@@ -114,5 +119,14 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
     @Override
     public boolean exists(ID id) {
         return genericeMapper.exists(id);
+    }
+
+    /**
+     * 获取当前实体对象class
+     * @return
+     */
+    public Class<T> getEntityClass() {
+
+        return ReflectUtils.getClassGenricType(getClass());
     }
 }

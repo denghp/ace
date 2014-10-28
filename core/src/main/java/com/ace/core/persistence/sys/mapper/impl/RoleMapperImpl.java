@@ -39,8 +39,8 @@ public class RoleMapperImpl extends GenericMapperImpl<Role, Long> implements Rol
     }
     @Override
     public List<Role> getListRoleByIds(List<Long> roleIds) {
-        if (roleIds == null) {
-            logger.warn("roleIds is null.");
+        if (roleIds == null && roleIds.size() <= 0) {
+            logger.error("roleIds is null.");
             return null;
         }
         return getSqlSession().selectList(getNamespace() + RoleRdbOperation.GET_LIST_ROLE_BY_IDS.value(), roleIds);
@@ -48,6 +48,10 @@ public class RoleMapperImpl extends GenericMapperImpl<Role, Long> implements Rol
 
     @Override
     public List<Role> getRoleResourcePermissions(Long roleId) {
+        if (roleId == null) {
+            logger.error("roleId is null.");
+            return null;
+        }
         return getSqlSession().selectList(getNamespace() + RoleRdbOperation.GET_ROLE_RESOURCE_PERMISSIONS.value(), roleId);
     }
 }

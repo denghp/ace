@@ -5,6 +5,8 @@
  */
 package com.ace.console.cache;
 
+import com.google.code.ssm.api.ParameterValueKeyProvider;
+import com.google.code.ssm.api.ReadThroughSingleCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -101,9 +103,9 @@ public class BaseCacheAspect implements InitializingBean {
      * @param value
      *        缓存的值
      */
-    public void put(String key, Object value) {
+    public void put(@ParameterValueKeyProvider String key, Object value) {
         log.info("cacheName:{}, put key:{}", cacheName, key);
-        this.cache.put(key, value);
+        //this.cache.put(key, value);
     }
 
 }

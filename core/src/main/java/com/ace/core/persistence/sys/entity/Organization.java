@@ -2,7 +2,9 @@ package com.ace.core.persistence.sys.entity;
 
 import org.joda.time.DateTime;
 
-public class Organization {
+import java.io.Serializable;
+
+public class Organization implements Serializable {
     private Long id;
 
     private String name;

@@ -1,8 +1,9 @@
 package com.ace.core.persistence.sys.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class RoleResourcePermission {
+public class RoleResourcePermission implements Serializable {
     private Long id;
 
     private Long roleId;

@@ -5,7 +5,7 @@
  */
 package com.ace.commons.json;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @Author: denghp

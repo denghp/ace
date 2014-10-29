@@ -1,6 +1,8 @@
 package com.ace.core.persistence.sys.entity;
 
-public class Job {
+import java.io.Serializable;
+
+public class Job implements Serializable {
     private Long id;
 
     private String name;

@@ -19,11 +19,13 @@
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd"
        default-lazy-init="true">
 
-<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <import resource="classpath:simplesm-context.xml"/>
+
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     <!-- 定义受环境影响易变的变量 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
-        <property name="ignoreResourceNotFound" value="true" />
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
         <property name="locations">
             <list>
                 <!-- 标准配置 -->
@@ -35,17 +37,45 @@
 
     <!-- 扫描注解Bean 对切入类的方法进行缓存处理-->
     <context:component-scan base-package="com.ace">
-        <!--
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        -->
+
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
     <!--开启注解 -->
-    <context:annotation-config />
+    <context:annotation-config/>
 
     <!-- 开启自动切面代理 -->
-    <aop:aspectj-autoproxy />
+    <aop:aspectj-autoproxy/>
+    <bean class="com.google.code.ssm.Settings">
+        <property name="order" value="500" />
+    </bean>
+    <!-- simple spring memcache -->
+    <bean name="defaultMemcachedClient" class="com.google.code.ssm.CacheFactory">
+        <property name="cacheClientFactory">
+            <bean name="cacheClientFactory" class="com.google.code.ssm.providers.xmemcached.MemcacheClientFactoryImpl" />
+        </property>
+        <property name="addressProvider">
+            <bean class="com.google.code.ssm.config.DefaultAddressProvider">
+                <property name="address" value="192.168.4.86:11211" />
+            </bean>
+        </property>
+        <property name="configuration">
+            <bean class="com.google.code.ssm.providers.CacheConfiguration">
+                <property name="consistentHashing" value="true" />
+            </bean>
+        </property>
+        <!--
+        <property name="defaultSerializationType"
+                  value="#{T(com.google.code.ssm.api.format.SerializationType).valueOf(@defaultSerializationTypeAsString)}" />
+        -->
+    </bean>
 
+    <!-- easy way to test different types of serialization mechanizm by passing it as system property (-Dssm.provider=JSON) -->
+    <!--
+    <bean name="defaultSerializationTypeAsString" class="java.lang.String">
+        <constructor-arg value="#{systemProperties['ssm.defaultSerializationType']?:'JSON'}" />
+    </bean>
+    -->
 
     <!-- 数据源 -->
     <!--see https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_DruidDataSource%E5%8F%82%E8%80%83%E9%85%8D%E7%BD%AE-->
@@ -63,22 +93,23 @@
         <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="${druid.maxWait}"/>
         <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}"/>
 
         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}"/>
 
-        <property name="validationQuery" value="${druid.validationQuery}" />
-        <property name="testWhileIdle" value="${druid.testWhileIdle}" />
-        <property name="testOnBorrow" value="${druid.testOnBorrow}" />
-        <property name="testOnReturn" value="${druid.testOnReturn}" />
+        <property name="validationQuery" value="${druid.validationQuery}"/>
+        <property name="testWhileIdle" value="${druid.testWhileIdle}"/>
+        <property name="testOnBorrow" value="${druid.testOnBorrow}"/>
+        <property name="testOnReturn" value="${druid.testOnReturn}"/>
 
         <!-- 打开PSCache，并且指定每个连接上PSCache的大小  如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。-->
-        <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+        <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${druid.maxPoolPreparedStatementPerConnectionSize}"/>
 
         <!-- 配置监控统计拦截的filters -->
-        <property name="filters" value="${druid.filters}" />
+        <property name="filters" value="${druid.filters}"/>
 
     </bean>
 
@@ -117,7 +148,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
-        <property name="typeAliasesPackage" value="com.ace.core.persistence.sys.entity" />
+        <property name="typeAliasesPackage" value="com.ace.core.persistence.sys.entity"/>
         <property name="mapperLocations">
             <array>
                 <value>classpath*:mybatis/sqlmap/*.xml</value>
@@ -128,7 +159,7 @@
     <!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口 -->
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ace.core.persistence.sys.mapper" />
+        <property name="basePackage" value="com.ace.core.persistence.sys.mapper"/>
         <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
     </bean>
 

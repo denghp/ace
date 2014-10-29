@@ -5,7 +5,9 @@ import com.ace.core.entity.Treeable;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
-public class Resource implements Treeable<Long> {
+import java.io.Serializable;
+
+public class Resource implements Treeable<Long>, Serializable {
 
     private Long id;
 

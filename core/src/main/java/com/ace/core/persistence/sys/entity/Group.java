@@ -3,7 +3,9 @@ package com.ace.core.persistence.sys.entity;
 import com.ace.core.persistence.sys.enums.GroupType;
 import org.joda.time.DateTime;
 
-public class Group {
+import java.io.Serializable;
+
+public class Group implements Serializable {
 
     private Long id;
 

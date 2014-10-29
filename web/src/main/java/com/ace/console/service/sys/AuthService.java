@@ -1,9 +1,7 @@
 package com.ace.console.service.sys;
 
-import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
 import com.ace.core.persistence.sys.entity.Auth;
-import org.codehaus.jackson.JsonGenerationException;
 
 import java.io.IOException;
 import java.util.Set;

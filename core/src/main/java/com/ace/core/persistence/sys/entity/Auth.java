@@ -3,6 +3,7 @@ package com.ace.core.persistence.sys.entity;
 import com.ace.core.persistence.sys.enums.AuthType;
 import com.google.common.collect.Sets;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -28,7 +29,7 @@ import java.util.Set;
  * @Date: 10/19/14 6:48 PM
  */
 
-public class Auth {
+public class Auth implements Serializable{
     private Long id;
 
     private Long organizationId;

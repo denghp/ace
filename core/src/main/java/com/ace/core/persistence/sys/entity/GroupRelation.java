@@ -1,6 +1,8 @@
 package com.ace.core.persistence.sys.entity;
 
-public class GroupRelation {
+import java.io.Serializable;
+
+public class GroupRelation implements Serializable {
     private Long id;
 
     private Long groupId;

@@ -2,6 +2,7 @@ package com.ace.console.service.sys.impl;
 
 import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
+import com.ace.console.service.Book;
 import com.ace.console.service.sys.UserService;
 import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.sys.entity.User;
@@ -10,11 +11,13 @@ import com.ace.core.persistence.sys.mapper.UserMapper;
 import com.google.code.ssm.api.ParameterValueKeyProvider;
 import com.google.code.ssm.api.ReadThroughSingleCache;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 
 /**
@@ -115,5 +118,13 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
             return null;
         }
         return userMapper.getUserDetails(userId);
+    }
+
+    @ReadThroughSingleCache(namespace = "#book.getBookById", expiration = 3600)
+    @Override
+    public Book getBookById(@ParameterValueKeyProvider Integer id) {
+        Book book = new Book(1000,"三国演绎",new DateTime());
+
+        return book;
     }
 }

@@ -37,8 +37,9 @@
 
     <!-- 扫描注解Bean 对切入类的方法进行缓存处理-->
     <context:component-scan base-package="com.ace">
-
+        <!--
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        -->
     </context:component-scan>
 
     <!--开启注解 -->
@@ -49,6 +50,22 @@
     <bean class="com.google.code.ssm.Settings">
         <property name="order" value="500" />
     </bean>
+
+    <bean name="cacheManager" class="com.google.code.ssm.spring.SSMCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="com.google.code.ssm.spring.SSMCache">
+                    <constructor-arg name="cache" index="0" ref="defaultMemcachedClient"/>
+                    <!-- 5 minutes -->
+                    <constructor-arg name="expiration" index="1" value="300"/>
+                    <!-- @CacheEvict(..., "allEntries" = true) doesn't work -->
+                    <constructor-arg name="allowClear" index="2" value="false"/>
+                </bean>
+            </set>
+        </property>
+
+    </bean>
+
     <!-- simple spring memcache -->
     <bean name="defaultMemcachedClient" class="com.google.code.ssm.CacheFactory">
         <property name="cacheClientFactory">
@@ -56,7 +73,7 @@
         </property>
         <property name="addressProvider">
             <bean class="com.google.code.ssm.config.DefaultAddressProvider">
-                <property name="address" value="192.168.4.86:11211" />
+                <property name="address" value="127.0.0.1:11211" />
             </bean>
         </property>
         <property name="configuration">
@@ -64,18 +81,8 @@
                 <property name="consistentHashing" value="true" />
             </bean>
         </property>
-        <!--
-        <property name="defaultSerializationType"
-                  value="#{T(com.google.code.ssm.api.format.SerializationType).valueOf(@defaultSerializationTypeAsString)}" />
-        -->
+        <property name="defaultSerializationType" value="JSON" />
     </bean>
-
-    <!-- easy way to test different types of serialization mechanizm by passing it as system property (-Dssm.provider=JSON) -->
-    <!--
-    <bean name="defaultSerializationTypeAsString" class="java.lang.String">
-        <constructor-arg value="#{systemProperties['ssm.defaultSerializationType']?:'JSON'}" />
-    </bean>
-    -->
 
     <!-- 数据源 -->
     <!--see https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_DruidDataSource%E5%8F%82%E8%80%83%E9%85%8D%E7%BD%AE-->

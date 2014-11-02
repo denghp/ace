@@ -36,7 +36,7 @@ public class RoleServiceImpl extends GenericServiceImpl<Role, Long> implements R
     private RoleMapper roleMapper;
 
     @Override
-    @ReadThroughMultiCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":roles:getEnabledRoles", expiration = 600)
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":roles:getEnabledRoles", expiration = 600)
     public Set<Role> getEnabledRoles(@ParameterValueKeyProvider Set<Long> roleIds) {
         Set<Role> roleSet = Sets.newHashSet();
         //获取角色信息,过滤无效的role

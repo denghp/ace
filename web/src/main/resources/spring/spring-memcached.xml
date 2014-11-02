@@ -44,7 +44,10 @@
             <set>
                 <bean class="com.ace.console.cache.ShiroMemcachedCache" >
                     <constructor-arg name="cache" index="0" ref="defaultCache" />
+                    <!-- 5 minutes -->
                     <constructor-arg name="expiration" index="1" value="300" />
+                    <!-- @CacheEvict(..., "allEntries" = true) won't work because allowClear is false,
+                    so we won't flush accidentally all entries from memcached instance -->
                     <constructor-arg name="allowClear" index="2" value="false" />
                 </bean>
             </set>
@@ -69,11 +72,28 @@
                 <property name="connectionTimeout" value="${memcached.connection.timeout}" />
                 <property name="operationTimeout" value="${memcached.op.timeout}" />
                 <property name="useNameAsKeyPrefix" value="true"/>
+                <property name="useBinaryProtocol" value="true" />
+                <!-- 配置权限
+                <property name="authInfoMap" >
+                    <map>
+                        <entry key-ref="addrUtil" value-ref="authInfo"/>
+                    </map>
+                </property>
+                -->
             </bean>
         </property>
         <!--
         <property name="defaultSerializationType" value="JSON" />
         -->
     </bean>
+
+    <bean id="authInfo" class="net.rubyeye.xmemcached.auth.AuthInfo"  scope="prototype" factory-method="plain">
+        <constructor-arg value="0596ee1e527e11e4"/>
+        <constructor-arg value="Dhp19861207"/>
+    </bean>
+    <bean id="addrUtil" class="net.rubyeye.xmemcached.utils.AddrUtil"  scope="prototype" factory-method="getOneAddress">
+        <constructor-arg value="${memcached.ip}:${memcached.port}"/>
+    </bean>
+
 
 </beans>

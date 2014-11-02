@@ -57,11 +57,16 @@
     <logger name="com.google.code" level="INFO">
         <appender-ref ref="ROLLING"/>
     </logger>
+
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="ROLLING"/>
+    </logger>
+
     <logger name="com.ace" level="DEBUG">
         <appender-ref ref="ROLLING"/>
     </logger>
 
-    <root level="INFO" >
+    <root level="DEBUG" >
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLING"/>
     </root>

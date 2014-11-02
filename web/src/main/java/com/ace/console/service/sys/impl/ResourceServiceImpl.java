@@ -55,8 +55,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @param resource
      * @return
      */
-    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME +":menus:findActualResourceIdentity", expiration = 600)
-    public String findActualResourceIdentity(@ParameterValueKeyProvider Resource resource) {
+    public String findActualResourceIdentity(Resource resource) {
 
         if (resource == null) {
             return null;
@@ -66,13 +65,13 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
 
         boolean hasResourceIdentity = !StringUtils.isEmpty(resource.getIdentity());
 
-        Resource parent = resourceMapper.selectById(resource.getParentId());
+        Resource parent = selectById(resource.getParentId());
         while (parent != null) {
             if (!StringUtils.isEmpty(parent.getIdentity())) {
                 s.insert(0, parent.getIdentity() + ":");
                 hasResourceIdentity = true;
             }
-            parent = resourceMapper.selectById(parent.getParentId());
+            parent = selectById(parent.getParentId());
         }
 
         //如果用户没有声明 资源标识  且父也没有，那么就为空
@@ -114,9 +113,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
     @ReadThroughAssignCache(assignedKey = Constants.DEFAULT_PROJECT_NAME + ":menu:findMenus", namespace = "menu", expiration = 600)
     public List<Menu> findMenus( ) {
         String sort = "parent_id desc,weight desc";
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sort", sort);
-        List<Resource> resources = resourceMapper.getAllWithSort(params);
+
+        List<Resource> resources = getAllWithSort(sort);
 
         return convertToMenus(resources);
     }
@@ -131,9 +129,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
     @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:findMenusByUser", expiration = 600)
     public List<Menu> findMenus(@ParameterValueKeyProvider User user) {
         String sort = "parent_id desc,weight desc";
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sort", sort);
-        List<Resource> resources = resourceMapper.getAllWithSort(params);
+        List<Resource> resources = getAllWithSort(sort);
 
         Set<String> userPermissions = null;
         userPermissions = userAuthService.findPermissions(user);
@@ -317,7 +313,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
             return null;
         }
         //获取父级
-        Resource resource = resourceMapper.selectById(t.getParentId());
+        Resource resource = selectById(t.getParentId());
         if (resource == null) {
             throw AceException.create(AceException.Code.NOT_FOUND, "父级资源没有找到!");
         }

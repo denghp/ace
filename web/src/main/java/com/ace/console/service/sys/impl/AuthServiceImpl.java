@@ -2,6 +2,7 @@ package com.ace.console.service.sys.impl;
 
 import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.service.sys.AuthService;
+import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.mapper.AuthMapper;
 import com.google.code.ssm.api.ParameterValueKeyProvider;
@@ -44,7 +45,7 @@ public class AuthServiceImpl extends GenericServiceImpl<Auth, Long> implements A
 
     }
 
-    @ReadThroughSingleCache(namespace = "user/getRoleIds", expiration = 600)
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":auth:getRoleIds", expiration = 600)
     @Override
     public Set<Long> getRoleIds(@ParameterValueKeyProvider Long userId, Set<Long> groupIds) {
         if (userId == null) {

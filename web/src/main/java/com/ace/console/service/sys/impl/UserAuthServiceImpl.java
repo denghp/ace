@@ -8,7 +8,10 @@ package com.ace.console.service.sys.impl;
 import com.ace.console.enums.Status;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.*;
+import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.*;
+import com.google.code.ssm.api.ParameterValueKeyProvider;
+import com.google.code.ssm.api.ReadThroughSingleCache;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
@@ -94,7 +97,8 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public Set<String> findStringRoles(User user){
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":auth:findStringRoles", expiration = 600)
+    public Set<String> findStringRoles(@ParameterValueKeyProvider User user){
 
         Set<Role> roleSet = findRoles(user);
 
@@ -107,7 +111,8 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public Set<String> findPermissions(User user) {
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":auth:findPermissions", expiration = 600)
+    public Set<String> findPermissions(@ParameterValueKeyProvider User user) {
 
         Set<String> permissions = Sets.newHashSet();
 

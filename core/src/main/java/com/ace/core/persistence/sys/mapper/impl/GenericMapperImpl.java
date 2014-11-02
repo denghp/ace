@@ -1,10 +1,12 @@
 package com.ace.core.persistence.sys.mapper.impl;
 
+import com.ace.commons.json.JsonUtils;
 import com.ace.core.page.Page;
 import com.ace.core.page.PageBean;
 import com.ace.core.persistence.sys.enums.RdbOperation;
 import com.ace.core.persistence.sys.mapper.GenericMapper;
 import com.ace.core.utils.ReflectUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -95,8 +97,15 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
 
     @Override
     public T selectById(ID id) {
-        logger.info("----------findOne Id : {} ", id);
-        return getSqlSession().selectOne(getNamespace() + RdbOperation.SELECT_BY_PRIMARY_KEY.value(), id);
+        String namespace = getNamespace() + RdbOperation.SELECT_BY_PRIMARY_KEY.value();
+        Object obj = getSqlSession().selectOne(namespace, id);
+        try {
+            logger.info("----- {} ,findOne Id : {} ", namespace,id);
+            logger.debug("id : {} entity : {}", id, JsonUtils.getObjectMapper().writeValueAsString(obj));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return (T)obj;
     }
 
     @Override

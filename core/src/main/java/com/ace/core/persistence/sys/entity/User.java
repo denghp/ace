@@ -238,14 +238,14 @@ public class User implements Serializable {
         return username + salt;
     }
 
-    @Override
-    public String toString() {
-        try {
-            return JsonUtils.getObjectMapper().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @Override
+//    public String toString() {
+//        try {
+//            return JsonUtils.getObjectMapper().writeValueAsString(this);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 }

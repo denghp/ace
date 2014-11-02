@@ -16,6 +16,7 @@ import com.ace.core.persistence.sys.entity.Resource;
 import com.ace.core.persistence.sys.entity.RoleResourcePermission;
 import com.ace.core.persistence.sys.entity.User;
 import com.ace.core.persistence.sys.mapper.ResourceMapper;
+import com.google.code.ssm.api.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.permission.WildcardPermission;
@@ -108,7 +109,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      *
      * @return
      */
-    public List<Menu> findMenus() {
+    @ReadThroughAssignCache(assignedKey = "menu/findMenus", namespace = "menu", expiration = 600)
+    public List<Menu> findMenus( ) {
         String sort = "parent_id desc,weight desc";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sort", sort);
@@ -124,7 +126,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @param user
      * @return
      */
-    public List<Menu> findMenus(User user) {
+    @ReadThroughSingleCache(namespace = "menus/findMenusByUser", expiration = 600)
+    public List<Menu> findMenus(@ParameterValueKeyProvider User user) {
         String sort = "parent_id desc,weight desc";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sort", sort);
@@ -239,6 +242,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         return getAllWithSort(null);
     }
 
+    @ReadThroughAssignCache(assignedKey = "menu/getAllWithSort", namespace = "menu", expiration = 600)
     public List<Resource> getAllWithSort(String sort) {
         if (StringUtils.isBlank(sort)) {
             logger.warn("sort is empty, use default sort!!");

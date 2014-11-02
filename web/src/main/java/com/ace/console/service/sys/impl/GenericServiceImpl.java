@@ -80,8 +80,9 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
         genericeMapper.update(entity);
     }
 
+
     @Override
-    public T selectById(ID id) {
+    public T selectById(@ParameterValueKeyProvider ID id) {
         if (id == null) {
             logger.error("id is null.");
             return null;

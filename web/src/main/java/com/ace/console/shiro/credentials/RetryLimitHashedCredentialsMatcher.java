@@ -3,6 +3,7 @@ package com.ace.console.shiro.credentials;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -36,6 +37,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         //从token中获取用户名
         String username = (String)token.getPrincipal();
+        System.out.println("passwordRetryCache: "+passwordRetryCache.get(username));
         //retry count + 1
         AtomicInteger retryCount = passwordRetryCache.get(username);
         //根据用户名从缓存中获取对应的密码,为空则把尝试次数存入缓存

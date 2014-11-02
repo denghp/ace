@@ -2,10 +2,11 @@ package com.ace.core.persistence.sys.entity;
 
 import com.google.common.collect.Lists;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Role {
+public class Role implements Serializable{
     private Long id;
 
     private String name;

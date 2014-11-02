@@ -18,26 +18,28 @@
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd"
        default-lazy-init="true">
-
-   <import resource="spring-cache.xml" />
    <import resource="spring-service.xml" />
-
-    <!-- 凭证匹配器 -->
+   <import resource="spring-context.xml" />
+    <!-- 凭证匹配器
     <bean id="credentialsMatcher" class="com.ace.console.shiro.credentials.RetryLimitHashedCredentialsMatcher">
         <constructor-arg ref="shiroCacheManager"/>
         <property name="hashAlgorithmName" value="md5"/>
         <property name="hashIterations" value="2"/>
         <property name="storedCredentialsHexEncoded" value="true"/>
     </bean>
+    -->
 
     <!-- Realm实现 -->
     <bean id="userRealm" class="com.ace.console.shiro.realm.UserRealm">
+        <!-- credentialsMatcher 会自动存储AuthenticationInfo对象, 这里自定义实现验证缓存
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
-        <property name="cachingEnabled" value="true"/>
         <property name="authenticationCachingEnabled" value="true"/>
         <property name="authenticationCacheName" value="authenticationCache"/>
-        <property name="authorizationCachingEnabled" value="true"/>
-        <property name="authorizationCacheName" value="authorizationCache"/>
+        -->
+        <!-- 用切面缓存代理了 此处就不缓存了 -->
+        <property name="authenticationCachingEnabled" value="false"/>
+        <property name="authorizationCachingEnabled" value="false"/>
+        <property name="cacheManager" ref="shiroMemcachedManager" />
     </bean>
 
     <!-- 会话ID生成器 -->
@@ -52,10 +54,21 @@
 
     <!-- 会话DAO -->
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
-        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
+        <property name="activeSessionsCacheName" value="default"/>
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
+        <property name="cacheManager" ref="shiroMemcachedManager" />
+    </bean>
+   <!--
+    <bean id="sessionDAO" class="com.ace.console.extra.session.CustomShiroSessionDAO" >
+        <constructor-arg ref="ssmSessionRepository" />
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
+        <property name="activeSessionsCacheName" value="default" />
     </bean>
 
+    <bean id="ssmSessionRepository" class="com.ace.console.extra.session.impl.SSMSessionRepository" >
+        <constructor-arg ref="memcachedManager" />
+    </bean>
+    -->
     <!-- 会话验证调度器 -->
     <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
         <property name="sessionValidationInterval" value="1800000"/>
@@ -68,21 +81,18 @@
         <property name="deleteInvalidSessions" value="true"/>
         <property name="sessionValidationSchedulerEnabled" value="true"/>
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
-        <property name="sessionDAO" ref="sessionDAO"/>
         <property name="sessionIdCookieEnabled" value="true"/>
         <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
     </bean>
 
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
-        <property name="cacheManager" ref="shiroCacheManager"/>
+        <property name="cacheManager" ref="shiroMemcachedManager"/>
     </bean>
 
-    <bean id="shiroCacheManager" class="com.ace.console.cache.SpringCacheManagerWrapper">
-        <property name="cacheManager" ref="springCacheManager"/>
-    </bean>
 
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

@@ -51,6 +51,12 @@
         <appender-ref ref="ROLLING"/>
     </logger>
 
+    <logger name="net.rubyeye.xmemcached" level="INFO">
+        <appender-ref ref="ROLLING"/>
+    </logger>
+    <logger name="com.google.code" level="INFO">
+        <appender-ref ref="ROLLING"/>
+    </logger>
     <logger name="com.ace" level="DEBUG">
         <appender-ref ref="ROLLING"/>
     </logger>

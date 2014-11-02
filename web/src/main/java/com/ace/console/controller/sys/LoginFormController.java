@@ -7,6 +7,7 @@
 package com.ace.console.controller.sys;
 
 import com.ace.console.bind.annotation.CurrentUser;
+import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
 import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.User;
@@ -84,21 +85,19 @@ public class LoginFormController {
         //登录失败了 提取错误消息
         Exception shiroLoginFailureEx =
                 (Exception) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-
-
         if (shiroLoginFailureEx != null) {
-            //String msg = messageSource.getMessage(shiroLoginFailureEx.getMessage(), null, null);
-            //model.addAttribute(Constants.ERROR, msg == null ? shiroLoginFailureEx.getMessage() : msg);
-            if (shiroLoginFailureEx instanceof UnknownAccountException) {
+            if (shiroLoginFailureEx instanceof AceException.UserNotFoundException) {
                 model.addAttribute(Constants.ERROR, "未知账户.");
-            } else if (shiroLoginFailureEx instanceof IncorrectCredentialsException) {
+            } else if (shiroLoginFailureEx instanceof AceException.UserPasswordNotMatchException) {
                 model.addAttribute(Constants.ERROR, "验证未通过,密码错误.");
-            } else if (shiroLoginFailureEx instanceof LockedAccountException) {
+            } else if (shiroLoginFailureEx instanceof AceException.UserBlockedException) {
                 model.addAttribute(Constants.ERROR, "验证未通过,账户锁定.");
-            } else if (shiroLoginFailureEx instanceof ExcessiveAttemptsException) {
+            } else if (shiroLoginFailureEx instanceof AceException.UserPasswordRetryCount) {
                 model.addAttribute(Constants.ERROR, "验证未通过,错误次数过多.");
             } else if (shiroLoginFailureEx instanceof AuthenticationException) {
                 model.addAttribute(Constants.ERROR, "验证未通过,用户名或密码不正确.");
+            } else if (shiroLoginFailureEx instanceof Exception){
+                model.addAttribute(Constants.ERROR, "验证未通过,服务器内部错误.");
             }
 
         }

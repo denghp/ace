@@ -1,35 +1,24 @@
 package com.ace.console.service;
 
 import com.ace.commons.json.JsonUtils;
-import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.code.ssm.api.ParameterValueKeyProvider;
-import com.google.code.ssm.api.ReadThroughSingleCache;
-import com.google.code.ssm.providers.CacheClient;
-import com.google.code.ssm.providers.CacheException;
-import com.google.code.ssm.providers.CachedObject;
-import com.google.code.ssm.transcoders.JsonTranscoder;
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 
 /**
  * @Project_Name: ace-parent
@@ -50,13 +39,13 @@ public class UserServiceTest {
     @Resource
     private UserAuthService userAuthService;
 
-    protected String password = "123";
+    protected String password = "123456";
     protected User user;
 
 
     @Before
     public void init() {
-        user = new User("demo_"+System.currentTimeMillis(), password);
+        user = new User("admin", password);
 
     }
 
@@ -108,14 +97,6 @@ public class UserServiceTest {
         Set<String> permissions = userAuthService.findPermissions(user);
         logger.info("permissions : {}", permissions);
         Assert.assertNotNull(permissions);
-    }
-
-    @Test
-    public void testBook() throws JsonProcessingException {
-        Book bo = userService.getBookById(10022);
-        logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(bo));
-        Book bo1 = userService.getBookById(10022);
-        logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(bo1));
     }
 
 

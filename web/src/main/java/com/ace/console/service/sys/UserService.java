@@ -1,10 +1,8 @@
 package com.ace.console.service.sys;
 
 import com.ace.console.exception.AceException;
-import com.ace.console.service.Book;
 import com.ace.console.service.GenericService;
 import com.ace.core.persistence.sys.entity.User;
-import org.springframework.stereotype.Service;
 
 /**
  * @Project_Name: ace-web
@@ -53,5 +51,4 @@ public interface UserService extends GenericService<User, Long> {
     public User getUserDetails(Long userId);
 
 
-    public Book getBookById(Integer id);
 }

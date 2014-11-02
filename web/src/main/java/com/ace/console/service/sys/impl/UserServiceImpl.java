@@ -2,7 +2,7 @@ package com.ace.console.service.sys.impl;
 
 import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
-import com.ace.console.service.Book;
+import com.ace.console.service.sys.PasswordService;
 import com.ace.console.service.sys.UserService;
 import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.sys.entity.User;
@@ -11,13 +11,11 @@ import com.ace.core.persistence.sys.mapper.UserMapper;
 import com.google.code.ssm.api.ParameterValueKeyProvider;
 import com.google.code.ssm.api.ReadThroughSingleCache;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 
 /**
@@ -37,6 +35,10 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
     @Resource
     @BaseComponent
     private UserMapper userMapper;
+
+
+//    @Resource
+//    private PasswordService passwordService;
 
     /**
      * 创建用户
@@ -78,7 +80,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         return false;
     }
 
-    @ReadThroughSingleCache(namespace = "#user.username", expiration = 3600)
+    @ReadThroughSingleCache(namespace = "user/getByUsername", expiration = 3600)
     @Override
     public User getByUsername(@ParameterValueKeyProvider String username) {
         if (StringUtils.isBlank(username)) {
@@ -90,7 +92,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
 
     @Override
     public User login(String username, String password) throws AceException {
-        User user = userMapper.getByUsername(username);
+        User user = getByUsername(username);
 
         if (user == null) {
             logger.warn("{} username not found.", username);
@@ -104,10 +106,6 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         //验证密码
 //        passwordService.validate(user, password);
 
-        if (user.getStatus() == UserStatus.blocked) {
-            logger.warn("{} loginError user is blocked!", username);
-            throw new AceException.UserBlockedException();
-        }
         return user;
     }
 
@@ -120,11 +118,4 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         return userMapper.getUserDetails(userId);
     }
 
-    @ReadThroughSingleCache(namespace = "#book.getBookById", expiration = 3600)
-    @Override
-    public Book getBookById(@ParameterValueKeyProvider Integer id) {
-        Book book = new Book(1000,"三国演绎",new DateTime());
-
-        return book;
-    }
 }

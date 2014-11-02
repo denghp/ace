@@ -19,13 +19,40 @@
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd"
        default-lazy-init="true">
 
-    <!-- 缓存配置 -->
-    <bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="ehCacheManager"/>
+    <!-- memcached缓存配置 -->
+    <!--
+    <bean name="memcachedClientBuilder"
+          class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
+        <constructor-arg>
+            <list>
+                <bean class="java.net.InetSocketAddress">
+                    <constructor-arg>
+                        <value>${memcached.ip}</value>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <value>${memcached.port}</value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+        <constructor-arg>
+            <list>
+                <value>1</value>
+            </list>
+        </constructor-arg>
+        <property name="connectionPoolSize" value="${memcached.pool.size}" />
+        <property name="commandFactory">
+            <bean class="net.rubyeye.xmemcached.command.TextCommandFactory"></bean>
+        </property>
+        <property name="sessionLocator">
+            <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>
+        </property>
+        <property name="transcoder">
+            <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder"/>
+        </property>
+        <property name="connectTimeout" value="${memcached.connection.timeout}" />
+        <property name="opTimeout" value="${memcached.op.timeout}" />
     </bean>
-
-    <!--ehcache-->
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:config/ehcache.xml"/>
-    </bean>
+    <bean name="memcachedClient" factory-bean="memcachedClientBuilder" factory-method="build" destroy-method="shutdown"/>
+    -->
 </beans>

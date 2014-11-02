@@ -59,4 +59,10 @@ public interface Constants {
 
     Map<String,String> ERRORS = new HashMap<String,String>();
 
+    /**
+     * simple-spring-memcache 默认cache name
+     */
+    String DEFAULT_MM_CACHE_NAME = "default";
+
+
 }

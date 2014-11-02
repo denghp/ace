@@ -35,15 +35,17 @@ public class UserRealm extends AuthorizingRealm {
 
     @Resource
     private UserAuthService userAuthService;
+
     /**
      * 给登录用户授权
+     *
      * @param principalCollection
      * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //根据授权信息获取用户名
-        String username = (String)principalCollection.getPrimaryPrincipal();
+        String username = (String) principalCollection.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //获取用户信息
@@ -64,44 +66,53 @@ public class UserRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-//        UsernamePasswordToken upToken = (UsernamePasswordToken) authenticationToken;
-//        String username = upToken.getUsername().trim();
-//        String password = "";
-//        if (upToken.getPassword() != null) {
-//            password = new String(upToken.getPassword());
-//        }
-//        User user = null;
-//        try {
-//            user = userService.login(username, password);
-//        } catch (AceException.UserNotFoundException e) {
-//            throw new UnknownAccountException("user.not.exists", e);
-//        } catch (AceException.UserBlockedException e) {
-//            throw new LockedAccountException("user.blocked", e);
-//        } catch (Exception e) {
-//            logger.error("login error", e);
-//            throw new AuthenticationException("user.unknown.error",e);
-//        }
-        String username = (String)authenticationToken.getPrincipal();
-
-        User user = userService.getByUsername(username);
-
-        if (user == null) {
-            throw new UnknownAccountException();
+        UsernamePasswordToken upToken = (UsernamePasswordToken) authenticationToken;
+        String username = upToken.getUsername().trim();
+        String password = "";
+        if (upToken.getPassword() != null) {
+            password = new String(upToken.getPassword());
         }
 
-        if (user.getStatus().equals(UserStatus.blocked)) {
-            throw new LockedAccountException();
+        User user = null;
+
+        try {
+            user = userService.login(username, password);
+        } catch (AceException.UserNotFoundException e) {
+            throw new UnknownAccountException("user.not.exists", e);
+        } catch (AceException.UserPasswordNotMatchException e) {
+            throw new AuthenticationException("user.password.not.match", e);
+        } catch (AceException.UserPasswordRetryCount e) {
+            throw new ExcessiveAttemptsException("user.password.retry.limit.exceed", e);
+        } catch (AceException.UserBlockedException e) {
+            throw new LockedAccountException("user.blocked", e);
+        } catch (Exception e) {
+            logger.error("login error", e);
+            throw new AuthenticationException("user.unknown.error", e);
         }
+
+
+//        String username = (String)authenticationToken.getPrincipal();
+//
+//        User user = userService.getByUsername(username);
+//
+//        if (user == null) {
+//            throw new UnknownAccountException();
+//        }
+//
+//        if (user.getStatus().equals(UserStatus.blocked)) {
+//            throw new LockedAccountException();
+//        }
 
         //SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUsername(), password.toCharArray(), getName());
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
-                user.getUsername(), //用户名
-                user.getPassword(), //密码
-                ByteSource.Util.bytes(user.getCredentialsSalt()),//salt=username+salt
-                getName()  //realm name
-        );
+//        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
+//                user.getUsername(), //用户名
+//                user.getPassword(), //密码
+//                ByteSource.Util.bytes(user.getCredentialsSalt()),//salt=username+salt
+//                getName()  //realm name
+//        );
 
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUsername(), password.toCharArray(), getName());
         return info;
     }
 }

@@ -40,7 +40,32 @@
     <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
     <mvc:default-servlet-handler/>
 
-    <mvc:resources mapping="/static/**" location="/assets/"/>
+    <mvc:resources mapping="/static/**" location="/assets/">
+        <mvc:resource-chain resource-cache="true" cache-name="default">
+            <mvc:resolvers>
+                <bean class="org.springframework.web.servlet.resource.GzipResourceResolver"/>
+                <bean class="org.springframework.web.servlet.resource.CachingResourceResolver">
+                    <constructor-arg ref="ssmCache" />
+                </bean>
+                <bean class="org.springframework.web.servlet.resource.VersionResourceResolver">
+                    <property name="strategyMap">
+                        <map>
+                            <entry key="/**">
+                                <bean class="org.springframework.web.servlet.resource.ContentVersionStrategy"/>
+                            </entry>
+                        </map>
+                    </property>
+                </bean>
+                <bean class="org.springframework.web.servlet.resource.PathResourceResolver"/>
+            </mvc:resolvers>
+            <mvc:transformers>
+                <bean class="org.springframework.web.servlet.resource.CachingResourceTransformer">
+                    <constructor-arg ref="ssmCache"/>
+                </bean>
+                <bean class="org.springframework.web.servlet.resource.CssLinkResourceTransformer"/>
+            </mvc:transformers>
+        </mvc:resource-chain>
+    </mvc:resources>
 
 
     <!-- 内容协商管理器  -->
@@ -64,7 +89,6 @@
         <!-- 默认的content type -->
         <property name="defaultContentType" value="text/html"/>
     </bean>
-
 
 
     <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->

@@ -4,6 +4,10 @@ import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.service.sys.AuthService;
 import com.ace.core.persistence.sys.entity.Auth;
 import com.ace.core.persistence.sys.mapper.AuthMapper;
+import com.google.code.ssm.api.ParameterValueKeyProvider;
+import com.google.code.ssm.api.ReadThroughMultiCache;
+import com.google.code.ssm.api.ReadThroughMultiCacheOption;
+import com.google.code.ssm.api.ReadThroughSingleCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachePut;
@@ -40,9 +44,9 @@ public class AuthServiceImpl extends GenericServiceImpl<Auth, Long> implements A
 
     }
 
-    @CachePut(value = "Set<Long>", key = "#auth.getRoleIds")
+    @ReadThroughSingleCache(namespace = "user/getRoleIds", expiration = 600)
     @Override
-    public Set<Long> getRoleIds(Long userId, Set<Long> groupIds) {
+    public Set<Long> getRoleIds(@ParameterValueKeyProvider Long userId, Set<Long> groupIds) {
         if (userId == null) {
             logger.error("userId is empty.");
             return null;

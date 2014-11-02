@@ -1,5 +1,6 @@
 package com.ace.console.extra.session.impl;
 
+import com.ace.console.cache.ShiroMemcachedManager;
 import com.ace.console.extra.session.ShiroSessionRepository;
 import com.ace.console.utils.Constants;
 import org.apache.shiro.cache.Cache;
@@ -25,23 +26,17 @@ public class SSMSessionRepository implements ShiroSessionRepository {
 
     private static final String SESSION_PREFIX = "session/";
 
-    private final MemcachedManager memcachedManager;
+    private final ShiroMemcachedManager shiroMemcachedManager;
 
     private Cache<Object, Object> cache;
 
-    public SSMSessionRepository(final MemcachedManager memcachedManager) {
-        try {
-            memcachedManager.afterPropertiesSet();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        this.memcachedManager = memcachedManager;
-
+    public SSMSessionRepository(final ShiroMemcachedManager shiroMemcachedManager) {
+        this.shiroMemcachedManager = shiroMemcachedManager;
     }
 
 
     public Cache<Object, Object> getCache() {
-        return memcachedManager.getCache(Constants.DEFAULT_MM_CACHE_NAME);
+        return shiroMemcachedManager.getCache(Constants.DEFAULT_MM_CACHE_NAME);
     }
 
     @Override

@@ -64,5 +64,10 @@ public interface Constants {
      */
     String DEFAULT_MM_CACHE_NAME = "default";
 
+    /**
+     * 应用服务名称
+     */
+    String DEFAULT_PROJECT_NAME = "ace";
 
+    String DEFAULT_NAMESPACE = "df_namespace";
 }

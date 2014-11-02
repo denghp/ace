@@ -98,7 +98,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-    <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.User" >
+    <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into sys_user (id, username, password,
         realname, mobile, email,
         salt, deleted, status,
@@ -117,7 +117,7 @@
         #{firstLoginTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler}, #{count,jdbcType=BIGINT})
     </insert>
 
-    <insert id="insertSelective" parameterType="com.ace.core.persistence.sys.entity.User" >
+    <insert id="insertSelective" parameterType="com.ace.core.persistence.sys.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >

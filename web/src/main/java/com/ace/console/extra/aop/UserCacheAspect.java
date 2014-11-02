@@ -1,9 +1,14 @@
 package com.ace.console.extra.aop;
 
 import com.ace.console.cache.BaseCacheAspect;
+import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.User;
+import com.google.code.ssm.api.ReadThroughSingleCache;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,167 +23,176 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class UserCacheAspect extends BaseCacheAspect {
-//
-//    public UserCacheAspect() {
-//        setCacheName("sys-userCache");
-//    }
-//
-//    private String idKeyPrefix = "id-";
-//    private String usernameKeyPrefix = "username-";
-//    private String emailKeyPrefix = "email-";
-//    private String mobilePhoneNumberKeyPrefix = "mobile-";
-//
-//    ////////////////////////////////////////////////////////////////////////////////
-//    ////切入点
-//    ////////////////////////////////////////////////////////////////////////////////
-//
-//    /**
-//     * 匹配用户Service
-//     */
-//    @Pointcut(value = "target(com.ace.console.service.sys.UserService)")
-//    private void userServicePointcut() {
-//    }
-//
-//    /**
-//     * only put
-//     * 如 新增 修改 登录 改密 改状态  只有涉及修改即可
-//     */
-//    @Pointcut(value =
-//            "execution(* save(..)) " +
-//                    "|| execution(* saveAndFlush(..)) " +
-//                    "|| execution(* update(..)) " +
-//                    "|| execution(* login(..)) " +
-//                    "|| execution(* changePassword(..)) " +
-//                    "|| execution(* changeStatus(..))")
-//    private void cachePutPointcut() {
-//    }
-//
-//
-//    /**
-//     * evict 比如删除
-//     */
-//    @Pointcut(value = "(execution(* delete(*))) && args(arg)", argNames = "arg")
-//    private void cacheEvictPointcut(Object arg) {
-//    }
-//
-//    /**
-//     * put 或 get
-//     * 比如查询
-//     */
-//    @Pointcut(value =
-//            "(execution(* getByUsername(*)) " +
-//                    "|| execution(* getUserDetails(*)) " +
-//                    "|| execution(* findByEmail(*)) " +
-//                    "|| execution(* findByMobile(*)) " +
-//                    "|| execution(* findOne(*)))")
-//    private void cacheablePointcut() {
-//    }
-//
-//
-//    ////////////////////////////////////////////////////////////////////////////////
-//    ////增强实现
-//    ////////////////////////////////////////////////////////////////////////////////
-//    @AfterReturning(value = "userServicePointcut() && cachePutPointcut()", returning = "user")
-//    public void cachePutAdvice(Object user) {
-//        //put cache
-//        put((User) user);
-//    }
-//
-//    @After(value = "userServicePointcut() && cacheEvictPointcut(arg)", argNames = "arg")
-//    public void cacheEvictAdvice(Object arg) {
-//        if (arg == null) {
-//            return;
-//        }
-//        if (arg instanceof Long) {
-//            //only evict id
-//            evictId(String.valueOf(arg));
-//        }
-//        if (arg instanceof Long[]) {
-//            for (Long id : (Long[]) arg) {
-//                //only evict id
-//                evictId(String.valueOf(id));
-//            }
-//        }
-//
-//        if (arg instanceof String) {
-//            //only evict id
-//            evictId((String) arg);
-//        }
-//        if (arg instanceof String[]) {
-//            for (String id : (String[]) arg) {
-//                //only evict id
-//                evictId(String.valueOf(id));
-//            }
-//        }
-//        if (arg instanceof User) {
-//            //evict user
-//            evict((User) arg);
-//        }
-//    }
-//
-//    @Around(value = "userServicePointcut() && cacheablePointcut()")
-//    public Object cacheableAdvice(ProceedingJoinPoint pjp) throws Throwable {
-//
-//        String methodName = pjp.getSignature().getName();
-//        Object arg = pjp.getArgs().length >= 1 ? pjp.getArgs()[0] : null;
-//
-//        String key = "";
-//        boolean isIdKey = false;
-//        if ("selectById".equals(methodName)) {
-//            key = idKey(String.valueOf(arg));
-//            isIdKey = true;
-//        } else if ("findByUsername".equals(methodName)) {
-//            key = usernameKey((String) arg);
-//        } else if ("findByEmail".equals(methodName)) {
-//            key = emailKey((String) arg);
-//        } else if ("findByMobilePhoneNumber".equals(methodName)) {
-//            key = mobilePhoneNumberKey((String) arg);
-//        }
-//
-//        User user = null;
-//        if (isIdKey == true) {
-//            user = get(key);
-//        } else {
-//            Long id = get(key);
-//            if (id != null) {
-//                key = idKey(String.valueOf(id));
-//                user = get(key);
-//            }
-//        }
-//        //cache hit
-//        if (user != null) {
-//            log.debug("cacheName:{}, hit key:{}", cacheName, key);
-//            return user;
-//        }
-//        log.debug("cacheName:{}, miss key:{}", cacheName, key);
-//
-//        //cache miss
-//        user = (User) pjp.proceed();
-//
-//        //put cache
-//        put(user);
-//        return user;
-//
-//    }
-//
-//
-//    private String idKey(String id) {
-//        return idKeyPrefix + id;
-//    }
-//
-//    private String usernameKey(String username) {
-//        return usernameKeyPrefix + username;
-//    }
-//
-//    private String emailKey(String email) {
-//        return emailKeyPrefix + email;
-//    }
-//
-//    private String mobilePhoneNumberKey(String mobilePhoneNumber) {
-//        return mobilePhoneNumberKeyPrefix + mobilePhoneNumber;
-//    }
-//
-//
+
+    private Logger LOGGER = LoggerFactory.getLogger(getClass());
+
+    public UserCacheAspect() {
+        setCacheName(Constants.DEFAULT_MM_CACHE_NAME);
+    }
+
+    private static final String ID_KEY_PREFIX = "id_";
+    private static final String DT_ID_KEY_PREFIX = "dt_id_";
+    private static final String USERNAME_KEY_PREFIX = "username_";
+    private static final String EMAIL_KEY_PREFIX = "email_";
+    private static final String MOBILE_KEY_PREFIX = "mobile_";
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////切入点
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 匹配用户Service
+     */
+    @Pointcut(value = "target(com.ace.console.service.sys.UserService)")
+    private void userServicePointcut() {
+    }
+
+    /**
+     * only put
+     * 如 新增 修改 登录 改密 改状态  只有涉及修改即可
+     */
+    @Pointcut(value =
+            "execution(* save(..)) " +
+                    "|| execution(* saveAndFlush(..)) " +
+                    "|| execution(* update(..)) " +
+                    "|| execution(* login(..)) " +
+                    "|| execution(* changePassword(..)) " +
+                    "|| execution(* changeStatus(..))")
+    private void cachePutPointcut() {
+    }
+
+
+    /**
+     * evict 比如删除
+     */
+    @Pointcut(value = "(execution(* delete(*))) && args(arg)", argNames = "arg")
+    private void cacheEvictPointcut(Object arg) {
+    }
+
+    /**
+     * put 或 get
+     * 比如查询
+     */
+    @Pointcut(value =
+            "(execution(* getByUsername(*)) " +
+                    "|| execution(* getUserDetails(*)) " +
+                    "|| execution(* getByEmail(*)) " +
+                    "|| execution(* getByMobile(*)) " +
+                    "|| execution(* selectById(*)))")
+    private void cacheablePointcut() {
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////增强实现
+    ////////////////////////////////////////////////////////////////////////////////
+    @AfterReturning(value = "userServicePointcut() && cachePutPointcut()", returning = "user")
+    public void cachePutAdvice(User user) {
+        //put cache
+        String key = getCacheKey(user.getId().toString(),User.class);
+        if (StringUtils.isBlank(key)) {
+            LOGGER.warn("getCacheKey is null.");
+        } else {
+            put(key, user);
+        }
+    }
+
+    @After(value = "userServicePointcut() && cacheEvictPointcut(arg)", argNames = "arg")
+    public void cacheEvictAdvice(Object arg) {
+        if (arg == null) {
+            return;
+        }
+        if (arg instanceof Long) {
+            //only evict id
+            evict(getCacheKey(idKey(String.valueOf(arg)), User.class));
+            //only evict user details
+            evict(getCacheKey(getDtIdKeyPrefix(String.valueOf(arg)), User.class));
+        }
+        if (arg instanceof Long[]) {
+            for (Long id : (Long[]) arg) {
+                //only evict id
+                evict(getCacheKey(idKey(String.valueOf(arg)), User.class));
+                //only evict user details
+                evict(getCacheKey(getDtIdKeyPrefix(String.valueOf(arg)), User.class));
+            }
+        }
+
+        if (arg instanceof String) {
+            //only evict id
+            evict(getCacheKey(idKey(String.valueOf(arg)), User.class));
+            //only evict user details
+            evict(getCacheKey(getDtIdKeyPrefix(String.valueOf(arg)), User.class));
+        }
+        if (arg instanceof String[]) {
+            for (String id : (String[]) arg) {
+                //only evict id
+                evict(getCacheKey(idKey(String.valueOf(arg)), User.class));
+                //only evict user details
+                evict(getCacheKey(getDtIdKeyPrefix(String.valueOf(arg)), User.class));
+            }
+        }
+        if (arg instanceof User) {
+            //evict user
+            evict(getCacheKey(idKey(((User) arg).getId().toString()), User.class));
+            //only evict id
+            evict(getCacheKey(getDtIdKeyPrefix(((User) arg).getId().toString()), User.class));
+        }
+    }
+
+    @Around(value = "userServicePointcut() && cacheablePointcut()")
+    public Object cacheableAdvice(ProceedingJoinPoint pjp) throws Throwable {
+
+        String methodName = pjp.getSignature().getName();
+        Object arg = pjp.getArgs().length >= 1 ? pjp.getArgs()[0] : null;
+
+        String key = "";
+        if ("selectById".equals(methodName)) {
+            key = getCacheKey(idKey(String.valueOf(arg)), User.class);
+        } else if ("getByUsername".equals(methodName)) {
+            key = getCacheKey(usernameKey((String) arg), User.class);
+        } else if ("getByEmail".equals(methodName)) {
+            key = getCacheKey(emailKey((String) arg),User.class);
+        } else if ("getByMobilePhone".equals(methodName)) {
+            key = getCacheKey(mobilePhoneNumberKey((String) arg), User.class);
+        } else if ("getUserDetails".equals(methodName)) {
+            key = getCacheKey(getDtIdKeyPrefix((String) arg), User.class);
+        }
+
+        User user = get(key);
+
+        //cache hit
+        if (user != null) {
+            LOGGER.info("cacheName:{}, hit key:{}", cacheName, key);
+            return user;
+        }
+        LOGGER.info("cacheName:{}, miss key:{}", cacheName, key);
+
+        //cache miss
+        user = (User) pjp.proceed();
+
+        //put cache
+        put(key, user);
+        return user;
+
+    }
+    private String getDtIdKeyPrefix(String id) {return DT_ID_KEY_PREFIX + id;}
+
+    private String idKey(String id) {
+        return ID_KEY_PREFIX + id;
+    }
+
+    private String usernameKey(String username) {
+        return USERNAME_KEY_PREFIX + username;
+    }
+
+    private String emailKey(String email) {
+        return EMAIL_KEY_PREFIX + email;
+    }
+
+    private String mobilePhoneNumberKey(String mobilePhoneNumber) {
+        return MOBILE_KEY_PREFIX + mobilePhoneNumber;
+    }
+
 //    ////////////////////////////////////////////////////////////////////////////////
 //    ////cache 抽象实现
 //    ////////////////////////////////////////////////////////////////////////////////

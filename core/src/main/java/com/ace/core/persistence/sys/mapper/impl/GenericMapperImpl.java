@@ -65,7 +65,7 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
 
     @Override
     public int delete(ID id) {
-        return getSqlSession().delete(getNamespace() + RdbOperation.DELETE_BY_PRIMARY_KEY, id);
+        return getSqlSession().delete(getNamespace() + RdbOperation.DELETE_BY_PRIMARY_KEY.value(), id);
     }
 
     @Override

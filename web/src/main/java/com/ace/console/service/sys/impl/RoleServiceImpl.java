@@ -8,9 +8,14 @@ package com.ace.console.service.sys.impl;
 import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.enums.Status;
 import com.ace.console.service.sys.RoleService;
+import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.RoleResourcePermission;
 import com.ace.core.persistence.sys.mapper.RoleMapper;
+import com.google.code.ssm.api.ParameterValueKeyProvider;
+import com.google.code.ssm.api.ReadThroughMultiCache;
+import com.google.code.ssm.api.ReadThroughMultiCacheOption;
+import com.google.code.ssm.api.ReadThroughSingleCache;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Service;
@@ -31,7 +36,8 @@ public class RoleServiceImpl extends GenericServiceImpl<Role, Long> implements R
     private RoleMapper roleMapper;
 
     @Override
-    public Set<Role> getEnabledRoles(Set<Long> roleIds) {
+    @ReadThroughMultiCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":roles:getEnabledRoles", expiration = 600)
+    public Set<Role> getEnabledRoles(@ParameterValueKeyProvider Set<Long> roleIds) {
         Set<Role> roleSet = Sets.newHashSet();
         //获取角色信息,过滤无效的role
         List<Role> roleList = roleMapper.getListRoleByIds(Lists.newArrayList(roleIds));
@@ -43,7 +49,8 @@ public class RoleServiceImpl extends GenericServiceImpl<Role, Long> implements R
         return roleSet;
     }
 
-    public Map<Long, RoleResourcePermission> getRoleResourceMaps(Long roleId) {
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":roles:getRoleResourceMaps", expiration = 600)
+    public Map<Long, RoleResourcePermission> getRoleResourceMaps(@ParameterValueKeyProvider Long roleId) {
         List<Role> roles = roleMapper.getRoleResourcePermissions(roleId);
         Map<Long, RoleResourcePermission> rrpMaps = new HashMap<Long, RoleResourcePermission>();
         if (roles != null && roles.size() > 0) {

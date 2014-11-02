@@ -1,19 +1,11 @@
 package com.ace.console.cache;
 
-import com.google.code.ssm.PrefixedCacheImpl;
-import com.google.code.ssm.spring.SSMCache;
-import com.google.code.ssm.spring.SSMCacheManager;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;

@@ -50,5 +50,17 @@ public interface UserService extends GenericService<User, Long> {
      */
     public User getUserDetails(Long userId);
 
+    /**
+     * 根据用户手机号查询
+     * @param mobile
+     * @return
+     */
+    public User getByMobilePhone(String mobile);
 
+    /**
+     * 根据用户email 查询用户信息
+     * @param email
+     * @return
+     */
+    public User getByEmail(String email);
 }

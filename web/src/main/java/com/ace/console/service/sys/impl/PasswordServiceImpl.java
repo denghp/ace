@@ -1,5 +1,7 @@
 package com.ace.console.service.sys.impl;
 
+import com.ace.console.cache.ShiroMemcachedCache;
+import com.ace.console.cache.ShiroMemcachedManager;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.PasswordService;
 import com.ace.console.utils.Constants;
@@ -30,7 +32,7 @@ public class PasswordServiceImpl implements PasswordService {
     private Logger logger = LoggerFactory.getLogger(PasswordServiceImpl.class);
 
     @Resource
-    private MemcachedManager memcachedManager;
+    private ShiroMemcachedManager shiroMemcachedManager;
 
     private Cache<Object, Object> cache;
 
@@ -41,7 +43,7 @@ public class PasswordServiceImpl implements PasswordService {
 
     @PostConstruct
     public void init() {
-        cache = memcachedManager.getCache(Constants.DEFAULT_MM_CACHE_NAME);
+        cache = shiroMemcachedManager.getCache(Constants.DEFAULT_MM_CACHE_NAME);
     }
 
     @Override

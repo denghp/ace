@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public abstract class GenericServiceImpl<T, ID extends Serializable> implements GenericService<T, ID>, InitializingBean {
 
-    private Logger logger = LoggerFactory.getLogger(GenericServiceImpl.class);
+    private Logger LOGGER = LoggerFactory.getLogger(GenericServiceImpl.class);
 
     private GenericMapper<T, ID> genericeMapper;
 
@@ -58,7 +58,7 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
 
         try {
             genericeMapper.insert(entity);
-            logger.debug("entity : {}", JsonUtils.getObjectMapper().writeValueAsString(entity));
+            LOGGER.debug("entity : {}", JsonUtils.getObjectMapper().writeValueAsString(entity));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -66,25 +66,37 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
     }
 
     @Override
-    public void delete(T entity) throws AceException {
-
+    public void delete(ID id) throws AceException {
+        if (id == null) {
+            LOGGER.warn("delete object error , the id is empty.");
+            return;
+        }
+        genericeMapper.delete(id);
     }
 
     @Override
     public void deleteList(List<ID> ids) throws AceException {
+        if (ids == null || ids.size() <= 0) {
+            LOGGER.warn("delete objects error , the ids is empty.");
+            return;
+        }
         genericeMapper.deleteBatch(ids);
     }
 
     @Override
     public void update(T entity) throws AceException {
+        if (entity == null) {
+            LOGGER.warn("update object failed, the entity is null.");
+            return;
+        }
         genericeMapper.update(entity);
     }
 
 
     @Override
-    public T selectById(@ParameterValueKeyProvider ID id) {
+    public T selectById(ID id) {
         if (id == null) {
-            logger.error("id is null.");
+            LOGGER.error("id is null.");
             return null;
         }
         return genericeMapper.selectById(id);

@@ -10,6 +10,7 @@ import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.ResourceService;
 import com.ace.console.service.sys.RoleService;
 import com.ace.console.service.sys.UserAuthService;
+import com.ace.console.utils.Constants;
 import com.ace.core.entity.ZTree;
 import com.ace.core.persistence.sys.entity.Menu;
 import com.ace.core.persistence.sys.entity.Resource;
@@ -54,7 +55,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @param resource
      * @return
      */
-    public String findActualResourceIdentity(Resource resource) {
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME +":menus:findActualResourceIdentity", expiration = 600)
+    public String findActualResourceIdentity(@ParameterValueKeyProvider Resource resource) {
 
         if (resource == null) {
             return null;
@@ -109,7 +111,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      *
      * @return
      */
-    @ReadThroughAssignCache(assignedKey = "menu/findMenus", namespace = "menu", expiration = 600)
+    @ReadThroughAssignCache(assignedKey = Constants.DEFAULT_PROJECT_NAME + ":menu:findMenus", namespace = "menu", expiration = 600)
     public List<Menu> findMenus( ) {
         String sort = "parent_id desc,weight desc";
         Map<String, Object> params = new HashMap<String, Object>();
@@ -126,7 +128,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @param user
      * @return
      */
-    @ReadThroughSingleCache(namespace = "menus/findMenusByUser", expiration = 600)
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:findMenusByUser", expiration = 600)
     public List<Menu> findMenus(@ParameterValueKeyProvider User user) {
         String sort = "parent_id desc,weight desc";
         Map<String, Object> params = new HashMap<String, Object>();
@@ -145,7 +147,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         return convertToMenus(resources);
     }
 
-    public List<Resource> getChildsByPid(int pid) {
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:getChildsByPid", expiration = 600)
+    public List<Resource> getChildsByPid(@ParameterValueKeyProvider int pid) {
         return resourceMapper.getChildsByPid(pid);
     }
 
@@ -190,7 +193,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @param resources
      * @return
      */
-    public List<Menu> convertToMenus(List<Resource> resources) {
+    @ReadThroughMultiCache(namespace = Constants.DEFAULT_PROJECT_NAME +":menu:convertToMenus", expiration = 600)
+    public List<Menu> convertToMenus(@ParameterValueKeyProvider List<Resource> resources) {
 
         if (resources.size() == 0) {
             return Collections.EMPTY_LIST;
@@ -242,7 +246,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         return getAllWithSort(null);
     }
 
-    @ReadThroughAssignCache(assignedKey = "menu/getAllWithSort", namespace = "menu", expiration = 600)
+    @ReadThroughAssignCache(assignedKey = ":menu:getAllWithSort", namespace = Constants.DEFAULT_PROJECT_NAME , expiration = 600)
     public List<Resource> getAllWithSort(String sort) {
         if (StringUtils.isBlank(sort)) {
             logger.warn("sort is empty, use default sort!!");
@@ -253,6 +257,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         return resourceMapper.getAllWithSort(params);
     }
 
+    @ReadThroughMultiCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menu:getZTreeList", expiration = 600,
+            option = @ReadThroughMultiCacheOption(generateKeysFromResult = true))
     public List<ZTree<Integer>> getZTreeList(boolean async, Long roleId) {
         List<Resource> resourceList = getAllWithSort();
         Map<Long, RoleResourcePermission> rrpMaps = null;
@@ -280,6 +286,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         return zTrees;
     }
 
+    @ReadThroughAssignCache(assignedKey = ":menu:convertToZtree", namespace = Constants.DEFAULT_PROJECT_NAME , expiration = 600)
     private ZTree convertToZtree(Resource m, boolean open) {
         ZTree<Long> zTree = new ZTree<Long>();
         zTree.setId(m.getId());

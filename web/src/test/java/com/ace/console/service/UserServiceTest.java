@@ -45,7 +45,7 @@ public class UserServiceTest {
 
     @Before
     public void init() {
-        user = new User("admin", password);
+        user = new User("admin1", password);
 
     }
 
@@ -54,6 +54,12 @@ public class UserServiceTest {
        User en = userService.save(user);
        logger.info("user : {}", JsonUtils.getObjectMapper().writeValueAsString(en));
        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void deleteUser() throws AceException {
+        User en = userService.save(user);
+        userService.delete(en.getId());
     }
 
     @Test

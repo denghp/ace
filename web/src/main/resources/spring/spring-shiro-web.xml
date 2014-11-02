@@ -20,6 +20,7 @@
        default-lazy-init="true">
    <import resource="spring-service.xml" />
    <import resource="spring-context.xml" />
+   <import resource="spring-memcached.xml" />
     <!-- 凭证匹配器
     <bean id="credentialsMatcher" class="com.ace.console.shiro.credentials.RetryLimitHashedCredentialsMatcher">
         <constructor-arg ref="shiroCacheManager"/>

@@ -4,6 +4,7 @@ import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.PasswordService;
 import com.ace.console.service.sys.UserService;
+import com.ace.console.utils.Constants;
 import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.sys.entity.User;
 import com.ace.core.persistence.sys.enums.UserStatus;
@@ -37,8 +38,8 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
     private UserMapper userMapper;
 
 
-//    @Resource
-//    private PasswordService passwordService;
+    @Resource
+    private PasswordService passwordService;
 
     /**
      * 创建用户
@@ -80,9 +81,8 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         return false;
     }
 
-    @ReadThroughSingleCache(namespace = "user/getByUsername", expiration = 3600)
     @Override
-    public User getByUsername(@ParameterValueKeyProvider String username) {
+    public User getByUsername(String username) {
         if (StringUtils.isBlank(username)) {
             logger.warn("username is empty.");
             return null;
@@ -104,7 +104,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
             throw new AceException.UserBlockedException();
         }
         //验证密码
-//        passwordService.validate(user, password);
+        passwordService.validate(user, password);
 
         return user;
     }
@@ -118,4 +118,13 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         return userMapper.getUserDetails(userId);
     }
 
+    @Override
+    public User getByMobilePhone(String mobile) {
+        return null;
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return null;
+    }
 }

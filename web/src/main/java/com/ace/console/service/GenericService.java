@@ -44,10 +44,10 @@ public interface GenericService<T, ID extends Serializable> {
     /**
      * 删除实体
      *
-     * @param entity
-     *          实体Bean
+     * @param id
+     *          实体对的主键ID
      */
-    public void delete(T entity) throws AceException;
+    public void delete(ID id) throws AceException;
 
     /**
      *

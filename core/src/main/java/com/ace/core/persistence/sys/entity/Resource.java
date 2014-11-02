@@ -284,14 +284,4 @@ public class Resource implements Treeable<Long>, Serializable {
         return "icon-angle-right";
     }
 
-    @Override
-    public String toString() {
-        try {
-            return JsonUtils.getObjectMapper().writeValueAsString(this);
-        } catch (Exception ex) {
-            //ignore
-        }
-        return  null;
-    }
-
 }

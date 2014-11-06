@@ -24,7 +24,7 @@ public class BaseCacheAspect implements InitializingBean {
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private CacheManager cacheManager;
+    private CacheManager ssmCacheManager;
 
     private Cache cache;
 
@@ -46,13 +46,13 @@ public class BaseCacheAspect implements InitializingBean {
      * @return
      */
     public void setCacheManager(CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
+        this.ssmCacheManager = cacheManager;
     }
 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        cache = cacheManager.getCache(cacheName);
+        cache = ssmCacheManager.getCache(cacheName);
     }
 
 
@@ -62,7 +62,7 @@ public class BaseCacheAspect implements InitializingBean {
     }
 
     public void evict(String key) {
-        LOGGER.debug("cacheName:{}, evict key:{}", cacheName, key);
+        LOGGER.info("cacheName:{}, evict key:{}", cacheName, key);
         this.cache.evict(key);
     }
 

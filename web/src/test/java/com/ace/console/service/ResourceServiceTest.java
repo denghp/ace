@@ -7,6 +7,7 @@ package com.ace.console.service;
 
 import com.ace.console.service.sys.ResourceService;
 import com.ace.core.persistence.sys.entity.Menu;
+import com.ace.core.persistence.sys.entity.Resources;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,13 @@ public class ResourceServiceTest {
         Assert.assertNotNull(menuList);
     }
 
+    @Test
+    public void selectById() {
+        List<Resources> resourceList = resourceService.selectAll();
+        for (Resources resources : resourceList) {
+            resourceService.selectById(resources.getId());
+        }
+    }
 
 
 }

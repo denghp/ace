@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ace.core.persistence.sys.mapper.ResourceMapper" >
-  <resultMap id="BaseResultMap" type="com.ace.core.persistence.sys.entity.Resource" >
+<mapper namespace="com.ace.core.persistence.sys.mapper.ResourcesMapper" >
+  <resultMap id="BaseResultMap" type="com.ace.core.persistence.sys.entity.Resources" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="identity" property="identity" jdbcType="VARCHAR" />
@@ -24,25 +24,31 @@
   </sql>
 
     <select id="getChildsByPid" resultMap="BaseResultMap">
-        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,enabled,create_time, modify_time,if (getChildCount(id) > 0,true,false) as hasChildren,if (getChildCount(id) > 0,false,true) as loaded FROM sys_resource where parent_id = #{pid} order by parent_id desc,weight asc;
+        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,enabled,create_time, modify_time,if (getChildCount(id) > 0,true,false) as hasChildren,if (getChildCount(id) > 0,false,true) as loaded FROM sys_resources where parent_id = #{pid} order by parent_id desc,weight asc;
     </select>
 
     <select id="getAllWithSort" parameterType="java.lang.String" resultMap="BaseResultMap">
-        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,enabled,create_time, modify_time,if (getChildCount(id) > 0,true,false) as hasChildren FROM sys_resource where enabled = 1  ORDER by ${sort};
+        SELECT id,name,identity,url,parent_id,parent_ids,icon,weight,enabled,create_time, modify_time,if (getChildCount(id) > 0,true,false) as hasChildren FROM sys_resources where enabled = 1  ORDER by ${sort};
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from sys_resource
+    from sys_resources
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_resources limit 200;
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sys_resource
+    delete from sys_resources
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.Resource" useGeneratedKeys="true" keyProperty="id">
-    insert into sys_resource (id, name, identity, 
+  <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.Resources" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_resources (id, name, identity, 
       url, parent_id, parent_ids, 
       icon, weight, enabled, 
       create_time, modify_time)
@@ -52,8 +58,8 @@
       #{createTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler},
       #{modifyTime,typeHandler=com.ace.commons.mybatis.type.JodaDateTimestampTypeHandler})
   </insert>
-  <insert id="insertSelective" parameterType="com.ace.core.persistence.sys.entity.Resource"  useGeneratedKeys="true" keyProperty="id">
-    insert into sys_resource
+  <insert id="insertSelective" parameterType="com.ace.core.persistence.sys.entity.Resources"  useGeneratedKeys="true" keyProperty="id">
+    insert into sys_resources
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -125,8 +131,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ace.core.persistence.sys.entity.Resource" >
-    update sys_resource
+  <update id="updateByPrimaryKeySelective" parameterType="com.ace.core.persistence.sys.entity.Resources" >
+    update sys_resources
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -161,8 +167,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ace.core.persistence.sys.entity.Resource" >
-    update sys_resource
+  <update id="updateByPrimaryKey" parameterType="com.ace.core.persistence.sys.entity.Resources" >
+    update sys_resources
     set name = #{name,jdbcType=VARCHAR},
       identity = #{identity,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},

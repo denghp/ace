@@ -11,7 +11,7 @@ BEGIN
        SET cTemp =cast(rootId as CHAR);
        WHILE cTemp is not null DO
          SET pTemp = concat(pTemp,',',cTemp);
-         SELECT group_concat(id) INTO cTemp FROM sys_resource
+         SELECT group_concat(id) INTO cTemp FROM sys_resources
          WHERE FIND_IN_SET(parent_id,cTemp)>0;
        END WHILE;
        RETURN pTemp;
@@ -24,7 +24,7 @@ CREATE FUNCTION `getChildCount`(rootId INT)
      RETURNS INT
 BEGIN
        DECLARE pTemp INT DEFAULT 0 ;
-       set pTemp = (select count(*) from sys_resource f_t where f_t.parent_id = rootId);
+       set pTemp = (select count(*) from sys_resources f_t where f_t.parent_id = rootId);
        RETURN pTemp;
 END ||
 DELIMITER ;;

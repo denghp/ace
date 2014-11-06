@@ -2,8 +2,11 @@ package com.ace.console.service.sys.impl;
 
 import com.ace.console.bind.annotation.BaseComponent;
 import com.ace.console.service.sys.GroupRelationService;
+import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.GroupRelation;
 import com.ace.core.persistence.sys.mapper.GroupRelationMapper;
+import com.google.code.ssm.api.ParameterValueKeyProvider;
+import com.google.code.ssm.api.ReadThroughSingleCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,7 +33,8 @@ public class GroupRelationServiceImpl extends GenericServiceImpl<GroupRelation, 
     private GroupRelationMapper groupRelationMapper;
 
     @Override
-    public List<Long> getGroupIds(Long userId) {
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":group:getGroupIds", expiration = 600)
+    public List<Long> getGroupIds(@ParameterValueKeyProvider Long userId) {
         if (userId == null) {
             logger.warn("Then userId is null.");
             return null;

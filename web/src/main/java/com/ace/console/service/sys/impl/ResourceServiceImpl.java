@@ -13,10 +13,10 @@ import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.utils.Constants;
 import com.ace.core.entity.ZTree;
 import com.ace.core.persistence.sys.entity.Menu;
-import com.ace.core.persistence.sys.entity.Resource;
+import com.ace.core.persistence.sys.entity.Resources;
 import com.ace.core.persistence.sys.entity.RoleResourcePermission;
 import com.ace.core.persistence.sys.entity.User;
-import com.ace.core.persistence.sys.mapper.ResourceMapper;
+import com.ace.core.persistence.sys.mapper.ResourcesMapper;
 import com.google.code.ssm.api.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +33,7 @@ import java.util.*;
  * @Description:
  */
 @Service
-public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> implements ResourceService {
+public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> implements ResourceService {
 
     private static Logger logger = LoggerFactory.getLogger(ResourceServiceImpl.class);
 
@@ -45,7 +45,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
 
     @BaseComponent
     @javax.annotation.Resource
-    private ResourceMapper resourceMapper;
+    private ResourcesMapper resourcesMapper;
 
     public static final String DEFAULT_SORT = "parent_id desc,weight desc";
 
@@ -55,7 +55,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @param resource
      * @return
      */
-    public String findActualResourceIdentity(Resource resource) {
+    public String findActualResourceIdentity(Resources resource) {
 
         if (resource == null) {
             return null;
@@ -65,7 +65,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
 
         boolean hasResourceIdentity = !StringUtils.isEmpty(resource.getIdentity());
 
-        Resource parent = selectById(resource.getParentId());
+        Resources parent = selectById(resource.getParentId());
         while (parent != null) {
             if (!StringUtils.isEmpty(parent.getIdentity())) {
                 s.insert(0, parent.getIdentity() + ":");
@@ -89,7 +89,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         //如果有儿子 最后拼一个*
         /**
          boolean hasChildren = false;
-         for (Resource r : resourceMapper.getList()) {
+         for (Resources r : resourcesMapper.getList()) {
          if (resource.getId().equals(r.getParentId())) {
          hasChildren = true;
          break;
@@ -114,7 +114,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
     public List<Menu> findMenus( ) {
         String sort = "parent_id desc,weight desc";
 
-        List<Resource> resources = getAllWithSort(sort);
+        List<Resources> resources = getAllWithSort(sort);
 
         return convertToMenus(resources);
     }
@@ -129,12 +129,12 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
     @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:findMenusByUser", expiration = 600)
     public List<Menu> findMenus(@ParameterValueKeyProvider User user) {
         String sort = "parent_id desc,weight desc";
-        List<Resource> resources = getAllWithSort(sort);
+        List<Resources> resources = getAllWithSort(sort);
 
         Set<String> userPermissions = null;
         userPermissions = userAuthService.findPermissions(user);
 
-        Iterator<Resource> iter = resources.iterator();
+        Iterator<Resources> iter = resources.iterator();
         while (iter.hasNext()) {
             if (!hasPermission(iter.next(), userPermissions)) {
                 iter.remove();
@@ -144,12 +144,13 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
     }
 
     @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:getChildsByPid", expiration = 600)
-    public List<Resource> getChildsByPid(@ParameterValueKeyProvider int pid) {
-        return resourceMapper.getChildsByPid(pid);
+    public List<Resources> getChildsByPid(@ParameterValueKeyProvider int pid) {
+        logger.debug(">>>> getChildsByPid : {}", pid);
+        return resourcesMapper.getChildsByPid(pid);
     }
 
 
-    private boolean hasPermission(Resource resource, Set<String> userPermissions) {
+    private boolean hasPermission(Resources resource, Set<String> userPermissions) {
         String actualResourceIdentity = findActualResourceIdentity(resource);
         if (StringUtils.isEmpty(actualResourceIdentity)) {
             return true;
@@ -190,7 +191,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @return
      */
     @ReadThroughMultiCache(namespace = Constants.DEFAULT_PROJECT_NAME +":menu:convertToMenus", expiration = 600)
-    public List<Menu> convertToMenus(@ParameterValueKeyProvider List<Resource> resources) {
+    public List<Menu> convertToMenus(@ParameterValueKeyProvider List<Resources> resources) {
 
         if (resources.size() == 0) {
             return Collections.EMPTY_LIST;
@@ -219,9 +220,9 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         }
     }
 
-    private static void recursiveMenu(Menu menu, List<Resource> resources) {
+    private static void recursiveMenu(Menu menu, List<Resources> resources) {
         for (int i = resources.size() - 1; i >= 0; i--) {
-            Resource resource = resources.get(i);
+            Resources resource = resources.get(i);
             if (resource.getParentId() != null && resource.getParentId().equals(menu.getId())) {
                 menu.getChildren().add(convertToMenu(resource));
                 resources.remove(i);
@@ -233,30 +234,26 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         }
     }
 
-    private static Menu convertToMenu(Resource resource) {
+    private static Menu convertToMenu(Resources resource) {
         return new Menu(resource.getId(), resource.getName(), resource.getIcon(), resource.getUrl(),
                 resource.getWeight(), resource.getIdentity(), resource.getEnabled());
     }
 
-    public List<Resource> getAllWithSort() {
-        return getAllWithSort(null);
-    }
-
     @ReadThroughAssignCache(assignedKey = ":menu:getAllWithSort", namespace = Constants.DEFAULT_PROJECT_NAME , expiration = 600)
-    public List<Resource> getAllWithSort(String sort) {
+    public List<Resources> getAllWithSort(String sort) {
         if (StringUtils.isBlank(sort)) {
             logger.warn("sort is empty, use default sort!!");
             sort = DEFAULT_SORT;
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sort", sort);
-        return resourceMapper.getAllWithSort(params);
+        return resourcesMapper.getAllWithSort(params);
     }
 
     @ReadThroughMultiCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menu:getZTreeList", expiration = 600,
             option = @ReadThroughMultiCacheOption(generateKeysFromResult = true))
     public List<ZTree<Integer>> getZTreeList(boolean async, Long roleId) {
-        List<Resource> resourceList = getAllWithSort();
+        List<Resources> resourceList = getAllWithSort(null);
         Map<Long, RoleResourcePermission> rrpMaps = null;
         if (roleId != null) {
             rrpMaps = roleService.getRoleResourceMaps(roleId);
@@ -265,14 +262,14 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         return convertToZtreeList(resourceList, async, null);
     }
 
-    private List<ZTree<Integer>> convertToZtreeList(List<Resource> models, boolean async, Map<Long, RoleResourcePermission> rrpMaps) {
+    private List<ZTree<Integer>> convertToZtreeList(List<Resources> models, boolean async, Map<Long, RoleResourcePermission> rrpMaps) {
         List<ZTree<Integer>> zTrees = Lists.newArrayList();
 
         if (models == null || models.isEmpty()) {
             return zTrees;
         }
 
-        for (Resource resource : models) {
+        for (Resources resource : models) {
             ZTree zTree = convertToZtree(resource, async);
             if (rrpMaps != null && rrpMaps.containsKey(resource.getId())) {
                 zTree.setChecked(true);
@@ -283,7 +280,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
     }
 
     @ReadThroughAssignCache(assignedKey = ":menu:convertToZtree", namespace = Constants.DEFAULT_PROJECT_NAME , expiration = 600)
-    private ZTree convertToZtree(Resource m, boolean open) {
+    private ZTree convertToZtree(Resources m, boolean open) {
         ZTree<Long> zTree = new ZTree<Long>();
         zTree.setId(m.getId());
         zTree.setpId(m.getParentId());
@@ -308,12 +305,12 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
      * @param t 实体
      * @return 返回保存的实体
      */
-    public Resource save(Resource t) throws AceException {
+    public Resources save(Resources t) throws AceException {
         if (t == null) {
             return null;
         }
         //获取父级
-        Resource resource = selectById(t.getParentId());
+        Resources resource = selectById(t.getParentId());
         if (resource == null) {
             throw AceException.create(AceException.Code.NOT_FOUND, "父级资源没有找到!");
         }
@@ -322,11 +319,14 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resource, Long> impl
         } else {
             t.setParentIds(resource.getParentIds() + "/" + resource.getId());
         }
-        resourceMapper.insert(t);
+        resourcesMapper.insert(t);
         return t;
     }
 
-
-
-
+    @Override
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:selectById", expiration = 600)
+    public Resources selectById(@ParameterValueKeyProvider Long aLong) {
+        logger.info("===========Resources selectById : {}", aLong);
+        return resourcesMapper.selectById(aLong);
+    }
 }

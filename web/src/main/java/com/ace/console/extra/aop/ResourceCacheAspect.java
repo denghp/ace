@@ -2,8 +2,6 @@ package com.ace.console.extra.aop;
 
 import com.ace.console.cache.BaseCacheAspect;
 import com.ace.console.utils.Constants;
-import com.ace.core.persistence.sys.entity.Resource;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,37 +59,13 @@ public class ResourceCacheAspect extends BaseCacheAspect {
      * put 或 get
      * 比如查询
      */
-    @Pointcut(value =
-            "(execution(* selectById(*)))")
-    private void cacheablePointcut() {
+//    @Pointcut(value =
+//            "(execution(* selectById(*)))")
+//    private void cacheablePointcut() {
+//
+//    }
 
-    }
 
-    @Around(value = "resourceServicePointcut() && cacheablePointcut()")
-    public Object cacheableAdvice(ProceedingJoinPoint pjp) throws Throwable {
-        String methodName = pjp.getSignature().getName();
-        Object arg = pjp.getArgs().length >= 1 ? pjp.getArgs()[0] : null;
-
-        String key = "";
-
-        if ("selectById".equals(methodName)) {
-            key = getCacheKey(idKey(String.valueOf(arg)), Resource.class);
-        }
-        Resource resource = get(key);
-
-        //cache hit
-        if (resource != null) {
-            LOGGER.info("cacheName:{}, hit key:{}", cacheName, key);
-            return resource;
-        }
-        //cache miss
-        resource = (Resource) pjp.proceed();
-
-        //put cache
-        put(key, resource);
-        LOGGER.info("cacheName:{}, miss key:{}", cacheName, key);
-        return resource;
-    }
 
 
     private String idKey(String id) {

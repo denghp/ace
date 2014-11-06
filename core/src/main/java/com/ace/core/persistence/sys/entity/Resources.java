@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
-public class Resource implements Treeable<Long>, Serializable {
+public class Resources implements Treeable<Long>, Serializable {
 
     private Long id;
 

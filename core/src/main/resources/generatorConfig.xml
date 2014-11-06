@@ -45,7 +45,7 @@
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table schema="ace" tableName="sys_role" domainObjectName="Role"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table schema="ace" tableName="sys_resource" domainObjectName="Resource"
+        <table schema="ace" tableName="sys_resources" domainObjectName="Resources"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table schema="ace" tableName="sys_group" domainObjectName="Group"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>

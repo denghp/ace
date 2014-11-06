@@ -6,7 +6,6 @@
 package com.ace.console.service.sys.impl;
 
 import com.ace.console.enums.Status;
-import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.*;
 import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.*;
@@ -121,7 +120,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         //循环获取角色对应的资源及权限
         for (Role role : roles) {
             for (RoleResourcePermission rrp : role.getResourcePermissions()) {
-                com.ace.core.persistence.sys.entity.Resource resource = resourceService.selectById(rrp.getResourceId());
+                Resources resource = resourceService.selectById(rrp.getResourceId());
 
                 String actualResourceIdentity = resourceService.findActualResourceIdentity(resource);
 

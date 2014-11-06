@@ -5,8 +5,8 @@
  */
 package com.ace.core.persistence.sys.mapper.impl;
 
-import com.ace.core.persistence.sys.entity.Resource;
-import com.ace.core.persistence.sys.mapper.ResourceMapper;
+import com.ace.core.persistence.sys.entity.Resources;
+import com.ace.core.persistence.sys.mapper.ResourcesMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @Description:
  */
 @Repository
-public class ResourceMapperImp extends GenericMapperImpl<Resource, Long> implements ResourceMapper {
+public class ResourcesMapperImp extends GenericMapperImpl<Resources, Long> implements ResourcesMapper {
     private Logger logger = LoggerFactory.getLogger(UserMapperImpl.class);
     public enum ResourceRdbOperation {
 
@@ -39,12 +39,12 @@ public class ResourceMapperImp extends GenericMapperImpl<Resource, Long> impleme
     }
 
     @Override
-    public List<Resource> getAllWithSort(Map<String, Object> params) {
+    public List<Resources> getAllWithSort(Map<String, Object> params) {
         return getSqlSession().selectList(getNamespace() + ResourceRdbOperation.GET_ALL_WITH_SORT.value(), params);
     }
 
     @Override
-    public List<Resource> getChildsByPid(int pid) {
+    public List<Resources> getChildsByPid(int pid) {
         return getSqlSession().selectList(getNamespace() + ResourceRdbOperation.GET_CHILDS_BY_PID.value(), pid);
     }
 }

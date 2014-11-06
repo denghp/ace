@@ -17,7 +17,7 @@ drop table if exists sys_job;
 
 drop table if exists sys_permission;
 
-drop table if exists sys_resource;
+drop table if exists sys_resources;
 
 drop table if exists sys_role_resource_permission;
 
@@ -320,9 +320,9 @@ create index idx_sys_permission_permission on sys_permission
 );
 
 /*==============================================================*/
-/* Table: sys_resource                                          */
+/* Table: sys_resources                                          */
 /*==============================================================*/
-create table sys_resource
+create table sys_resources
 (
   id                   bigint not null auto_increment comment '资源主键',
   name                 varchar(125) default NULL comment '资源名称',
@@ -339,44 +339,44 @@ create table sys_resource
 )
   auto_increment = 1000;
 
-alter table sys_resource comment '系统资源表';
+alter table sys_resources comment '系统资源表';
 
 /*==============================================================*/
-/* Index: idx_sys_resource_name                                 */
+/* Index: idx_sys_resources_name                                 */
 /*==============================================================*/
-create index idx_sys_resource_name on sys_resource
+create index idx_sys_resources_name on sys_resources
 (
   name
 );
 
 /*==============================================================*/
-/* Index: idx_sys_resource_identity                             */
+/* Index: idx_sys_resources_identity                             */
 /*==============================================================*/
-create index idx_sys_resource_identity on sys_resource
+create index idx_sys_resources_identity on sys_resources
 (
   identity
 );
 
 /*==============================================================*/
-/* Index: idx_sys_resource_user                                 */
+/* Index: idx_sys_resources_user                                 */
 /*==============================================================*/
-create index idx_sys_resource_user on sys_resource
+create index idx_sys_resources_user on sys_resources
 (
   url
 );
 
 /*==============================================================*/
-/* Index: idx_sys_resource_parent_id                            */
+/* Index: idx_sys_resources_parent_id                            */
 /*==============================================================*/
-create index idx_sys_resource_parent_id on sys_resource
+create index idx_sys_resources_parent_id on sys_resources
 (
   parent_id
 );
 
 /*==============================================================*/
-/* Index: idx_sys_resource_parent_ids_weight                    */
+/* Index: idx_sys_resources_parent_ids_weight                    */
 /*==============================================================*/
-create index idx_sys_resource_parent_ids_weight on sys_resource
+create index idx_sys_resources_parent_ids_weight on sys_resources
 (
   weight
 );

@@ -98,14 +98,8 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
     @Override
     public T selectById(ID id) {
         String namespace = getNamespace() + RdbOperation.SELECT_BY_PRIMARY_KEY.value();
-        Object obj = getSqlSession().selectOne(namespace, id);
-        try {
-            logger.info("----- {} ,findOne Id : {} ", namespace,id);
-            logger.debug("id : {} entity : {}", id, JsonUtils.getObjectMapper().writeValueAsString(obj));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return (T)obj;
+        logger.info("----- {} ,findOne Id : {} ", namespace,id);
+        return getSqlSession().selectOne(namespace, id);
     }
 
     @Override

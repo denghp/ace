@@ -54,9 +54,6 @@
     <logger name="net.rubyeye.xmemcached" level="INFO">
         <appender-ref ref="ROLLING"/>
     </logger>
-    <logger name="com.google.code" level="INFO">
-        <appender-ref ref="ROLLING"/>
-    </logger>
 
     <logger name="org.springframework" level="INFO">
         <appender-ref ref="ROLLING"/>
@@ -66,7 +63,7 @@
         <appender-ref ref="ROLLING"/>
     </logger>
 
-    <root level="DEBUG" >
+    <root level="INFO" >
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLING"/>
     </root>

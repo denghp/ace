@@ -16,6 +16,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -110,13 +111,16 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":auth:findPermissions", expiration = 600)
-    public Set<String> findPermissions(@ParameterValueKeyProvider User user) {
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":auth:findStringPermissions", expiration = 600)
+    public Set<String> findStringPermissions(@ParameterValueKeyProvider User user) {
 
         Set<String> permissions = Sets.newHashSet();
 
         //获取所有角色
         Set<Role> roles = findRoles(user);
+        if (roles == null || roles.isEmpty()) {
+
+        }
         //循环获取角色对应的资源及权限
         for (Role role : roles) {
             for (RoleResourcePermission rrp : role.getResourcePermissions()) {

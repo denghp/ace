@@ -45,7 +45,7 @@
                 <bean class="com.ace.console.cache.ShiroMemcachedCache" >
                     <constructor-arg name="cache" index="0" ref="defaultCache" />
                     <!-- 5 minutes -->
-                    <constructor-arg name="expiration" index="1" value="300" />
+                    <constructor-arg name="expiration" index="1" value="600" />
                     <!-- @CacheEvict(..., "allEntries" = true) won't work because allowClear is false,
                     so we won't flush accidentally all entries from memcached instance -->
                     <constructor-arg name="allowClear" index="2" value="false" />

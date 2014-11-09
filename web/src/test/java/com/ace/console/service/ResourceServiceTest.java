@@ -6,8 +6,10 @@
 package com.ace.console.service;
 
 import com.ace.console.service.sys.ResourceService;
+import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.Menu;
 import com.ace.core.persistence.sys.entity.Resources;
+import com.ace.core.persistence.sys.entity.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,10 +34,23 @@ public class ResourceServiceTest {
     @Resource
     private ResourceService resourceService;
 
+    @Resource
+    private UserService userService;
 
     @Test
     public void findMenusTest() {
         List<Menu> menuList = resourceService.findMenus();
+
+        for (Menu menu : menuList) {
+            logger.info("menu : {}", menu.toString());
+        }
+        Assert.assertNotNull(menuList);
+    }
+
+    @Test
+    public void findMenusByUserTest() {
+        User user = userService.getByUsername("admin");
+        List<Menu> menuList = resourceService.findMenus(user);
 
         for (Menu menu : menuList) {
             logger.info("menu : {}", menu.toString());

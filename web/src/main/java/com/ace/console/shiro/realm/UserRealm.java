@@ -4,13 +4,11 @@ import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.User;
-import com.ace.core.persistence.sys.enums.UserStatus;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +51,7 @@ public class UserRealm extends AuthorizingRealm {
         //根据用户获取相应角色并授权
         //TODO: 获取用户角色和权限
         authorizationInfo.setRoles(userAuthService.findStringRoles(user));
-        Set<String> permissions = userAuthService.findPermissions(user);
+        Set<String> permissions = userAuthService.findStringPermissions(user);
         //获取用户相应的权限
         authorizationInfo.setStringPermissions(permissions);
         if (logger.isDebugEnabled()) {

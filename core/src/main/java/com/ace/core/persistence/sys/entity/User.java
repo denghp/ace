@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.joda.deser.DateTimeDeserializer;
 import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
+import com.google.code.ssm.api.CacheKeyMethod;
 import com.google.common.collect.Lists;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
@@ -238,14 +239,20 @@ public class User implements Serializable {
         return username + salt;
     }
 
-//    @Override
-//    public String toString() {
-//        try {
-//            return JsonUtils.getObjectMapper().writeValueAsString(this);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    @Override
+    public String toString() {
+        try {
+            return JsonUtils.getObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @CacheKeyMethod
+    public String getCacheKey() {
+        return username + "_" + id;
+    }
+
 
 }

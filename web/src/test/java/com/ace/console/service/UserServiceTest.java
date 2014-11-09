@@ -6,7 +6,6 @@ import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,7 +99,7 @@ public class UserServiceTest {
     public void findPermissions() {
         user = new User();
         user.setId(1l);
-        Set<String> permissions = userAuthService.findPermissions(user);
+        Set<String> permissions = userAuthService.findStringPermissions(user);
         logger.info("permissions : {}", permissions);
         Assert.assertNotNull(permissions);
     }

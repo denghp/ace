@@ -38,6 +38,9 @@ public class RoleServiceImpl extends GenericServiceImpl<Role, Long> implements R
     @Override
     @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":roles:getEnabledRoles", expiration = 600)
     public Set<Role> getEnabledRoles(@ParameterValueKeyProvider Set<Long> roleIds) {
+        if (roleIds == null || roleIds.isEmpty()) {
+            return null;
+        }
         Set<Role> roleSet = Sets.newHashSet();
         //获取角色信息,过滤无效的role
         List<Role> roleList = roleMapper.getListRoleByIds(Lists.newArrayList(roleIds));

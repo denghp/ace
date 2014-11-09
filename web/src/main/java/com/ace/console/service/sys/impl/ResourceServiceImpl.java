@@ -110,8 +110,8 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
      *
      * @return
      */
-    @ReadThroughAssignCache(assignedKey = Constants.DEFAULT_PROJECT_NAME + ":menu:findMenus", namespace = "menu", expiration = 600)
-    public List<Menu> findMenus( ) {
+    @ReadThroughAssignCache(assignedKey = ":findMenus", namespace = Constants.DEFAULT_PROJECT_NAME +":menu", expiration = 60 * 60)
+    public List<Menu> findMenus() {
         String sort = "parent_id desc,weight desc";
 
         List<Resources> resources = getAllWithSort(sort);
@@ -132,7 +132,7 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
         List<Resources> resources = getAllWithSort(sort);
 
         Set<String> userPermissions = null;
-        userPermissions = userAuthService.findPermissions(user);
+        userPermissions = userAuthService.findStringPermissions(user);
 
         Iterator<Resources> iter = resources.iterator();
         while (iter.hasNext()) {

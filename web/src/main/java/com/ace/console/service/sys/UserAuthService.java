@@ -42,6 +42,6 @@ public interface UserAuthService {
      * @param user
      * @return
      */
-    public Set<String> findPermissions(User user) ;
+    public Set<String> findStringPermissions(User user) ;
 
 }

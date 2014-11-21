@@ -176,7 +176,6 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
             return true;
         }
 
-
         //模式匹配
         WildcardPermission p1 = new WildcardPermission(permissionResourceIdentity);
         WildcardPermission p2 = new WildcardPermission(actualResourceIdentity);

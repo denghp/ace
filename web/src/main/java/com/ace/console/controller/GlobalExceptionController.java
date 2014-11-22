@@ -25,15 +25,15 @@ public class GlobalExceptionController {
 
     @ExceptionHandler(AceException.class)
     public String handleCustomException(AceException ex, HttpServletResponse response) {
-        LOG.error("AceException : {}", ex);
+        LOG.error("AceException : ", ex);
         response.setStatus(500);
-        return "/error-500.html";
+        return "/errors/500";
     }
 
     @ExceptionHandler(Exception.class)
     public String handleAllException(Exception ex, HttpServletResponse response) {
-        LOG.error("Exception : {}", ex);
+        LOG.error("Exception : ", ex);
         response.setStatus(500);
-        return "/error-500.html";
+        return "/errors/500";
     }
 }

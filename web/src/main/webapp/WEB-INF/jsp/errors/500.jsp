@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../commons/taglibs.jsp" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 

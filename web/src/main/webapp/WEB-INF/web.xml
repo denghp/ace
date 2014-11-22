@@ -70,11 +70,11 @@
     <!-- 错误页面映射 -->
     <error-page>
         <error-code>404</error-code>
-        <location>/error-404.html</location>
+        <location>/WEB-INF/jsp/errors/404.jsp</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/error-500.html</location>
+        <location>/WEB-INF/jsp/errors/500.jsp</location>
     </error-page>
 
 

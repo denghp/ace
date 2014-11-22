@@ -23,9 +23,9 @@
     <link rel="stylesheet" href="${contextPath}/assets/css/ui.jqgrid.css" />
 
     <!-- fonts -->
-
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-
+    <!--
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css-family.css" />
+    -->
     <!-- erp styles -->
 
     <link rel="stylesheet" href="${contextPath}/assets/css/ace.min.css" />

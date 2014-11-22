@@ -40,11 +40,11 @@
                 <script type="text/javascript">
                     /**
                      $(document).ready(function(id, url) {
-        $("#element").click(function() {
-            console.log("load...");
-            $("#main-content").load("./main.ftl");
-        });
-    });
+                        $("#element").click(function() {
+                            console.log("load...");
+                            $("#main-content").load("./main.ftl");
+                        });
+                    });
                      **/
                     function loadPage(url) {
                         $("#main-content").load(url);

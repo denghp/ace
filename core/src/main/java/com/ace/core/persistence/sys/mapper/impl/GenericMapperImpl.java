@@ -1,13 +1,10 @@
 package com.ace.core.persistence.sys.mapper.impl;
 
-import com.ace.commons.json.JsonUtils;
-import com.ace.core.page.Page;
-import com.ace.core.page.PageBean;
+import com.ace.core.paginator.domain.PageBounds;
+import com.ace.core.paginator.domain.PageList;
 import com.ace.core.persistence.sys.enums.RdbOperation;
 import com.ace.core.persistence.sys.mapper.GenericMapper;
 import com.ace.core.utils.ReflectUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
@@ -143,7 +140,7 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
     @Override
     public int count(Map<String, Object> condition) {
         return getSqlSession().selectOne(
-                getNamespace() + RdbOperation.SELECT_BY_PRIMARY_KEY.value(), condition);
+                getNamespace() + RdbOperation.COUNT.value(), condition);
     }
 
     @Override
@@ -160,27 +157,23 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
     }
 
     @Override
-    public Page<T> page(Map<String, Object> condition, Integer pageNum, Integer pageSize) {
+    public PageList<T> page(Map<String, Object> condition, Integer pageNum, Integer pageSize) {
         //获取总数,初始化pagebean
-        PageBean pageBean = new PageBean(pageNum, pageSize, count(condition));
-
+        PageBounds pageBounds = new PageBounds(pageNum, pageSize);
         try {
 
             if (condition == null) {
                 condition = new HashMap<String, Object>();
             }
 
-            RowBounds rowBounds = new RowBounds((pageBean.getPage() -1) * pageBean.getPageSize(), pageBean.getPageSize());
-
+            logger.debug(pageBounds.toString());
             List<T> resultList = this.getSqlSession().selectList(
-                    getNamespace() + RdbOperation.SELECT_LIST.value(), condition,rowBounds);
+                    getNamespace() + RdbOperation.SELECT_LIST.value(), condition, pageBounds);
 
-            Page<T> pageResult = new Page<T>();
-            pageResult.setPageBean(pageBean);
-            pageResult.setResult(resultList);
-            return pageResult;
+            //获得结果集条总数
+            return (PageList)resultList;
         } catch (Exception ex) {
-            logger.error("findList " + getNamespace() + "failed : ", ex);
+            logger.error("page " + getNamespace() + "failed : ", ex);
         }
 
         return null;

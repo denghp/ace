@@ -9,9 +9,9 @@ import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.sys.entity.User;
 import com.ace.core.persistence.sys.enums.UserStatus;
 import com.ace.core.persistence.sys.mapper.UserMapper;
-import com.google.code.ssm.api.ParameterValueKeyProvider;
 import com.google.code.ssm.api.ReadThroughSingleCache;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,17 +43,22 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
 
     /**
      * 创建用户
-     * @param entity
+     * @param user
      *              实体Bean
      * @return
      * @throws AceException
      */
     @Override
-    public User save(User entity) throws AceException {
+    public User save(User user) throws AceException {
+        if (user.getCreateTime() == null) {
+            user.setCreateTime(new DateTime());
+        }
+        //生成种子
+        user.randomSalt();
         //将用户的密码进行加密处理
-        PasswordHelper.encryptPassword(entity);
+        user.setPassword(PasswordHelper.encryptPassword(user.getUsername(), user.getPassword(), user.getSalt()));
 
-        return super.save(entity);
+        return super.save(user);
     }
 
     /**
@@ -68,7 +73,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
         User user = userMapper.selectById(userId);
         user.setPassword(newPassword);
         //加密
-        PasswordHelper.encryptPassword(user);
+        PasswordHelper.encryptPassword(user.getUsername(), user.getPassword(), user.getSalt());
 
         userMapper.update(user);
 
@@ -82,6 +87,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
     }
 
     @Override
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":user:getByUsername", expiration = 1800)
     public User getByUsername(String username) {
         if (StringUtils.isBlank(username)) {
             logger.warn("username is empty.");
@@ -96,7 +102,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
 
         if (user == null) {
             logger.warn("{} username not found.", username);
-            throw new AceException.UserNotFoundException(username + " not found.");
+            throw new AceException.UserNotFoundException();
         }
 
         if (user.getStatus() == UserStatus.blocked) {

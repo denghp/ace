@@ -20,7 +20,7 @@
                 and Validation
             </small>
         </h1>
-    </div><!-- /.page-header -->
+    </div><!-- /.domain-header -->
 
     <div class="row">
     <div class="col-xs-12">

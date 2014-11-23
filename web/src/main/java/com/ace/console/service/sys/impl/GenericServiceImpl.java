@@ -11,12 +11,9 @@ import com.ace.commons.json.JsonUtils;
 import com.ace.console.common.support.InjectBaseDependencyHelper;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
-import com.ace.core.page.Page;
+import com.ace.core.paginator.domain.PageList;
 import com.ace.core.persistence.sys.mapper.GenericMapper;
 import com.ace.core.utils.ReflectUtils;
-import com.google.code.ssm.api.ParameterValueKeyProvider;
-import com.google.code.ssm.api.ReadThroughSingleCache;
-import com.google.code.ssm.api.ReturnValueKeyProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -128,7 +125,7 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
     }
 
     @Override
-    public Page<T> page(Map<String, Object> params, Integer pageNum, Integer pageSize) {
+    public PageList<T> page(Map<String, Object> params, Integer pageNum, Integer pageSize) {
         return genericeMapper.page(params,pageNum, pageSize);
     }
 

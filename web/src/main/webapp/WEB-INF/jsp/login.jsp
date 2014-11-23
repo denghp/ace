@@ -27,12 +27,8 @@
     <div class="widget-body">
         <div class="widget-main">
             <h4 class="header blue lighter bigger">
-                <c:if test="${!empty error}">
-                    <div class="alert alert-info fade in">
-                            ${error}
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-                </c:if>
+                <ace:showMessage></ace:showMessage>
+
                 <i class="icon-coffee green"></i>
                 Please Enter Your Information
             </h4>
@@ -270,7 +266,7 @@
 
 <script src="${contextPath}/assets/js/jquery.validate.min.js"></script>
 <script src="${contextPath}/assets/js/jquery.validate.locale-cn.js"></script>
-<!-- inline scripts related to this page -->
+<!-- inline scripts related to this domain -->
 
 <script type="text/javascript">
     function show_box(id) {

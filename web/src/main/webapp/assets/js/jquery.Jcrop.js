@@ -173,7 +173,7 @@
         }
         
         // Fix position of crop area when dragged the very first time.
-        // Necessary when crop image is in a hidden element when page is loaded.
+        // Necessary when crop image is in a hidden element when domain is loaded.
         docOffset = getPos($img);
 
         btndown = true;
@@ -298,7 +298,7 @@
 
     if (obj.tagName == 'IMG') {
       // Fix size of crop image.
-      // Necessary when crop image is within a hidden element when page is loaded.
+      // Necessary when crop image is within a hidden element when domain is loaded.
       if ($origimg[0].width != 0 && $origimg[0].height != 0) {
         // Obtain dimensions from contained img element.
         $origimg.width($origimg[0].width);

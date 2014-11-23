@@ -1,6 +1,6 @@
 package com.ace.core.persistence.sys.mapper;
 
-import com.ace.core.page.Page;
+import com.ace.core.paginator.domain.PageList;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -180,7 +180,7 @@ public interface GenericMapper<T, ID extends Serializable>  {
      *                  每頁返回的數量
      * @return
      */
-    public Page<T> page(Map<String, Object> condition, Integer pageNum, Integer pageSize);
+    public PageList<T> page(Map<String, Object> condition, Integer pageNum, Integer pageSize);
 
     /**
      * 查询实体是否存在

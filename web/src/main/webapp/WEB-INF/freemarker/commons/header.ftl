@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="${rc.getContextPath()}/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->
 
-    <!-- page specific plugin styles -->
+    <!-- domain specific plugin styles -->
 
     <link rel="stylesheet" href="${rc.getContextPath()}/assets/css/jquery-ui-1.10.3.full.min.css" />
     <link rel="stylesheet" href="${rc.getContextPath()}/assets/css/datepicker.css" />
@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="${rc.getContextPath()}/assets/css/ace-ie.min.css" />
     <![endif]-->
 
-    <!-- inline styles related to this page -->
+    <!-- inline styles related to this domain -->
 
     <!-- erp settings handler -->
 

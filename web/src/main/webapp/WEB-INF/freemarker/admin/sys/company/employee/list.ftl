@@ -63,9 +63,9 @@
 
     </div>
     <!-- /.row -->
-</div><!-- /.page-content -->
+</div><!-- /.domain-content -->
 <script src="${rc.getContextPath()}/assets/js/ace.time.js"></script>
-<!-- inline scripts related to this page -->
+<!-- inline scripts related to this domain -->
 <script type="text/javascript">
 
 eval('debugger;');

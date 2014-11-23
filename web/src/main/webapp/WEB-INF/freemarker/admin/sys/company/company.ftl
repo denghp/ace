@@ -4,7 +4,7 @@
         公司档案信息
     </h1>
 </div>
-<!-- /.page-header -->
+<!-- /.domain-header -->
 
 <div class="row">
 <div class="col-xs-12">

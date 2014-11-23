@@ -35,12 +35,4 @@ public interface PasswordService {
      */
     public void clearLoginRecordCache(String username);
 
-    /**
-     * 密码加密处理
-     * @param username 用户名
-     * @param password 密码
-     * @param salt     加密盐
-     * @return
-     */
-    public String encryptPassword(String username, String password, String salt);
 }

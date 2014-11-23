@@ -7,18 +7,15 @@
 package com.ace.console.controller.sys;
 
 import com.ace.console.bind.annotation.CurrentUser;
-import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserService;
 import com.ace.console.utils.Constants;
 import com.ace.core.persistence.sys.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -44,7 +41,7 @@ public class LoginFormController {
     @Value(value = "${shiro.login.url}")
     private String loginUrl;
 
-    @Autowired
+    @Resource
     private MessageSource messageSource;
 
     @RequestMapping(value = {"/{login:login;?.*}"})
@@ -65,41 +62,21 @@ public class LoginFormController {
             model.addAttribute(Constants.ERROR, messageSource.getMessage("user.forcelogout", null, null));
         }
 
-        //表示用户输入的验证码错误
-        if (!StringUtils.isEmpty(request.getParameter("jcaptchaError"))) {
-            model.addAttribute(Constants.ERROR, messageSource.getMessage("jcaptcha.validate.error", null, null));
-        }
-
-
-        //表示用户锁定了 @see org.apache.shiro.web.filter.user.SysUserFilter
-//        if (!StringUtils.isEmpty(request.getParameter("blocked"))) {
-//            User user = (User) request.getAttribute(Constants.CURRENT_USER);
-//            String reason = userStatusHistoryService.getLastReason(user);
-//            model.addAttribute(Constants.ERROR, messageSource.getMessage("user.blocked", new Object[]{reason}, null));
+//        //表示用户输入的验证码错误
+//        if (!StringUtils.isEmpty(request.getParameter("jcaptchaError"))) {
+//            model.addAttribute(Constants.ERROR, messageSource.getMessage("jcaptcha.validate.error", null, null));
 //        }
-
-        if (!StringUtils.isEmpty(request.getParameter("unknown"))) {
-            model.addAttribute(Constants.ERROR, messageSource.getMessage("user.unknown.error", null, null));
-        }
 
         //登录失败了 提取错误消息
         Exception shiroLoginFailureEx =
                 (Exception) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
         if (shiroLoginFailureEx != null) {
-            if (shiroLoginFailureEx instanceof AceException.UserNotFoundException) {
-                model.addAttribute(Constants.ERROR, "未知账户.");
-            } else if (shiroLoginFailureEx instanceof AceException.UserPasswordNotMatchException) {
-                model.addAttribute(Constants.ERROR, "验证未通过,密码错误.");
-            } else if (shiroLoginFailureEx instanceof AceException.UserBlockedException) {
-                model.addAttribute(Constants.ERROR, "验证未通过,账户锁定.");
-            } else if (shiroLoginFailureEx instanceof AceException.UserPasswordRetryCount) {
-                model.addAttribute(Constants.ERROR, "验证未通过,错误次数过多.");
-            } else if (shiroLoginFailureEx instanceof AuthenticationException) {
-                model.addAttribute(Constants.ERROR, "验证未通过,用户名或密码不正确.");
-            } else if (shiroLoginFailureEx instanceof Exception){
-                model.addAttribute(Constants.ERROR, "验证未通过,服务器内部错误.");
+            try {
+                model.addAttribute(Constants.ERROR, messageSource.getMessage(shiroLoginFailureEx.getMessage(), null, null));
+            } catch (Exception ex) {
+                logger.error("user login error : ", ex);
+                model.addAttribute(Constants.ERROR, messageSource.getMessage("user.unknown.error", null, null));
             }
-
         }
 
         //如果用户直接到登录页面 先退出一下

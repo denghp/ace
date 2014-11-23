@@ -1,11 +1,10 @@
 package com.ace.console.service.sys.impl;
 
-import com.ace.console.cache.ShiroMemcachedCache;
 import com.ace.console.cache.ShiroMemcachedManager;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.PasswordService;
 import com.ace.console.utils.Constants;
-import com.ace.console.utils.security.Md5Utils;
+import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.sys.entity.User;
 import net.sf.ehcache.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +59,6 @@ public class PasswordServiceImpl implements PasswordService {
                         "passwordError",
                         "password error, retry limit exceed! password: {},max retry count {}",
                         password, maxRetryCount);
-                //throw new UserPasswordRetryLimitExceedException(maxRetryCount);
                 throw AceException.create(AceException.Code.USER_PASSWORD_RETRY_COUNT,"password error, retry limit exceed! password: {},max retry count "+retryCount);
             }
         }
@@ -80,7 +78,7 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public boolean matches(User user, String newPassword) {
-        return user.getPassword().equals(encryptPassword(user.getUsername(), newPassword, user.getSalt()));
+        return user.getPassword().equals(PasswordHelper.encryptPassword(user.getUsername(), newPassword, user.getSalt()));
     }
 
     @Override
@@ -91,8 +89,4 @@ public class PasswordServiceImpl implements PasswordService {
         }
     }
 
-    @Override
-    public String encryptPassword(String username, String password, String salt) {
-        return Md5Utils.hash(username + password + salt);
-    }
 }

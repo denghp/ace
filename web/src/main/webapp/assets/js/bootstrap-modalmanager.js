@@ -70,7 +70,7 @@
 
                     that.$element
                         .toggleClass('modal-open', that.hasOpenModal())
-                        .toggleClass('page-overflow', $(window).height() < that.$element.height());
+                        .toggleClass('domain-overflow', $(window).height() < that.$element.height());
 
                     modal.$parent = modal.$element.parent();
 
@@ -141,7 +141,7 @@
             this.$element.toggleClass('modal-open', hasOpenModal);
 
             if (!hasOpenModal){
-                this.$element.removeClass('page-overflow');
+                this.$element.removeClass('domain-overflow');
             }
 
             this.removeContainer(modal);
@@ -314,7 +314,7 @@
 
             this.$element
                 .toggleClass('modal-open', !this.isLoading || this.hasOpenModal())
-                .toggleClass('page-overflow', $(window).height() < this.$element.height());
+                .toggleClass('domain-overflow', $(window).height() < this.$element.height());
 
             if (!this.isLoading) {
 

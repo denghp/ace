@@ -12,8 +12,8 @@ package com.ace.core.persistence.sys.enums;
 public enum RdbParams {
 
     ID("id"),
-    USER_ID("userId"),
-    GROUP_IDS("groupIds");
+    LIMIT("limit"),
+    OFFSET("offset");
 
     private String value;
 

@@ -42,6 +42,22 @@ public class AuthMapperImpl extends GenericMapperImpl<Auth, Long> implements Aut
         }
     }
 
+    public enum AuthRdbParams {
+
+        USER_ID("userId"),
+        GROUP_IDS("groupIds");
+
+        private String value;
+
+        private AuthRdbParams(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return this.value;
+        }
+
+    }
 
     /**
      * 根据用户ID,所属组ID查询相关的角色
@@ -59,9 +75,9 @@ public class AuthMapperImpl extends GenericMapperImpl<Auth, Long> implements Aut
             return null;
         }
         Map<String, Object> params = Maps.newHashMap();
-        params.put(RdbParams.USER_ID.value(), userId);
+        params.put(AuthRdbParams.USER_ID.value(), userId);
         if (groupIds != null && groupIds.size() > 0) {
-            params.put(RdbParams.GROUP_IDS.value(), groupIds);
+            params.put(AuthRdbParams.GROUP_IDS.value(), groupIds);
         }
         List<Auth> authList = getSqlSession().selectList(getNamespace() + AuthOperation.GET_ROLE_IDS.value(), params);
         Set<Long> roles = Sets.newHashSet();

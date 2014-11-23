@@ -30,7 +30,7 @@
 <script src="${rc.getContextPath()}/assets/js/bootstrap.min.js"></script>
 <script src="${rc.getContextPath()}/assets/js/typeahead-bs2.min.js"></script>
 
-<!-- page specific plugin scripts -->
+<!-- domain specific plugin scripts -->
 
 <!--[if lte IE 8]>
 <script src="${rc.getContextPath()}/assets/js/excanvas.min.js"></script>
@@ -54,7 +54,7 @@
 <script type="text/javascript" src="${rc.getContextPath()}/assets/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="${rc.getContextPath()}/assets/js/jquery.ztree.excheck-3.5.min.js"></script>
 
-<!-- page specific plugin scripts -->
+<!-- domain specific plugin scripts -->
 
 <script src="${rc.getContextPath()}/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${rc.getContextPath()}/assets/js/date-time/bootstrap-datepicker.zh-CN.js"></script>

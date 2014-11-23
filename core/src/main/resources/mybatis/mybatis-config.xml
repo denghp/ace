@@ -12,5 +12,10 @@
         <typeAlias type="org.joda.time.DateTime" alias="DateTime"/>
     </typeAliases>
 
+    <plugins>
+        <plugin interceptor="com.ace.core.paginator.interceptor.PageInterceptor">
+            <property name="dialectClass" value="com.ace.core.paginator.dialect.MySQLDialect"/>
+        </plugin>
+    </plugins>
 
 </configuration>

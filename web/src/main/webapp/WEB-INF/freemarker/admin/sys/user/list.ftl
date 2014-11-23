@@ -34,7 +34,7 @@
                 Dynamic tables and grids using jqGrid plugin
             </small>
         </h1>
-    </div><!-- /.page-header -->
+    </div><!-- /.domain-header -->
 
     <div class="row">
         <div class="col-xs-12">
@@ -61,8 +61,8 @@
         </div><!-- /.col -->
 
     </div><!-- /.row -->
-</div><!-- /.page-content -->
-<!-- inline scripts related to this page -->
+</div><!-- /.domain-content -->
+<!-- inline scripts related to this domain -->
 
 <script type="text/javascript">
 

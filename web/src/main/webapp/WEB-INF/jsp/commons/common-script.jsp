@@ -19,7 +19,7 @@ window.jQuery || document.write("<script src='${contextPath}/assets/js/jquery-1.
 <script src="${contextPath}/assets/js/bootstrap.min.js"></script>
 <script src="${contextPath}/assets/js/typeahead-bs2.min.js"></script>
 
-<!-- page specific plugin scripts -->
+<!-- domain specific plugin scripts -->
 
 <!--[if lte IE 8]>
 <script src="${contextPath}/assets/js/excanvas.min.js"></script>
@@ -43,7 +43,7 @@ window.jQuery || document.write("<script src='${contextPath}/assets/js/jquery-1.
 <script type="text/javascript" src="${contextPath}/assets/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="${contextPath}/assets/js/jquery.ztree.excheck-3.5.min.js"></script>
 
-<!-- page specific plugin scripts -->
+<!-- domain specific plugin scripts -->
 
 <script src="${contextPath}/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${contextPath}/assets/js/date-time/bootstrap-datepicker.zh-CN.js"></script>

@@ -2,7 +2,7 @@ package com.ace.console.service;
 
 
 import com.ace.console.exception.AceException;
-import com.ace.core.page.Page;
+import com.ace.core.paginator.domain.PageList;
 import com.ace.core.persistence.sys.mapper.GenericMapper;
 
 import java.io.Serializable;
@@ -139,7 +139,7 @@ public interface GenericService<T, ID extends Serializable> {
      *                  每頁返回的數量
      * @return
      */
-    public Page<T> page(Map<String, Object> params, Integer pageNum, Integer pageSize);
+    public PageList<T> page(Map<String, Object> params, Integer pageNum, Integer pageSize);
 
     /**
      * 查询实体是否存在

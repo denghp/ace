@@ -2,18 +2,18 @@ package com.ace.core.persistence.sys.entity;
 
 import com.ace.commons.json.JsonUtils;
 import com.ace.core.persistence.sys.enums.UserStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.joda.deser.DateTimeDeserializer;
 import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
 import com.google.code.ssm.api.CacheKeyMethod;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class User implements Serializable {
 
     private String salt;
 
-    private Boolean deleted;
+    private Boolean deleted = Boolean.FALSE;
 
     @JsonSerialize(using = DateTimeSerializer.class)
     private DateTime birthday;
@@ -159,7 +159,7 @@ public class User implements Serializable {
     }
 
     public void setSalt(String salt) {
-        this.salt = salt == null ? null : salt.trim();
+        this.salt = salt;
     }
 
     public UserStatus getStatus() {
@@ -234,10 +234,13 @@ public class User implements Serializable {
         this.firstLoginTime = firstLoginTime;
     }
 
-    //获取凭证盐
-    public String getCredentialsSalt() {
-        return username + salt;
+    /**
+     * 生成随机新的种子
+     */
+    public void randomSalt() {
+        setSalt(RandomStringUtils.randomAlphanumeric(10));
     }
+
 
     @Override
     public String toString() {

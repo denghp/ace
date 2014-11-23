@@ -82,14 +82,28 @@
         where username = #{username}
     </select>
 
+    <select id="getByEmail" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where email = #{emial}
+    </select>
+
+    <select id="getByMobilePhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where mobile = #{mobile}
+    </select>
+
     <select id="selectList" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List"/>
-        from sys_user order id desc limit 50
+        from sys_user;
     </select>
 
     <select id="count" resultType="java.lang.Integer" >
-        select count(*)
+        select count(1)
         from sys_user
     </select>
 
@@ -300,5 +314,17 @@
         count = #{count,jdbcType=BIGINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <update id="changePassword" parameterType="java.util.Map">
+        update sys_user set password = #{password} where id = #{userId}
+    </update>
+
+    <delete id="deleteByIds" parameterType="map">
+        delete from sys_user where id in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </delete>
 
 </mapper>

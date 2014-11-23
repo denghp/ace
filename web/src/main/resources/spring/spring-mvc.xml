@@ -100,5 +100,8 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-
+    <!-- 国际化请求拦截器处理 -->
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+    </mvc:interceptors>
 </beans>

@@ -4,8 +4,10 @@ import com.ace.commons.json.JsonUtils;
 import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.UserAuthService;
 import com.ace.console.service.sys.UserService;
+import com.ace.core.paginator.domain.PageList;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,9 +22,6 @@ import java.io.IOException;
 import java.util.Set;
 
 /**
- * @Project_Name: ace-parent
- * @File: UserServiceTest
- * (C) Copyright ACE Corporation 2014 All Rights Reserved.
  * @Author: denghp
  * @Date: 10/16/14
  * @Time: 11:50 PM
@@ -44,7 +43,7 @@ public class UserServiceTest {
 
     @Before
     public void init() {
-        user = new User("admin1", password);
+        user = new User("denghp", password);
 
     }
 
@@ -63,7 +62,7 @@ public class UserServiceTest {
 
     @Test
     public void selectUser() throws IOException {
-        User user = userService.selectById(1l);
+        User user = userService.selectById(10004l);
         logger.info("user : {}",JsonUtils.getObjectMapper().writeValueAsString(user));
         Assert.assertNotNull(user);
     }
@@ -104,5 +103,29 @@ public class UserServiceTest {
         Assert.assertNotNull(permissions);
     }
 
+
+    @Test
+    public void selectUserPages() throws JsonProcessingException {
+        int pageNum = 1;
+        int limit = 3;
+        while(true) {
+            PageList<User> userPageList = userService.page(null, pageNum, limit);
+            if (userPageList == null || userPageList.isEmpty()) {
+                logger.info("not found users");
+                break;
+            }
+            logger.info("totalCount : " + userPageList.getPaginator().getTotalCount());
+            for (User user : userPageList) {
+                logger.info("user1 : {}", JsonUtils.getObjectMapper().writeValueAsString(user));
+            }
+
+            pageNum = userPageList.getPaginator().getNextPage();
+            logger.info("page : " + pageNum);
+            if (!userPageList.getPaginator().isHasNextPage()) {
+                break;
+            }
+
+        }
+    }
 
 }

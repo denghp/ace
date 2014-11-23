@@ -28,7 +28,7 @@
 
 <div class="page-content">
     <!--
-    <div class="page-header">
+    <div class="domain-header">
         <h1>
             角色管理
             <small>
@@ -38,7 +38,7 @@
         </h1>
     </div>
     -->
-    <!-- /.page-header -->
+    <!-- /.domain-header -->
 
     <div class="row">
         <div class="col-xs-12">
@@ -64,9 +64,9 @@
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
-</div><!-- /.page-content -->
+</div><!-- /.domain-content -->
 <div id="ajax-modal" class="modal fade" tabindex="-1" style="display: none;"></div>
-<!-- inline scripts related to this page -->
+<!-- inline scripts related to this domain -->
 
 <script type="text/javascript">
 eval('debugger;');

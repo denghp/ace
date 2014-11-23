@@ -36,9 +36,6 @@
 
     <!-- 扫描注解Bean 对切入类的方法进行缓存处理-->
     <context:component-scan base-package="com.ace">
-        <!--
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        -->
     </context:component-scan>
 
     <!-- 开启自动切面代理 -->
@@ -145,8 +142,8 @@
         <property name="basenames">
             <list>
                 <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
-                <value>classpath:messages/messages.properties</value>
-                <value>classpath:messages/ValidationMessages.properties</value>
+                <value>classpath:messages/messages_ch</value>
+                <value>classpath:messages/ValidationMessages</value>
             </list>
         </property>
         <property name="useCodeAsDefaultMessage" value="false"/>

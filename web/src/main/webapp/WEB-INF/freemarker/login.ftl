@@ -267,7 +267,7 @@
 
 <script src="assets/js/jquery.validate.min.js"></script>
 <script src="assets/js/jquery.validate.locale-cn.js"></script>
-<!-- inline scripts related to this page -->
+<!-- inline scripts related to this domain -->
 
 <script type="text/javascript">
     function show_box(id) {

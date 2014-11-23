@@ -51,9 +51,9 @@
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
-</div><!-- /.page-content -->
+</div><!-- /.domain-content -->
 <div id="paddtree"></div>
-<!-- inline scripts related to this page -->
+<!-- inline scripts related to this domain -->
 <script type="text/javascript">
 var grid_data =
         [

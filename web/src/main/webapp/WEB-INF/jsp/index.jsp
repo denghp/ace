@@ -2,6 +2,8 @@
 <%@ include file="commons/taglibs.jsp" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 
+<!DOCTYPE html>
+<html lang="en">
 <%@ include file="commons/head.jsp" %>
 
 <body>

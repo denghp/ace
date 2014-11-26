@@ -21,6 +21,18 @@
     delete from sys_permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
+    <select id="selectList" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from sys_permission
+    </select>
+
+    <select id="count" resultType="java.lang.Integer" >
+        select count(1)
+        from sys_permission
+    </select>
+
   <insert id="insert" parameterType="com.ace.core.persistence.sys.entity.Permission" >
     insert into sys_permission (id, name, permission, 
       description, enabled)

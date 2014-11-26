@@ -1,7 +1,7 @@
-package com.ace.console.controller.sys;
+package com.ace.console.controller;
 
 import com.ace.console.exception.AceException;
-import com.ace.console.model.AceResponse;
+import com.ace.console.model.ACEResponse;
 import com.ace.console.model.ResponseHeader;
 import com.ace.console.service.sys.UserService;
 import com.ace.core.persistence.sys.entity.User;
@@ -40,7 +40,7 @@ public class RegisterUserController {
 
     @RequestMapping(value = {"/{register:register;?.*}"}, method = RequestMethod.POST)
     @ResponseBody
-    public AceResponse registerForm(@Valid User user,BindingResult result) throws AceException {
+    public ACEResponse registerForm(@Valid User user,BindingResult result) throws AceException {
         long starTime = System.currentTimeMillis();
         try {
             //step1 注册用户
@@ -57,7 +57,7 @@ public class RegisterUserController {
             logger.error("register user error : ", ex);
         }
 
-        return new AceResponse(new ResponseHeader(AceException.Code.OK.intValue(),System.currentTimeMillis() - starTime));
+        return new ACEResponse(new ResponseHeader(AceException.Code.OK.intValue(),System.currentTimeMillis() - starTime));
     }
 
     /**

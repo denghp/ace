@@ -9,6 +9,7 @@ import com.ace.console.utils.PasswordHelper;
 import com.ace.core.persistence.sys.entity.User;
 import com.ace.core.persistence.sys.enums.UserStatus;
 import com.ace.core.persistence.sys.mapper.UserMapper;
+import com.google.code.ssm.api.ParameterValueKeyProvider;
 import com.google.code.ssm.api.ReadThroughSingleCache;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -88,7 +89,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Long> implements U
 
     @Override
     @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":user:getByUsername", expiration = 1800)
-    public User getByUsername(String username) {
+    public User getByUsername(@ParameterValueKeyProvider String username) {
         if (StringUtils.isBlank(username)) {
             logger.warn("username is empty.");
             return null;

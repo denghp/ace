@@ -238,7 +238,6 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
                 resource.getWeight(), resource.getIdentity(), resource.getEnabled());
     }
 
-    @ReadThroughAssignCache(assignedKey = ":menu:getAllWithSort", namespace = Constants.DEFAULT_PROJECT_NAME , expiration = 600)
     public List<Resources> getAllWithSort(String sort) {
         if (StringUtils.isBlank(sort)) {
             logger.warn("sort is empty, use default sort!!");
@@ -249,8 +248,6 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
         return resourcesMapper.getAllWithSort(params);
     }
 
-    @ReadThroughMultiCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menu:getZTreeList", expiration = 600,
-            option = @ReadThroughMultiCacheOption(generateKeysFromResult = true))
     public List<ZTree<Integer>> getZTreeList(boolean async, Long roleId) {
         List<Resources> resourceList = getAllWithSort(null);
         Map<Long, RoleResourcePermission> rrpMaps = null;
@@ -278,7 +275,6 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
         return zTrees;
     }
 
-    @ReadThroughAssignCache(assignedKey = ":menu:convertToZtree", namespace = Constants.DEFAULT_PROJECT_NAME , expiration = 600)
     private ZTree convertToZtree(Resources m, boolean open) {
         ZTree<Long> zTree = new ZTree<Long>();
         zTree.setId(m.getId());

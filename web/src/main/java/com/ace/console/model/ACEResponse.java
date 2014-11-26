@@ -3,6 +3,8 @@ package com.ace.console.model;
 import com.ace.commons.json.JsonUtils;
 
 import com.ace.console.exception.Error;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,7 +14,8 @@ import java.util.List;
  * @Time: 下午2:56
  * @Description:
  */
-public class AceResponse implements Serializable {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+public class ACEResponse implements Serializable {
 
     private static final long serialVersionUID = 3056471023678709706l;
     private ResponseHeader responseHeader;
@@ -22,19 +25,19 @@ public class AceResponse implements Serializable {
     private List<?> rows;
     private Error error;
 
-    public AceResponse() {}
+    public ACEResponse() {}
 
-    public AceResponse(ResponseHeader responseHeader){
+    public ACEResponse(ResponseHeader responseHeader){
         this.responseHeader = responseHeader;
     }
 
-    public AceResponse(Integer total, Integer page, Integer records) {
+    public ACEResponse(Integer total, Integer page, Integer records) {
         this.total = total;
         this.page = page;
         this.records = records;
     }
 
-    public AceResponse(Integer total, Integer page, Integer records, List<?> rows) {
+    public ACEResponse(Integer total, Integer page, Integer records, List<?> rows) {
         this(total,page,records);
         this.rows = rows;
     }
@@ -87,8 +90,8 @@ public class AceResponse implements Serializable {
         this.responseHeader = responseHeader;
     }
 
-    public static AceResponse createErrorResp(int code, String msg) {
-        AceResponse response = new AceResponse();
+    public static ACEResponse createErrorResp(int code, String msg) {
+        ACEResponse response = new ACEResponse();
         response.setError(new Error(code,msg));
         return response;
     }

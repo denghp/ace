@@ -33,10 +33,21 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    <include refid="Base_Column_List" />
+      <include refid="Base_Column_List" />
     from sys_resources
     where id = #{id,jdbcType=BIGINT}
-  </select>
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from sys_resources;
+    </select>
+
+    <select id="count" resultType="java.lang.Integer" >
+        select count(1)
+        from sys_resources
+    </select>
 
     <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select

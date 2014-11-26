@@ -70,4 +70,11 @@ public interface Constants {
     String DEFAULT_PROJECT_NAME = "ace";
 
     String DEFAULT_NAMESPACE = "df_namespace";
+
+    public static String FM_SEARCH_INDEX_KEY = "fm_search_index_time";
+    public static String GREEN_NORMAL_FORMAT = "YYYY-MM-dd'T'HH:mm:ss'Z'";
+    public static String DATETIME_NORMAL_FORMAT = "YYYY-MM-dd HH:mm:ss";
+    public static String DATETIME_NORMAL_FORMAT_NEW = "yyyy-MM-dd HH:mm:ss";
+    public static String DATETIME_DATE_NORMAL_FORMAT = "yyyy-MM-dd";
+    public static String HOUR_TIME_FORMAT = "HH:mm:ss";
 }

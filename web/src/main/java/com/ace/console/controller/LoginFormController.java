@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-package com.ace.console.controller.sys;
+package com.ace.console.controller;
 
 import com.ace.console.bind.annotation.CurrentUser;
 import com.ace.console.service.sys.UserService;

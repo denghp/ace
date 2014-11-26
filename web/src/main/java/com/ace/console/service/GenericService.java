@@ -118,14 +118,14 @@ public interface GenericService<T, ID extends Serializable> {
      *
      *  根据给定的HQL语句进行分页查询
      *
-     * @param offset
-     *          查询的起始位置
-     * @param limit
+     * @param pageNum
+     *          查询的页码
+     * @param pageSize
      *          查询返回的数量
      * @return
      *          返回集合实体列表
      */
-    public List<T> getPageList(Integer offset, Integer limit);
+    public List<T> getPageList(Integer pageNum, Integer pageSize);
 
     /**
      * <p/>

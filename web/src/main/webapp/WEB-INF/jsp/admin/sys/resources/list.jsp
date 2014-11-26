@@ -13,9 +13,9 @@
         </li>
 
         <li>
-            <a href="#">Tables</a>
+            <a href="#">系统设置</a>
         </li>
-        <li class="active">用户列表</li>
+        <li class="active">资源列表</li>
     </ul><!-- .breadcrumb -->
 
     <div class="nav-search" id="nav-search">
@@ -29,15 +29,6 @@
 </div>
 
 <div class="page-content">
-    <div class="page-header">
-        <h1>
-            jqGrid
-            <small>
-                <i class="icon-double-angle-right"></i>
-                Dynamic tables and grids using jqGrid plugin
-            </small>
-        </h1>
-    </div><!-- /.domain-header -->
 
     <div class="row">
         <div class="col-xs-12">
@@ -46,7 +37,7 @@
             <div id="alert-info" class="alert alert-info">
                 <i class="icon-hand-right"></i>
 
-                请注意: 这里显示您对用户管理的任何操作信息!
+                请注意: 这里显示您对资源管理的任何操作信息!
                 <button class="close" data-dismiss="alert">
                     <i class="icon-remove"></i>
                 </button>
@@ -62,45 +53,59 @@
 
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
-
     </div><!-- /.row -->
-</div><!-- /.domain-content -->
-<!-- inline scripts related to this domain -->
-
+</div><!-- /.page-content -->
+<div id="paddtree"></div>
+<!-- inline scripts related to this page -->
 <script type="text/javascript">
+var grid_data =
+        [
+            {id:1,name:'Cash',num:'100', debit:"400.00", credit:"250.00", balance:"150.00", lft:"1", rgt:"8",level:"0",isLeaf:"false",expanded:"false"},
+            {id:2,name:'Cash 1',num:'1', debit:"300.00", credit:"200.00", balance:"100.00", lft:2, rgt:5,level:1,isLeaf:false,expanded:false},
+            {id:3,name:'Sub Cash 1',num:'1', debit:"300.00", credit:"200.00", balance:"100.00", lft:3, rgt:4,level:2,isLeaf:true,expanded:false},
+            {id:4,name:'Cash 2',num:'2', debit:"100.00", credit:"50.00", balance:"50.00", lft:6, rgt:7,level:1,isLeaf:true,expanded:false}
+        ];
 
-eval('debugger;');
+eval("debugger");
 jQuery(function($) {
     var grid_selector = "#grid-table";
     var pager_selector = "#grid-pager";
     jQuery(grid_selector).jqGrid({
-        //direction: "rtl",
-        url:$path_base+'/admin/sys/user/list',
-        datatype: "json",
-        mtype: 'GET',
+        url:$path_base + "/admin/sys/resources/children",
         //data: grid_data,
-        //datatype: "local",
-        height: 350,
-        colNames:[' ', 'ID','用户名','邮箱', '手机号码','创建时间', '状态'],
+        datatype:"json",
+        mtype: 'GET',
+        height: 450,
+        colNames:['','ID','资源名称','父节点ID','排序编码','资源图标','资源标识','URL路径', '是否可用'],
         colModel:[
-            {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+            {name:'resources',index:'', width:100, fixed:true, sortable:false, resize:false,
                 formatter:'actions',
                 formatoptions:{
                     keys:true,
-                    delOptions:{url:$path_base+"/admin/sys/user/delete",recreateForm: true, beforeShowForm:beforeDeleteCallback,
-                    afterSubmit : function(response, postdata)  {
-                        var resp = response.responseJSON;
-                        if (resp.responseHeader != undefined &&
-                                resp.responseHeader.status != undefined &&
-                                resp.responseHeader.status == "200" ) {
-                            ace.show_msg("删除成功!");
-                            return [true];
+                    delOptions:{url:$path_base+"/admin/sys/resources/delete",recreateForm: true, beforeShowForm:beforeDeleteCallback,
+                        /** TODO:服务器端做验证
+                        beforeSubmit: function(posdata, formid){
+                            if($("#grid-table").jqGrid('getRowData',posdata).leaf == "true") {
+                                return[true,"delete posdata " + formid];
+                            }
+                            ace.show_msg("提交失败了, 该资源包含子菜单!")
+                            return [false,'提交失败了, 该资源包含子菜单!']
+                        },
+                         **/
+                        afterSubmit : function(response, postdata)  {
+                            var resp = response.responseJSON;
+                            if (resp.responseHeader != undefined &&
+                                    resp.responseHeader.status != undefined &&
+                                    resp.responseHeader.status == "200" ) {
+                                ace.show_msg("删除成功!");
+                                return [true];
+                            }
+                            if (resp.error != undefined ) {
+                                return [false,JSON.stringify(resp.error)];
+                            }
+                            return [false,"删除失败,服务器内部的错误! "];
                         }
-                        if (resp.error != undefined ) {
-                            return [false,JSON.stringify(resp.error)];
-                        }
-                        return [false,"删除失败,服务器内部的错误! "];
-                    }},
+                    },
                     //editformbutton:true,
                     //editOptions:{url:$path_base+"/admin/sys/user/update",recreateForm: true, beforeShowForm:beforeEditCallback},
                     onSuccess: function(response) {
@@ -126,27 +131,24 @@ jQuery(function($) {
                     }
                 }
             },
-            {name:'id',index:'id', width:60, hidden:true,sorttype:"int", editable: true},
-            {name:'username',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"50"}},
-            {name:'email',index:'email', width:150, editable: true,editoptions:{size:"20",maxlength:"50"}},
-            {name:'mobile',index:'phone', width:90, editable: true, editoptions:{size:"11",maxlength:"11"}},
-            //{name:'createTime',index:'createTime',width:90, editable:true,sorttype:"date", formatter:dateFormatter,unformat: pickDate},
-            {name:'createTime',index:'createTime',width:90, editable:true,sorttype:"date"},
-            {name:'status',index:'status', width:70, editable: true, edittype:"select", formatter:"select", editoptions: {value:"normal:正常;blocked:封禁"}},
-
+            {name:'id',index:'id', width:30,hidden:false,key:true, editable:false},
+            {name:'name',index:'name', width:100, editable:true, align:"left"},
+            {name:'parentId',index:'parentId', width:35, align:"center",editable:true},
+            {name:'weight',index:'weight', width:35,align:"center",editable:true},
+            {name:'icon',index:'icon', width:50, align:"center",editable:true},
+            {name:'identity',index:'identity', width:80,align:"left",editable:true},
+            {name:'url',index:'url', width:80,align:"left",editable:true, formatter:formatURL},
+            {name:'show',index:'show', width:50, editable: true, edittype:"checkbox",  editoptions:{value:"true:false"},unformat: aceSwitch}
         ],
 
         viewrecords : true,
         rowNum:10,
         rowList:[10,20,30],
         pager : pager_selector,
-        altRows: true,
         //toppager: true,
-
-        multiselect: true,
+        multiselect: false,
         //multikey: "ctrlKey",
         multiboxonly: true,
-
         loadComplete : function() {
             var table = this;
             setTimeout(function(){
@@ -157,13 +159,33 @@ jQuery(function($) {
                 enableTooltips(table);
             }, 0);
         },
-
-        editurl: $path_base+"/admin/sys/user/update",//nothing is saved
-        caption: "用户信息管理",
-
+        treeGrid:true,
+        treeGridModel:"adjacency",
+        ExpandColumn: 'name',
+        //ExpandColClick: true,
+        treeIcons:{
+            plus:'arrow icon-double-angle-down',
+            minus:'icon-double-angle-right'
+            //leaf:'ui-icon-radio-off' //使用leafDefaultIcon = icon-angle-right
+        },
+        treeReader: {
+            level_field: "level",
+            parent_id_field: "parent", // then why does your table use "parent_id"?
+            leaf_field: "leaf",
+            expanded_field: "expanded"
+        },
+        editurl: $path_base+"/admin/sys/resources/update",//nothing is saved
+        caption: "系统资源管理",
         autowidth: true
+
     });
 
+    function formatURL( cellvalue, options, cell ) {
+        if (cellvalue.length <= 0) {
+            return "javascript:void(0)"
+        }
+        return cellvalue;
+    }
     //enable search/filter toolbar
     //jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
 
@@ -176,18 +198,14 @@ jQuery(function($) {
                     .after('<span class="lbl"></span>');
         }, 0);
     }
-    //format date
-    function dateFormatter(cellvalue, options, rowObject) {
-        return cellvalue.split(" ")[0];
-    }
-
     //enable datepicker
     function pickDate( cellvalue, options, cell ) {
         setTimeout(function(){
             $(cell) .find('input[type=text]')
-                    .datepicker({format:'yyyy-mm-dd' , language:'zh-CN', autoclose:true});
+                    .datepicker({format:'yyyy-mm-dd' , autoclose:true});
         }, 0);
     }
+
 
     //navButtons
     jQuery(grid_selector).jqGrid('navGrid',pager_selector,
@@ -207,7 +225,7 @@ jQuery(function($) {
             },
             {
                 //edit record form
-                url:$path_base+"/admin/sys/user/update",
+                url:$path_base+"/admin/sys/resources/update",
                 closeAfterEdit:true,
                 recreateForm: true,
                 beforeShowForm : function(e) {
@@ -231,10 +249,14 @@ jQuery(function($) {
             },
             {
                 //new record form
-                url:$path_base+"/admin/sys/user/add",
+                url:$path_base+"/admin/sys/resources/add",
                 closeAfterAdd: true,
                 recreateForm: true,
                 viewPagerButtons: false,
+                serializeEditData: function(data){
+                    //新增数据的时候把默认的id='_empty'设置为id='0'
+                    return $.param($.extend({},data,{id:0}));
+                },
                 beforeShowForm : function(e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
@@ -243,7 +265,7 @@ jQuery(function($) {
                 },
                 beforeSubmit: function(posdata,formid) {
                     console.log(posdata);
-                  return [true,''];
+                    return [true,formid];
                 },
                 afterSubmit : function(response, postdata)  {
                     var resp = response.responseJSON;
@@ -256,12 +278,12 @@ jQuery(function($) {
                     if (resp.error != undefined ) {
                         return [false,JSON.stringify(resp.error)];
                     }
-                    return [false,"添加失败,服务器内部的错误! "];
+                    return [false,"更新失败,服务器内部的错误! "];
                 }
             },
             {
                 //delete record form
-                url:$path_base+"/admin/sys/user/delete",
+                url:$path_base+"/admin/sys/resources/delete",
                 recreateForm: true,
                 beforeShowForm : function(e) {
                     var form = $(e[0]);
@@ -288,7 +310,7 @@ jQuery(function($) {
             },
             {
                 //search form
-                url:$path_base+"/admin/sys/user/search",
+                url:$path_base+"/admin/sys/resources/search",
                 recreateForm: true,
                 afterShowSearch: function(e){
                     var form = $(e[0]);
@@ -316,11 +338,9 @@ jQuery(function($) {
     )
 
 
-
     function style_edit_form(form) {
-        //enable datepicker on "createTime" field and switches for "admin" field
-        form.find('input[name=createTime]').datepicker({format:'yyyy-mm-dd' , language:'zh-CN',autoclose:true})
-                .end().find('input[name=admin]')
+        //enable datepicker on "sdate" field and switches for "stock" field
+        form.find('input[name=show]')
                 .addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
 
         //update buttons classes
@@ -348,7 +368,6 @@ jQuery(function($) {
         form.find('.add-group').addClass('btn btn-xs btn-success');
         form.find('.delete-group').addClass('btn btn-xs btn-danger');
     }
-
     function style_search_form(form) {
         var dialog = form.closest('.ui-jqdialog');
         var buttons = dialog.find('.EditTable')
@@ -360,6 +379,7 @@ jQuery(function($) {
     function beforeDeleteCallback(e) {
         var form = $(e[0]);
         if(form.data('styled')) return false;
+
         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
         style_delete_form(form);
 
@@ -417,16 +437,23 @@ jQuery(function($) {
             'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
             'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
             'ui-icon-seek-next' : 'icon-angle-right bigger-140',
-            'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
+            'ui-icon-seek-end' : 'icon-double-angle-right bigger-140',
+            'ui-icon-triangle-1-e tree-plus treeclick' : 'icon-double-angle-left bigger-140'
         };
         $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
             var icon = $(this);
             var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
 
             if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-        })
-    }
+        });
+        /**
+        $('#grid-table > tbody > tr > > .tree-wrap .ui-icon').each(function(){
+            var icon = $(this);
+            var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
 
+            if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+        }); **/
+    }
 
     function enableTooltips(table) {
         $('.navtable .ui-pg-button').tooltip({container:'body'});
@@ -438,3 +465,7 @@ jQuery(function($) {
 
 });
 </script>
+
+
+
+

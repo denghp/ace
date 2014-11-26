@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<% pageContext.setAttribute("contextPath", request.getContextPath());%>
+<%@ include file="../../../../commons/taglibs.jsp" %>
 
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
@@ -13,11 +13,11 @@
         </li>
 
         <li>
-            <a href="#">Tables</a>
+            <a href="#">系统设置</a>
         </li>
-        <li class="active">用户列表</li>
+        <li class="active">权限列表</li>
     </ul><!-- .breadcrumb -->
-
+    <!--
     <div class="nav-search" id="nav-search">
         <form class="form-search">
 								<span class="input-icon">
@@ -25,19 +25,24 @@
 									<i class="icon-search nav-search-icon"></i>
 								</span>
         </form>
-    </div><!-- #nav-search -->
+    </div>
+    -->
+    <!-- #nav-search -->
 </div>
 
 <div class="page-content">
+    <!--
     <div class="page-header">
         <h1>
-            jqGrid
+            权限管理
             <small>
                 <i class="icon-double-angle-right"></i>
                 Dynamic tables and grids using jqGrid plugin
             </small>
         </h1>
-    </div><!-- /.domain-header -->
+    </div>
+    -->
+    <!-- /.page-header -->
 
     <div class="row">
         <div class="col-xs-12">
@@ -45,8 +50,7 @@
 
             <div id="alert-info" class="alert alert-info">
                 <i class="icon-hand-right"></i>
-
-                请注意: 这里显示您对用户管理的任何操作信息!
+                请注意: 这里显示您对权限管理的任何操作信息!
                 <button class="close" data-dismiss="alert">
                     <i class="icon-remove"></i>
                 </button>
@@ -62,45 +66,43 @@
 
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
-
     </div><!-- /.row -->
-</div><!-- /.domain-content -->
-<!-- inline scripts related to this domain -->
+</div><!-- /.page-content -->
+<!-- inline scripts related to this page -->
 
 <script type="text/javascript">
-
 eval('debugger;');
 jQuery(function($) {
     var grid_selector = "#grid-table";
     var pager_selector = "#grid-pager";
     jQuery(grid_selector).jqGrid({
         //direction: "rtl",
-        url:$path_base+'/admin/sys/user/list',
+        url:$path_base+'/admin/sys/permission/permission/list',
         datatype: "json",
         mtype: 'GET',
         //data: grid_data,
         //datatype: "local",
         height: 350,
-        colNames:[' ', 'ID','用户名','邮箱', '手机号码','创建时间', '状态'],
+        colNames:[' ', 'ID','权限名称','权限标识', '详细描述', '是否可用'],
         colModel:[
             {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
                 formatter:'actions',
                 formatoptions:{
                     keys:true,
-                    delOptions:{url:$path_base+"/admin/sys/user/delete",recreateForm: true, beforeShowForm:beforeDeleteCallback,
-                    afterSubmit : function(response, postdata)  {
-                        var resp = response.responseJSON;
-                        if (resp.responseHeader != undefined &&
-                                resp.responseHeader.status != undefined &&
-                                resp.responseHeader.status == "200" ) {
-                            ace.show_msg("删除成功!");
-                            return [true];
-                        }
-                        if (resp.error != undefined ) {
-                            return [false,JSON.stringify(resp.error)];
-                        }
-                        return [false,"删除失败,服务器内部的错误! "];
-                    }},
+                    delOptions:{url:$path_base+"/admin/sys/permission/permission/delete",recreateForm: true, beforeShowForm:beforeDeleteCallback,
+                        afterSubmit : function(response, postdata)  {
+                            var resp = response.responseJSON;
+                            if (resp.responseHeader != undefined &&
+                                    resp.responseHeader.status != undefined &&
+                                    resp.responseHeader.status == "200" ) {
+                                ace.show_msg("删除成功!");
+                                return [true];
+                            }
+                            if (resp.error != undefined ) {
+                                return [false,JSON.stringify(resp.error)];
+                            }
+                            return [false,"删除失败,服务器内部的错误! "];
+                        }},
                     //editformbutton:true,
                     //editOptions:{url:$path_base+"/admin/sys/user/update",recreateForm: true, beforeShowForm:beforeEditCallback},
                     onSuccess: function(response) {
@@ -126,13 +128,12 @@ jQuery(function($) {
                     }
                 }
             },
-            {name:'id',index:'id', width:60, hidden:true,sorttype:"int", editable: true},
-            {name:'username',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"50"}},
-            {name:'email',index:'email', width:150, editable: true,editoptions:{size:"20",maxlength:"50"}},
-            {name:'mobile',index:'phone', width:90, editable: true, editoptions:{size:"11",maxlength:"11"}},
-            //{name:'createTime',index:'createTime',width:90, editable:true,sorttype:"date", formatter:dateFormatter,unformat: pickDate},
-            {name:'createTime',index:'createTime',width:90, editable:true,sorttype:"date"},
-            {name:'status',index:'status', width:70, editable: true, edittype:"select", formatter:"select", editoptions: {value:"normal:正常;blocked:封禁"}},
+            {name:'id',index:'id', width:30, editable:false,sorttype:"int"},
+            {name:'name',index:'name', width:100,editable: true,editoptions:{size:"20",maxlength:"50"}},
+            {name:'permission',index:'role', width:100, editable: true,editoptions:{size:"20",maxlength:"50"}},
+            {name:'description',index:'desc', width:180, editable: true,editoptions:{rows:"2",cols:"10"}},
+            {name:'show',index:'show', width:40, editable: true, edittype:"checkbox",  editoptions:{value:"true:false"},unformat: aceSwitch}
+
 
         ],
 
@@ -151,15 +152,14 @@ jQuery(function($) {
             var table = this;
             setTimeout(function(){
                 styleCheckbox(table);
-
                 updateActionIcons(table);
                 updatePagerIcons(table);
                 enableTooltips(table);
             }, 0);
         },
 
-        editurl: $path_base+"/admin/sys/user/update",//nothing is saved
-        caption: "用户信息管理",
+        editurl: $path_base+"/admin/sys/permission/permission/update",//nothing is saved
+        caption: "权限管理",
 
         autowidth: true
     });
@@ -176,15 +176,21 @@ jQuery(function($) {
                     .after('<span class="lbl"></span>');
         }, 0);
     }
-    //format date
-    function dateFormatter(cellvalue, options, rowObject) {
-        return cellvalue.split(" ")[0];
-    }
 
+
+    function getColumnIndexByName(grid, columnName) {
+        var cm = jQuery(grid).jqGrid('getGridParam', 'colModel'), i, l = cm.length;
+        for (i = 0; i < l; i++) {
+            if (cm[i].name === columnName) {
+                return i; // return the index
+            }
+        }
+        return -1;
+    }
     //enable datepicker
     function pickDate( cellvalue, options, cell ) {
         setTimeout(function(){
-            $(cell) .find('input[type=text]')
+            $(cell).find('input[type=text]')
                     .datepicker({format:'yyyy-mm-dd' , language:'zh-CN', autoclose:true});
         }, 0);
     }
@@ -207,8 +213,8 @@ jQuery(function($) {
             },
             {
                 //edit record form
-                url:$path_base+"/admin/sys/user/update",
-                closeAfterEdit:true,
+                closeAfterEdit: true,
+                url:$path_base+"/admin/sys/permission/permission/update",
                 recreateForm: true,
                 beforeShowForm : function(e) {
                     var form = $(e[0]);
@@ -231,9 +237,10 @@ jQuery(function($) {
             },
             {
                 //new record form
-                url:$path_base+"/admin/sys/user/add",
+                url:$path_base+"/admin/sys/permission/permission/add",
                 closeAfterAdd: true,
                 recreateForm: true,
+                modal:true,
                 viewPagerButtons: false,
                 beforeShowForm : function(e) {
                     var form = $(e[0]);
@@ -241,9 +248,9 @@ jQuery(function($) {
                     style_edit_form(form);
 
                 },
-                beforeSubmit: function(posdata,formid) {
-                    console.log(posdata);
-                  return [true,''];
+                serializeEditData: function(data){
+                    //新增数据的时候把默认的id='_empty'设置为id='0'
+                    return $.param($.extend({},data,{id:0}));
                 },
                 afterSubmit : function(response, postdata)  {
                     var resp = response.responseJSON;
@@ -261,7 +268,7 @@ jQuery(function($) {
             },
             {
                 //delete record form
-                url:$path_base+"/admin/sys/user/delete",
+                url:$path_base+"/admin/sys/permission/permission/delete",
                 recreateForm: true,
                 beforeShowForm : function(e) {
                     var form = $(e[0]);
@@ -288,7 +295,7 @@ jQuery(function($) {
             },
             {
                 //search form
-                url:$path_base+"/admin/sys/user/search",
+                url:$path_base+"/admin/sys/permission/permission/search",
                 recreateForm: true,
                 afterShowSearch: function(e){
                     var form = $(e[0]);
@@ -318,11 +325,10 @@ jQuery(function($) {
 
 
     function style_edit_form(form) {
-        //enable datepicker on "createTime" field and switches for "admin" field
-        form.find('input[name=createTime]').datepicker({format:'yyyy-mm-dd' , language:'zh-CN',autoclose:true})
-                .end().find('input[name=admin]')
+        //enable datepicker on "sdate" field and switches for "stock" field
+        //form.find('input[name=createTime]').datepicker({format:'yyyy-mm-dd' ,language:'zh-CN', autoclose:true})
+                form.find('input[name=show]')
                 .addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
-
         //update buttons classes
         var buttons = form.next().find('.EditButton .fm-button');
         buttons.addClass('btn btn-sm').find('[class*="-icon"]').remove();//ui-icon, s-icon
@@ -348,7 +354,6 @@ jQuery(function($) {
         form.find('.add-group').addClass('btn btn-xs btn-success');
         form.find('.delete-group').addClass('btn btn-xs btn-danger');
     }
-
     function style_search_form(form) {
         var dialog = form.closest('.ui-jqdialog');
         var buttons = dialog.find('.EditTable')
@@ -373,7 +378,6 @@ jQuery(function($) {
     }
 
 
-
     //it causes some flicker when reloading or navigating grid
     //it may be possible to have some custom formatter to do this as the grid is being created to prevent this
     //or go back to default browser checkbox styles for the grid
@@ -394,9 +398,10 @@ jQuery(function($) {
     //unlike navButtons icons, action icons in rows seem to be hard-coded
     //you can change them like this in here if you want
     function updateActionIcons(table) {
-        /**
+         /**
          var replacement =
          {
+             'ui-icon-pencil' : 'icon-pencil blue',
              'ui-icon-pencil' : 'icon-pencil blue',
              'ui-icon-trash' : 'icon-trash red',
              'ui-icon-disk' : 'icon-ok green',
@@ -407,7 +412,7 @@ jQuery(function($) {
 						var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
 						if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 					})
-         */
+          **/
     }
 
     //replace icons with FontAwesome icons like above
@@ -426,7 +431,6 @@ jQuery(function($) {
             if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
         })
     }
-
 
     function enableTooltips(table) {
         $('.navtable .ui-pg-button').tooltip({container:'body'});

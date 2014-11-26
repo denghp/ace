@@ -120,8 +120,8 @@ public abstract class GenericServiceImpl<T, ID extends Serializable> implements 
     }
 
     @Override
-    public List<T> getPageList(Integer offset, Integer limit) {
-        return null;
+    public List<T> getPageList(Integer pageNum, Integer pageSize) {
+        return page(null, pageNum, pageSize);
     }
 
     @Override

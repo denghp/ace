@@ -3,7 +3,6 @@ package com.ace.core.persistence.sys.entity;
 import com.google.common.collect.Lists;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 public class Role implements Serializable{
@@ -17,11 +16,11 @@ public class Role implements Serializable{
 
     private String description;
 
-    private Integer enabled;
+    private Boolean enabled = Boolean.TRUE;
 
-    private Date createTime;
+    private String createTime;
 
-    private Date modifyTime;
+    private String modifyTime;
 
     private List<RoleResourcePermission> resourcePermissions;
 
@@ -65,27 +64,27 @@ public class Role implements Serializable{
         this.description = description == null ? null : description.trim();
     }
 
-    public Integer getEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Date modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 

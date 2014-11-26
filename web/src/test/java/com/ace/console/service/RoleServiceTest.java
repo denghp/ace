@@ -1,6 +1,7 @@
 package com.ace.console.service;
 
 import com.ace.commons.json.JsonUtils;
+import com.ace.console.exception.AceException;
 import com.ace.console.service.sys.RoleService;
 import com.ace.core.paginator.domain.PageList;
 import com.ace.core.persistence.sys.entity.Role;
@@ -46,5 +47,12 @@ public class RoleServiceTest extends AbstractTest {
         }
     }
 
+    @Test
+    public void saveRRP() throws AceException {
+        Long[] resourceIds = new Long[] {47l,48l,49l};
+        Role role = new Role();
+        role.setId(6l);
+        roleService.updateWithResourcePermission(resourceIds,role);
+    }
 
 }

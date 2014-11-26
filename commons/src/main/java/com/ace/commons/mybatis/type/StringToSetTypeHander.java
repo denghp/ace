@@ -31,9 +31,10 @@ public class StringToSetTypeHander extends BaseTypeHandler<Set<Long>> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Set<Long> parameter, JdbcType jdbcType) throws SQLException {
         if (parameter != null) {
-            ps.setString(i, parameter.toString());
+            String ids = parameter.toString();
+            ps.setString(i, ids.substring(1, ids.length() - 1));
         } else {
-            ps.setTimestamp(i, null);
+            ps.setString(i, null);
         }
     }
 

@@ -9,17 +9,18 @@
             typeHandler="com.ace.commons.mybatis.type.StringToSetTypeHander"/>
   </resultMap>
 
-
+    <resultMap id="roleResourcePermissionMap" type="com.ace.core.persistence.sys.entity.RoleResourcePermission">
+        <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="resourceId" column="resource_id"/>
+        <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR" javaType="java.util.Set"
+                typeHandler="com.ace.commons.mybatis.type.StringToSetTypeHander"/>
+    </resultMap>
 
   <sql id="Base_Column_List" >
     id, role_id, resource_id, permission_ids
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_role_resource_permission
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sys_role_resource_permission
     where id = #{id,jdbcType=BIGINT}
@@ -57,7 +58,7 @@
         #{resourceId,jdbcType=BIGINT},
       </if>
       <if test="permissionIds != null" >
-        #{permissionIds,typeHandler=com.ace.commons.mybatis.type.StringToSetTypeHander},
+        #{permissionIds, typeHandler=com.ace.commons.mybatis.type.StringToSetTypeHander},
       </if>
     </trim>
   </insert>
@@ -83,4 +84,26 @@
       permission_ids = #{permissionIds,typeHandler=com.ace.commons.mybatis.type.StringToSetTypeHander}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_resource_permission
+        where id = #{id,jdbcType=BIGINT};
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_resource_permission
+        where role_id = #{roleId, jdbcType=BIGINT} and resource_id = #{resourceId,jdbcType=BIGINT};
+    </select>
+
+    <select id="getRRPListByRId" parameterType="java.lang.Long" resultMap="roleResourcePermissionMap">
+        select id,role_id,resource_id,permission_ids from  sys_role_resource_permission where role_id = #{roleId};
+    </select>
+
+    <delete id="deleteRRPByRoleId" parameterType="java.lang.Long" >
+        delete from sys_role_resource_permission where role_id = #{roleId};
+    </delete>
 </mapper>

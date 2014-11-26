@@ -5,6 +5,7 @@
  */
 package com.ace.console.service.sys;
 
+import com.ace.console.exception.AceException;
 import com.ace.console.service.GenericService;
 import com.ace.core.persistence.sys.entity.Role;
 import com.ace.core.persistence.sys.entity.RoleResourcePermission;
@@ -32,5 +33,12 @@ public interface RoleService extends GenericService<Role, Long> {
      * @return
      */
     public Map<Long, RoleResourcePermission> getRoleResourceMaps(Long roleId);
+
+    /**
+     * 更新角色与资源的关系
+     * @param resourceIds
+     * @param role
+     */
+    public void updateWithResourcePermission(Long[] resourceIds, Role role) throws AceException;
 
 }

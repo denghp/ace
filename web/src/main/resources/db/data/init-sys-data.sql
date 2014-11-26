@@ -229,7 +229,7 @@ insert into `sys_resources`(`id`, `parent_id`, `parent_ids`, weight, `name`, `id
 insert into `sys_resources`(`id`, `parent_id`, `parent_ids`, weight, `name`, `identity`, `url`, `enabled`)
   values (83, 81, '0/1/71/81/', 2, '角色管理', 'role', '/admin/sys/permission/role', 1);
 insert into `sys_resources`(`id`, `parent_id`, `parent_ids`, weight, `name`, `identity`, `url`, `enabled`)
-  values (84, 81, '0/1/71/81/', 3, '资源列表', 'resource', '/admin/sys/resource', 1);
+  values (84, 81, '0/1/71/81/', 3, '资源列表', 'resource', '/admin/sys/resources', 1);
 
 insert into `sys_resources`(`id`, `parent_id`, `parent_ids`, weight, `name`, `identity`, `url`, `enabled`)
   values (85, 71, '0/1/71/', 4, '用户管理', 'user', '', 1);

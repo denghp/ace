@@ -56,7 +56,7 @@ public interface ResourceService extends GenericService<Resources, Long> {
      */
     public List<Menu> convertToMenus(List<Resources> resources);
 
-    public List<Resources>  getAllWithSort(String sort);
+    public List<Resources> getAllWithSort(String sort);
 
     /**
      *  获取ztree 集合

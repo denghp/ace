@@ -1,6 +1,7 @@
 package com.ace.core.persistence.sys.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class RoleResourcePermission implements Serializable {
@@ -13,6 +14,22 @@ public class RoleResourcePermission implements Serializable {
     private Set<Long> permissionIds;
 
     private Role role;
+
+    public RoleResourcePermission() {}
+
+    public RoleResourcePermission(Long roleId, Long resourceId) {
+        this(roleId, resourceId, null);
+    }
+
+    public RoleResourcePermission(Long roleId, Long resourceId, Set<Long> permissionIds) {
+        if (permissionIds == null) {
+            permissionIds = new HashSet<Long>();
+            permissionIds.add(1l);
+        }
+        this.roleId = roleId;
+        this.resourceId = resourceId;
+        this.permissionIds = permissionIds;
+    }
 
     public Role getRole() {
         return role;

@@ -84,13 +84,13 @@
                                     <div class="control-group">
                                         <div class="radio">
                                             <label>
-                                                <input name="show" value="true" <c:if test="${role.enabled == true}">checked="checked"</c:if> type="radio" class="ace">
+                                                <input name="enabled" value="true" <c:if test="${role.enabled == true}">checked="checked"</c:if> type="radio" class="ace">
                                                 <span class="lbl"> 可用</span>
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input name="show" value="false" <c:if test="${role.enabled == true}">checked="checked"</c:if> type="radio" class="ace">
+                                                <input name="enabled" value="false" <c:if test="${role.enabled == false}">checked="checked"</c:if> type="radio" class="ace">
                                                 <span class="lbl"> 不可用</span>
                                             </label>
                                         </div>

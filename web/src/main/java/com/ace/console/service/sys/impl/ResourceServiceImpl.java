@@ -248,8 +248,10 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
         return resourcesMapper.getAllWithSort(params);
     }
 
-    public List<ZTree<Integer>> getZTreeList(boolean async, Long roleId) {
-        List<Resources> resourceList = getAllWithSort(null);
+    @InvalidateSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":roles:getRoleResourceMaps")
+    @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:getZTreeList", expiration = 600)
+    public List<ZTree<Integer>> getZTreeList(boolean async, @ParameterValueKeyProvider Long roleId) {
+        List<Resources> resourceList = getAllWithSort(DEFAULT_SORT);
         Map<Long, RoleResourcePermission> rrpMaps = null;
         if (roleId != null) {
             rrpMaps = roleService.getRoleResourceMaps(roleId);

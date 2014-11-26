@@ -52,12 +52,12 @@ public class RoleController extends BaseCRUDController<Role, Integer> {
     @ResponseBody
     public ACEResponse updateWithResourcePermission(Role role,
                                                  BindingResult result,
-                                                 Integer[] resourceIds,
+                                                 Long[] resourceIds,
                                                  Model model) throws AceException {
         long starTime = System.currentTimeMillis();
         if (role.getId() != null && resourceIds != null) {
-            //TODO 未实现
-//            roleService.updateWithResourcePermission(resourceIds, role);
+            //TODO 需要清除缓存中存储的数据
+            roleService.updateWithResourcePermission(resourceIds, role);
             return new ACEResponse(new ResponseHeader(AceException.Code.OK.intValue(),System.currentTimeMillis() - starTime));
         }
         return ACEResponse.createErrorResp(AceException.Code.BAD_REQUEST.intValue(), "Bad Request, the params is invalid.");

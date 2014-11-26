@@ -1,5 +1,6 @@
 package com.ace.core.persistence.sys.entity;
 
+import com.google.code.ssm.api.CacheKeyMethod;
 import com.google.common.collect.Lists;
 
 import java.io.Serializable;
@@ -102,6 +103,11 @@ public class Role implements Serializable{
     public void addResourcePermission(RoleResourcePermission roleResourcePermission) {
         roleResourcePermission.setRole(this);
         getResourcePermissions().add(roleResourcePermission);
+    }
+
+    @CacheKeyMethod
+    public String getCacheKey(){
+        return id.toString();
     }
 
     @Override

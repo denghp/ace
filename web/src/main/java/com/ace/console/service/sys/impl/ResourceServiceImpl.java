@@ -143,6 +143,11 @@ public class ResourceServiceImpl extends GenericServiceImpl<Resources, Long> imp
         return convertToMenus(resources);
     }
 
+    @InvalidateSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:findMenusByUser")
+    public void removefindMenusCache(@ParameterValueKeyProvider User user) {
+
+    }
+
     @ReadThroughSingleCache(namespace = Constants.DEFAULT_PROJECT_NAME + ":menus:getChildsByPid", expiration = 600)
     public List<Resources> getChildsByPid(@ParameterValueKeyProvider int pid) {
         logger.debug(">>>> getChildsByPid : {}", pid);

@@ -2,10 +2,10 @@
 <configuration>
     <!-- log output to file  -->
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/fm-search-task.log</file>
+        <file>./logs/ace/ace.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>./logs/fm-search-task.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./logs/ace/ace.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">

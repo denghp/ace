@@ -66,5 +66,9 @@ public interface ResourceService extends GenericService<Resources, Long> {
      */
     public List<ZTree<Integer>> getZTreeList(boolean async, Long roleId);
 
-
+    /**
+     * 移除缓存
+     * @param user
+     */
+    public void removefindMenusCache(User user);
 }

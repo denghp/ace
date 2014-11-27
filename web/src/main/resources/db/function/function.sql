@@ -1,8 +1,8 @@
 /*** custom function getChildList **/
 use ace;
-DROP FUNCTION IF EXISTS getChildList;
+DROP FUNCTION IF EXISTS `getChildList`;
 DELIMITER ||
-CREATE FUNCTION `getChildList`(rootId INT)
+CREATE FUNCTION `getChildList`(rootId BIGINT )
      RETURNS VARCHAR(1000)
 BEGIN
        DECLARE pTemp VARCHAR(1000);
@@ -16,15 +16,17 @@ BEGIN
        END WHILE;
        RETURN pTemp;
 END ||
-DELIMITER ;;
+DELIMITER ;
+
+
 /*** custom function getChildList **/
-DROP FUNCTION IF EXISTS getChildCount;
+DROP FUNCTION IF EXISTS `getChildCount`;
 DELIMITER ||
-CREATE FUNCTION `getChildCount`(rootId INT)
+CREATE FUNCTION `getChildCount`(rootId BIGINT)
      RETURNS INT
 BEGIN
-       DECLARE pTemp INT DEFAULT 0 ;
+       DECLARE pTemp BIGINT DEFAULT 0 ;
        set pTemp = (select count(*) from sys_resources f_t where f_t.parent_id = rootId);
        RETURN pTemp;
 END ||
-DELIMITER ;;
+DELIMITER ;

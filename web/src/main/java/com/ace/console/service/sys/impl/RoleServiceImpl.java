@@ -89,6 +89,8 @@ public class RoleServiceImpl extends GenericServiceImpl<Role, Long> implements R
                     rrpMapper.insert(rrp);
                 }
             }
+            //TODO 需要手动清除角色对应用户关联的菜单,资源,权限缓存
+            
         } catch (Exception ex) {
             logger.error("updateWithResourcePermission error , {}", ex);
             throw AceException.create(AceException.Code.SYSTEM_ERROR, "UpdateWithResourcePermission failed!");
